@@ -1,0 +1,41 @@
+import {
+  newRouter,
+  newStore,
+  newApi,
+  newApp,
+  corePermit,
+} from "@izhimu/seas-core";
+import {
+  securityRootRouter,
+  securityHomeRouter,
+  securityHandler,
+  securityPermit,
+} from "./router/security.ts";
+import { securityStore } from "./store/module/security.ts";
+import {
+  securityRequestInterceptor,
+  securityResponseRejectedInterceptor,
+} from "./request";
+
+// Vuex
+const store = newStore().add(securityStore).build();
+
+// 路由
+const router = newRouter()
+  .root(securityRootRouter())
+  .home(securityHomeRouter())
+  .addBeforeEach(securityHandler(store, [...corePermit, ...securityPermit]))
+  .build();
+
+// 请求
+newApi()
+  .addRequestInterceptor(securityRequestInterceptor(store))
+  .addResponseRejectedInterceptor(securityResponseRejectedInterceptor())
+  .build();
+
+// App
+newApp()
+  .authDirective(store.state.security.authComponents)
+  .use(store)
+  .use(router)
+  .mount();

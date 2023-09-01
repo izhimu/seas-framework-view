@@ -1,0 +1,135 @@
+<!--suppress ALL -->
+<script setup lang="ts">
+import { computed, reactive } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import {
+  NConfigProvider,
+  NNotificationProvider,
+  NMessageProvider,
+  NDialogProvider,
+  NLoadingBarProvider,
+  NScrollbar,
+  NEl,
+  zhCN,
+  dateZhCN,
+  GlobalThemeOverrides,
+} from "naive-ui";
+import hljs from "highlight.js/lib/core";
+import json from "highlight.js/lib/languages/json";
+import index from "./event";
+
+const store = useStore();
+const router = useRouter();
+
+/**
+ * 主题配置
+ */
+const theme = computed(() => store.state.core.theme);
+const bodyColor = computed(() => (store.state.core.theme ? "#101014FF" : "#F8F8F8"));
+const themeOverrides: GlobalThemeOverrides = reactive({
+  common: {
+    primaryColor: "#448cfe",
+    primaryColorHover: "#5d9cff",
+    primaryColorPressed: "#3b7ce5",
+    primaryColorSuppl: "#205dbe",
+    bodyColor,
+  },
+});
+
+/**
+ * 处理Vuex刷新数据丢失
+ */
+if (sessionStorage.getItem("store")) {
+  const sessionStore = sessionStorage.getItem("store");
+  if (sessionStore) {
+    store.replaceState({
+      ...store.state,
+      ...JSON.parse(sessionStore),
+    });
+  }
+}
+window.addEventListener("beforeunload", () => {
+  sessionStorage.setItem("store", JSON.stringify(store.state));
+});
+
+/**
+ * 事件监听
+ */
+index.on("toLogin", () => {
+  store.commit("setLoginUser", null);
+  router.push({ path: "/login" });
+});
+
+/**
+ * 代码高亮
+ */
+hljs.registerLanguage("json", json);
+</script>
+
+<template>
+  <n-config-provider
+    :locale="zhCN"
+    :date-locale="dateZhCN"
+    :theme="theme"
+    :theme-overrides="themeOverrides"
+    :hljs="hljs"
+  >
+    <n-notification-provider placement="bottom-right">
+      <n-message-provider :max="1">
+        <n-dialog-provider>
+          <n-loading-bar-provider>
+            <n-scrollbar style="max-height: 100vh">
+              <n-el class="app-space">
+                <router-view v-slot="{ Component }">
+                  <transition name="fade-bottom" mode="out-in">
+                    <component :is="Component" />
+                  </transition>
+                </router-view>
+              </n-el>
+            </n-scrollbar>
+          </n-loading-bar-provider>
+        </n-dialog-provider>
+      </n-message-provider>
+    </n-notification-provider>
+  </n-config-provider>
+</template>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.app-space {
+  width: 100vw;
+  height: 100vh;
+  border-radius: unset;
+}
+
+/*noinspection CssUnusedSymbol*/
+.box-content {
+  padding: 16px;
+}
+
+.fade-bottom-enter-active,
+.fade-bottom-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+.fade-bottom-enter-from {
+  opacity: 0;
+  transform: translateY(-10%);
+}
+.fade-bottom-leave-to {
+  opacity: 0;
+  transform: translateY(10%);
+}
+
+.fill-width {
+  width: 100%;
+}
+
+.state-box {
+  margin: 10%;
+}
+</style>

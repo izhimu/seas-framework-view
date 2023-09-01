@@ -1,0 +1,108 @@
+import {
+  createRouter,
+  createWebHistory,
+  RouteLocationNormalized,
+  Router,
+  RouteRecordName,
+  RouteRecordRaw,
+} from "vue-router";
+import event from "../event";
+
+export type BeforeEachFunc = (to: RouteLocationNormalized) => string | boolean;
+
+export interface ISeasRouter {
+  value: Router | null;
+  rootRoutes: RouteRecordRaw[];
+  homeRoutes: RouteRecordRaw[];
+  homePageComponent: any;
+  beforeEachFuncs: BeforeEachFunc[];
+
+  root(value: RouteRecordRaw[]): this;
+
+  home(value: RouteRecordRaw[]): this;
+
+  homePage(page: any): this;
+
+  addBeforeEach(func: BeforeEachFunc): this;
+
+  build(): Router;
+}
+
+export class SeasRouter implements ISeasRouter {
+  value: Router | null = null;
+
+  rootRoutes: RouteRecordRaw[] = [];
+
+  homeRoutes: RouteRecordRaw[] = [];
+
+  homePageComponent: any = null;
+
+  beforeEachFuncs: BeforeEachFunc[] = [];
+
+  root(value: RouteRecordRaw[]): this {
+    this.rootRoutes.push(...value);
+    return this;
+  }
+
+  home(value: RouteRecordRaw[]): this {
+    this.homeRoutes.push(...value);
+    return this;
+  }
+
+  homePage(page: any): this {
+    this.homePageComponent = page;
+    return this;
+  }
+
+  addBeforeEach(func: BeforeEachFunc): this {
+    this.beforeEachFuncs.push(func);
+    return this;
+  }
+
+  build(redirect = "index"): Router {
+    this.value = createRouter({
+      history: createWebHistory(),
+      routes: [
+        ...this.rootRoutes,
+        {
+          path: "/",
+          name: "home",
+          redirect,
+          component: this.homePageComponent,
+          children: [
+            {
+              path: "404",
+              name: "404",
+              component: () => import("../view/404Page.vue"),
+            },
+            ...this.homeRoutes,
+          ],
+        },
+      ],
+    });
+    const allPage: Array<RouteRecordName | null | undefined> = this.value
+      .getRoutes()
+      .flatMap((v) => v.name);
+    this.value.beforeEach((to) => {
+      if (allPage.indexOf(to.name) === -1) {
+        return "/404";
+      }
+      if (this.beforeEachFuncs.length > 0) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const beforeEachFunc of this.beforeEachFuncs) {
+          const result = beforeEachFunc(to);
+          if (result !== true) {
+            return result;
+          }
+        }
+      }
+      event.emit("routerChange", to.name);
+      return true;
+    });
+    return this.value;
+  }
+}
+
+export const newRouter = () => new SeasRouter();
+
+export const corePermit = ["home", "404"];

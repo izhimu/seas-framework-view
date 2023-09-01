@@ -1,0 +1,53 @@
+{
+  "name": "@izhimu/seas-healthy-view",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Seas Framework View",
+  "main": "src/index.d.ts",
+  "author": {
+    "name": "izhimu",
+    "email": "1334642674@qq.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "push": "npm publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases/"
+  },
+  "peerDependencies": {
+    "@izhimu/seas-core": "^0.0.2",
+    "@izhimu/seas-job-view": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.7",
+    "@types/sm-crypto": "^0.3.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.11",
+    "@typescript-eslint/parser": "^5.59.11",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.42.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.14.1",
+    "prettier": "2.8.8",
+    "typescript": "^5.1.3",
+    "vite": "^4.3.9",
+    "vue-eslint-parser": "^9.3.1",
+    "vue-tsc": "^1.6.5",
+    "@fingerprintjs/fingerprintjs": "^3.4.1",
+    "@vicons/ionicons5": "^0.12.0",
+    "axios": "^1.4.0",
+    "echarts": "^5.4.2",
+    "highlight.js": "^11.8.0",
+    "mitt": "^3.0.0",
+    "naive-ui": "^2.34.4",
+    "qs": "^6.11.2",
+    "sm-crypto": "^0.3.12",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.2",
+    "vuex": "^4.1.0"
+  }
+}
