@@ -14,7 +14,7 @@ export {
   Page,
   Select,
 } from "./entity/core.ts";
-export { newRouter, SeasRouter, corePermit } from "./router";
+export { newRouter, router, SeasRouter, corePermit } from "./router";
 export { newStore, SeasStore } from "./store";
 export { CoreStore, coreStore } from "./store/module/core.ts";
 export { default as event } from "./event";

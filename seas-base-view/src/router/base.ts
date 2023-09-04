@@ -1,8 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
-import baseInitIcon from "../style/base.ts";
 
-const baseRouter = (): RouteRecordRaw[] => {
-  // baseInitIcon();
+export const baseRouter = (): RouteRecordRaw[] => {
   return [
     {
       path: "index",
@@ -52,4 +50,4 @@ const baseRouter = (): RouteRecordRaw[] => {
   ];
 };
 
-export default baseRouter;
+export const basePermit = ["index"];

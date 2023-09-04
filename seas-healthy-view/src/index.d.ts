@@ -9,3 +9,4 @@ export {
   dMemory,
   dSensors,
 } from "./entity/os.ts";
+export { default as healthyInitIcon } from "./style/healthy.ts";

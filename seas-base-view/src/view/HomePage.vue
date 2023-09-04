@@ -34,7 +34,6 @@ import {
 import LockPage from "@izhimu/seas-security-view/src/view/LockPage.vue";
 import { logout } from "@izhimu/seas-security-view/src/request/security";
 import { useIcon, event } from "@izhimu/seas-core";
-import { SecurityState } from "@izhimu/seas-security-view/src/store/module/security.ts";
 import { auth } from "../request/menu";
 import UserInfo from "./UserInfo.vue";
 
@@ -50,7 +49,6 @@ const router = useRouter();
 const dialog = useDialog();
 const message = useMessage();
 const { renderIcon, iconMap } = useIcon();
-const { state }: { state: SecurityState } = store;
 
 const renderLink = (name: string, title: string) => {
   return () =>
@@ -122,7 +120,7 @@ const loadMenuData = () => {
 /**
  * 切换主题
  */
-const themeNight = computed(() => !!store.state.theme);
+const themeNight = computed(() => !!store.state.core.theme);
 const themeIcon = shallowRef(themeNight.value ? Moon : Sunny);
 const theme = (isNight: boolean) => {
   themeIcon.value = isNight ? Moon : Sunny;
@@ -163,7 +161,7 @@ const handleLock = () => {
       logout().then((res) => {
         if (res.code === "000") {
           const lockUser = {
-            account: store.state.loginUser?.account,
+            account: store.state.security?.loginUser?.account,
             userName: "系统管理员",
           };
           store.commit("setLoginUser", null);
@@ -236,7 +234,7 @@ onMounted(() => {
             </n-button>
             <n-dropdown :options="escOptions" @select="handleEscClick">
               <n-button quaternary round>{{
-                state.loginUser?.userName
+                store.state.security?.loginUser?.userName
               }}</n-button>
             </n-dropdown>
           </n-space>

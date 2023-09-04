@@ -11,7 +11,6 @@ import event from "../event";
 export type BeforeEachFunc = (to: RouteLocationNormalized) => string | boolean;
 
 export interface ISeasRouter {
-  value: Router | null;
   rootRoutes: RouteRecordRaw[];
   homeRoutes: RouteRecordRaw[];
   homePageComponent: any;
@@ -29,7 +28,7 @@ export interface ISeasRouter {
 }
 
 export class SeasRouter implements ISeasRouter {
-  value: Router | null = null;
+  static value: Router;
 
   rootRoutes: RouteRecordRaw[] = [];
 
@@ -60,7 +59,7 @@ export class SeasRouter implements ISeasRouter {
   }
 
   build(redirect = "index"): Router {
-    this.value = createRouter({
+    SeasRouter.value = createRouter({
       history: createWebHistory(),
       routes: [
         ...this.rootRoutes,
@@ -80,10 +79,10 @@ export class SeasRouter implements ISeasRouter {
         },
       ],
     });
-    const allPage: Array<RouteRecordName | null | undefined> = this.value
+    const allPage: Array<RouteRecordName | null | undefined> = SeasRouter.value
       .getRoutes()
       .flatMap((v) => v.name);
-    this.value.beforeEach((to) => {
+    SeasRouter.value.beforeEach((to) => {
       if (allPage.indexOf(to.name) === -1) {
         return "/404";
       }
@@ -99,9 +98,11 @@ export class SeasRouter implements ISeasRouter {
       event.emit("routerChange", to.name);
       return true;
     });
-    return this.value;
+    return SeasRouter.value;
   }
 }
+
+export const router = () => SeasRouter.value;
 
 export const newRouter = () => new SeasRouter();
 

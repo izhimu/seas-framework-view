@@ -4,7 +4,6 @@ import {
   RouteRecordName,
   RouteRecordRaw,
 } from "vue-router";
-import { SeasRouter } from "@izhimu/seas-core";
 
 export const securityRootRouter = (): RouteRecordRaw[] => [
   {

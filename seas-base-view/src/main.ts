@@ -14,7 +14,8 @@ import {
   securityRequestInterceptor,
   securityResponseRejectedInterceptor,
 } from "@izhimu/seas-security-view";
-import baseRouter from "./router/base.ts";
+import { baseRouter, basePermit } from "./router/base.ts";
+import baseInitIcon from "./style/base.ts";
 
 // Vuex
 const store = newStore().add(securityStore).build();
@@ -25,7 +26,9 @@ const router = newRouter()
   .home(securityHomeRouter())
   .home(baseRouter())
   .homePage(() => import("./view/HomePage.vue"))
-  .addBeforeEach(securityHandler(store, [...corePermit, ...securityPermit]))
+  .addBeforeEach(
+    securityHandler(store, [...corePermit, ...securityPermit, ...basePermit])
+  )
   .build();
 
 // 请求
@@ -40,3 +43,6 @@ newApp()
   .use(store)
   .use(router)
   .mount();
+
+// 图标加载
+baseInitIcon();

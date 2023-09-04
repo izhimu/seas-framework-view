@@ -241,7 +241,7 @@ defineExpose({
           </n-form>
         </n-tab-pane>
         <n-tab-pane
-          v-if="store.state.authComponents.indexOf('system.role.user') !== -1"
+          v-if="store.state.security?.authComponents.indexOf('system.role.user') !== -1"
           class="tab-box"
           name="user"
           tab="用户分配"
@@ -257,7 +257,7 @@ defineExpose({
           />
         </n-tab-pane>
         <n-tab-pane
-          v-if="store.state.authComponents.indexOf('system.role.menu') !== -1"
+          v-if="store.state.security?.authComponents.indexOf('system.role.menu') !== -1"
           class="tab-box"
           name="menu"
           tab="菜单权限"
@@ -288,7 +288,7 @@ defineExpose({
           </n-card>
         </n-tab-pane>
         <n-tab-pane
-          v-if="store.state.authComponents.indexOf('system.role.dept') !== -1"
+          v-if="store.state.security?.authComponents.indexOf('system.role.dept') !== -1"
           class="tab-box"
           name="dept"
           tab="数据权限"

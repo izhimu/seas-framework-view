@@ -1,8 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
-import jobInitIcon from "../style/job.ts";
 
 const jobRouter = (): RouteRecordRaw[] => {
-  jobInitIcon();
   return [
     {
       path: "job/timer",

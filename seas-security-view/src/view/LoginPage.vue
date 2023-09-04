@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed, h } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 import {
   FormInst,
   FormRules,
@@ -23,7 +22,7 @@ import {
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { sm2 } from "sm-crypto";
 import { ChevronForward as ArrowIcon } from "@vicons/ionicons5";
-import { CoreStore } from "@izhimu/seas-core";
+import { CoreStore, router } from "@izhimu/seas-core";
 import { system, webview } from "../assets/js/osInfo";
 import { encrypt, login } from "../request/security";
 import { dEncryptKey, dLogin, dLoginUser } from "../entity/security";
@@ -37,7 +36,6 @@ window.$notification = useNotification();
 window.$loadingBar = useLoadingBar();
 
 const store = useStore();
-const router = useRouter();
 const message = useMessage();
 const notification = useNotification();
 const formRef = ref<FormInst | null>(null);
@@ -110,7 +108,7 @@ const loginHandler = async () => {
         store.commit("setLoginUser", loginUser);
         store.commit("setLockUser", null);
         message.success("登录成功");
-        router.push({ path: "/" });
+        router().push({ path: "/" });
       } else {
         getEncryptKey();
       }
