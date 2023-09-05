@@ -33,7 +33,8 @@ import {
 } from "@vicons/ionicons5";
 import LockPage from "@izhimu/seas-security-view/src/view/LockPage.vue";
 import { logout } from "@izhimu/seas-security-view/src/request/security";
-import { useIcon, event } from "@izhimu/seas-core";
+import { useIcon, event, CoreStore } from "@izhimu/seas-core";
+import { SecurityState } from "@izhimu/seas-security-view";
 import { auth } from "../request/menu";
 import UserInfo from "./UserInfo.vue";
 
@@ -49,6 +50,11 @@ const router = useRouter();
 const dialog = useDialog();
 const message = useMessage();
 const { renderIcon, iconMap } = useIcon();
+const { state } = store;
+const {
+  core: coreStore,
+  security: securityStore,
+}: { core: CoreStore; security: SecurityState } = state;
 
 const renderLink = (name: string, title: string) => {
   return () =>
@@ -225,7 +231,7 @@ onMounted(() => {
               height="32"
               style="margin: 16px"
             />
-            <n-el class="home-logo-text">Seas</n-el>
+            <n-el class="home-logo-text">{{ coreStore.appName }}</n-el>
           </n-el>
           <n-el class="home-top"></n-el>
           <n-space class="home-esc" justify="end" size="small">
@@ -234,7 +240,7 @@ onMounted(() => {
             </n-button>
             <n-dropdown :options="escOptions" @select="handleEscClick">
               <n-button quaternary round>{{
-                store.state.security?.loginUser?.userName
+                securityStore?.loginUser?.userName
               }}</n-button>
             </n-dropdown>
           </n-space>

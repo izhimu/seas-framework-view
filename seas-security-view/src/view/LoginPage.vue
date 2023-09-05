@@ -41,7 +41,8 @@ const notification = useNotification();
 const formRef = ref<FormInst | null>(null);
 const loading = ref(false);
 const verifyRef = ref();
-const { state }: { state: CoreStore } = store;
+const { state } = store;
+const { core: coreStore }: { core: CoreStore } = state;
 
 const rules = ref<FormRules>({
   account: [
@@ -164,10 +165,12 @@ onMounted(() => {
 <template>
   <div>
     <div class="inner-header">
-      <n-layout-content :class="state.theme ? 'login-page-dark' : 'login-page'">
+      <n-layout-content
+        :class="coreStore.theme ? 'login-page-dark' : 'login-page'"
+      >
         <div class="login-grid">
           <div class="login-head">
-            <div class="login-title">Seas</div>
+            <div class="login-title">{{ coreStore.appName }}</div>
           </div>
         </div>
         <div class="login-grid">

@@ -34,7 +34,8 @@ const formRef = ref<FormInst | null>(null);
 const time = ref(new Date());
 const loading = ref(false);
 const verifyRef = ref();
-const { state }: { state: CoreStore } = store;
+const { state } = store;
+const { core: coreStore }: { core: CoreStore } = state;
 
 const emit = defineEmits(["unlock"]);
 
@@ -120,10 +121,12 @@ const onSuccess = (v: { key: string; verify: string }) => {
 <template>
   <div>
     <div class="inner-header">
-      <n-layout-content :class="state.theme ? 'lock-page-dark' : 'lock-page'">
+      <n-layout-content
+        :class="coreStore.theme ? 'lock-page-dark' : 'lock-page'"
+      >
         <div class="lock-grid">
           <div class="lock-head">
-            <div class="lock-title">Seas</div>
+            <div class="lock-title">{{ coreStore.appName }}</div>
             <div class="lock-time">
               <n-time :time="time" format="HH:mm:ss" />
             </div>

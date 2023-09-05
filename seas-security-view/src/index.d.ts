@@ -4,7 +4,7 @@ export {
   securityHandler,
   securityPermit,
 } from "./router/security.ts";
-export { securityStore } from "./store/module/security.ts";
+export { securityStore, SecurityState } from "./store/module/security.ts";
 export {
   securityRequestInterceptor,
   securityResponseRejectedInterceptor,
