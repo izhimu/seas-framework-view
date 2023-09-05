@@ -1,11 +1,13 @@
 import { RouteRecordRaw } from "vue-router";
 
-export const baseRouter = (): RouteRecordRaw[] => {
+export const baseRouter = (
+  index = () => import("../view/IndexPage.vue")
+): RouteRecordRaw[] => {
   return [
     {
       path: "index",
       name: "index",
-      component: () => import("../view/IndexPage.vue"),
+      component: index,
     },
     {
       path: "system/role",
