@@ -4,6 +4,7 @@ import {
   newApi,
   newApp,
   corePermit,
+  coreStore,
 } from "@izhimu/seas-core";
 import {
   securityRootRouter,
@@ -16,10 +17,20 @@ import {
 } from "@izhimu/seas-security-view";
 import { jobRouter, jobInitIcon } from "@izhimu/seas-job-view";
 import { healthyRouter, healthyInitIcon } from "@izhimu/seas-healthy-view";
-import { baseRouter, baseInitIcon, basePermit } from "@izhimu/seas-base-view";
+import {
+  baseRouter,
+  baseHomePage,
+  baseInitIcon,
+  basePermit,
+  baseStore,
+} from "@izhimu/seas-base-view";
 
 // Vuex
-const store = newStore().add(securityStore).build();
+const store = newStore()
+  .add(coreStore)
+  .add(securityStore)
+  .add(baseStore)
+  .build();
 
 // 路由
 const router = newRouter()
@@ -28,7 +39,7 @@ const router = newRouter()
   .home(jobRouter())
   .home(healthyRouter())
   .home(baseRouter())
-  .homePage(() => import("@izhimu/seas-base-view/src/view/HomePage.vue"))
+  .homePage(baseHomePage())
   .addBeforeEach(
     securityHandler(store, [...corePermit, ...securityPermit, ...basePermit])
   )

@@ -37,6 +37,7 @@ import { useIcon, event, CoreStore } from "@izhimu/seas-core";
 import { SecurityState } from "@izhimu/seas-security-view";
 import { auth } from "../request/menu";
 import UserInfo from "./UserInfo.vue";
+import { BaseState } from "../store/module/base.ts";
 
 /**
  * 挂载全局对象
@@ -50,11 +51,11 @@ const router = useRouter();
 const dialog = useDialog();
 const message = useMessage();
 const { renderIcon, iconMap } = useIcon();
-const { state } = store;
 const {
   core: coreStore,
   security: securityStore,
-}: { core: CoreStore; security: SecurityState } = state;
+  base: baseStore,
+}: { core: CoreStore; security: SecurityState; base: BaseState } = store.state;
 
 const renderLink = (name: string, title: string) => {
   return () =>
@@ -224,14 +225,21 @@ onMounted(() => {
     <n-layout>
       <n-layout-header>
         <n-el class="home-header n-card n-card--bordered">
-          <n-el class="home-logo" @click="router.push('/index')">
+          <n-el
+            class="home-logo"
+            :style="{ width: baseStore.logoConfig?.titleWidth }"
+            @click="router.push('/index')"
+          >
             <n-image
+              v-if="baseStore.logoConfig?.icon"
               preview-disabled
-              src="/img/logo.png"
-              height="32"
+              :src="baseStore.logoConfig?.iconSrc"
+              :height="baseStore.logoConfig.iconSize"
               style="margin: 16px"
             />
-            <n-el class="home-logo-text">{{ coreStore.appName }}</n-el>
+            <n-el class="home-logo-text">{{
+              baseStore.logoConfig?.title ?? coreStore.appName
+            }}</n-el>
           </n-el>
           <n-el class="home-top"></n-el>
           <n-space class="home-esc" justify="end" size="small">
@@ -306,7 +314,6 @@ onMounted(() => {
 
 .home-logo {
   cursor: pointer;
-  width: 284px;
   display: flex;
   align-items: center;
 }
