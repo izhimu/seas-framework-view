@@ -52,4 +52,6 @@ export const baseRouter = (
   ];
 };
 
+export const baseHomePage = () => () => import("../view/HomePage.vue");
+
 export const basePermit = ["index"];

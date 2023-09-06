@@ -14,5 +14,5 @@ export {
   dAuthOrg,
 } from "./entity/role.ts";
 export { User, dUser, UserRole, dUserRole } from "./entity/user.ts";
-export { baseRouter, basePermit } from "./router/base.ts";
+export { baseRouter, baseHomePage, basePermit } from "./router/base.ts";
 export { default as baseInitIcon } from "./style/base.ts";
