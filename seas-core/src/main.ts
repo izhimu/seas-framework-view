@@ -8,7 +8,11 @@ export interface ISeasApp {
 
   use(plugin: Plugin): this;
 
-  mount(root: string): App;
+  mount(root: string): this;
+
+  icon(...funcs: Array<() => void>): this;
+
+  app(): App;
 }
 
 export class SeasApp implements ISeasApp {
@@ -34,8 +38,19 @@ export class SeasApp implements ISeasApp {
     return this;
   }
 
-  mount(root = "#app"): App {
+  mount(root = "#app"): this {
     this.innerApp.mount(root);
+    return this;
+  }
+
+  icon(...funcs): this {
+    funcs.forEach((func) => {
+      func();
+    });
+    return this;
+  }
+
+  app(): App {
     return this.innerApp;
   }
 }

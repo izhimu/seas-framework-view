@@ -39,10 +39,8 @@ newApi()
 
 // App
 newApp()
-  .authDirective(store.state.security.authComponents)
   .use(store)
   .use(router)
-  .mount();
-
-// 图标加载
-baseInitIcon();
+  .mount()
+  .authDirective(store.state.security.authComponents)
+  .icon(baseInitIcon);
