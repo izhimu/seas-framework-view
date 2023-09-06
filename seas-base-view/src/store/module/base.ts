@@ -24,7 +24,7 @@ export const baseStore: ModuleTree<BaseState> = {
     },
     mutations: {
       setLogoConfig(state, config) {
-        state.logoConfig = config;
+        Object.assign(state.logoConfig, config);
       },
     },
   },
