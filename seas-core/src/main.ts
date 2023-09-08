@@ -1,4 +1,5 @@
 import { App, Component, createApp as create, Plugin } from "vue";
+import { Store } from "vuex";
 import CoreApp from "./App.vue";
 
 export interface ISeasApp {
@@ -22,10 +23,12 @@ export class SeasApp implements ISeasApp {
     this.innerApp = create(appComponent);
   }
 
-  authDirective(codeList: string[], name = "auth"): this {
+  authDirective(store: Store<any>, name = "auth"): this {
     this.innerApp?.directive(name, {
       mounted(el, binding) {
-        if (codeList.indexOf(binding.value) === -1) {
+        if (
+          store.state?.security?.authComponents?.indexOf(binding.value) === -1
+        ) {
           el.remove();
         }
       },
