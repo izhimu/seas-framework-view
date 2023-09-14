@@ -2,7 +2,6 @@
 <script setup lang="ts">
 import { computed, reactive } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 import {
   NConfigProvider,
   NNotificationProvider,
@@ -17,10 +16,8 @@ import {
 } from "naive-ui";
 import hljs from "highlight.js/lib/core";
 import json from "highlight.js/lib/languages/json";
-import index from "./event";
 
 const store = useStore();
-const router = useRouter();
 
 /**
  * 主题配置
@@ -53,14 +50,6 @@ if (sessionStorage.getItem("store")) {
 }
 window.addEventListener("beforeunload", () => {
   sessionStorage.setItem("store", JSON.stringify(store.state));
-});
-
-/**
- * 事件监听
- */
-index.on("toLogin", () => {
-  store.commit("setLoginUser", null);
-  router.push({ path: "/login" });
 });
 
 /**

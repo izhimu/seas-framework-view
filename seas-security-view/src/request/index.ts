@@ -1,5 +1,6 @@
 import { Store } from "vuex";
 import { event } from "@izhimu/seas-core";
+import { ResponseRejectedInterceptorFunc } from "@izhimu/seas-core/src/request/index.ts";
 import { LoginUser } from "../entity/security";
 
 export const securityRequestInterceptor = (store: Store) => (config) => {
@@ -11,17 +12,18 @@ export const securityRequestInterceptor = (store: Store) => (config) => {
   return config;
 };
 
-export const securityResponseRejectedInterceptor = () => (error) => {
-  const { response } = error;
-  if (response.data) {
-    const { data } = response;
-    if (data.code) {
-      if (data.code === "014") {
-        event.emit("toLogin");
+export const securityResponseRejectedInterceptor =
+  (): ResponseRejectedInterceptorFunc => (error) => {
+    const { response } = error;
+    if (response.data) {
+      const { data } = response;
+      if (data.code) {
+        if (data.code === "014") {
+          event.emit("toLogin");
+        }
       }
+      window.$message.error(data.tips);
+      return Promise.reject(data);
     }
-    window.$message.error(data.tips);
-    return Promise.reject(data);
-  }
-  return true;
-};
+    return true;
+  };

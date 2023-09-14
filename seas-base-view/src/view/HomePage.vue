@@ -211,8 +211,15 @@ const handleUnlock = () => {
   lock.value = false;
 };
 
+/**
+ * 事件监听
+ */
 event.on("routerChange", (data) => {
   activeKey.value = data;
+});
+event.on("toLogin", () => {
+  store.commit("setLoginUser", null);
+  router.push({ path: "/login" });
 });
 
 onMounted(() => {

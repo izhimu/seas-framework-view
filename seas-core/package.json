@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Seas Framework View",
   "main": "src/index.d.ts",
   "author": {
