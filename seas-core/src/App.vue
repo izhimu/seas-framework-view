@@ -26,7 +26,9 @@ const router = useRouter();
  * 主题配置
  */
 const theme = computed(() => store.state.core.theme);
-const bodyColor = computed(() => (store.state.core.theme ? "#101014FF" : "#F8F8F8"));
+const bodyColor = computed(() =>
+  store.state.core.theme ? "#101014FF" : "#F8F8F8"
+);
 const themeOverrides: GlobalThemeOverrides = reactive({
   common: {
     primaryColor: "#448cfe",
