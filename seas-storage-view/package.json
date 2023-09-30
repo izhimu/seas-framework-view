@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-storage-view",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Seas Framework View",
   "main": "src/index.d.ts",
   "author": {
@@ -27,7 +27,7 @@
     "vue": "^3.3.4",
     "vue-router": "^4.2.2",
     "vuex": "^4.1.0",
-    "@izhimu/seas-core": "^1.0.1"
+    "@izhimu/seas-core": "^1.0.2"
   },
   "devDependencies": {
     "@types/qs": "^6.9.7",

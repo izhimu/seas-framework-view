@@ -16,9 +16,10 @@ import {
 } from "@izhimu/seas-security-view";
 import { baseRouter, basePermit } from "./router/base.ts";
 import baseInitIcon from "./style/base.ts";
+import { baseStore } from "./store/module/base.ts";
 
 // Vuex
-const store = newStore().add(securityStore).build();
+const store = newStore().add(securityStore).add(baseStore).build();
 
 // 路由
 const router = newRouter()

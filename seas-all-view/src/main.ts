@@ -4,7 +4,6 @@ import {
   newApi,
   newApp,
   corePermit,
-  coreStore,
 } from "@izhimu/seas-core";
 import {
   securityRootRouter,
@@ -26,11 +25,7 @@ import {
 } from "@izhimu/seas-base-view";
 
 // Vuex
-const store = newStore()
-  .add(coreStore)
-  .add(securityStore)
-  .add(baseStore)
-  .build();
+const store = newStore().add(securityStore).add(baseStore).build();
 
 // 路由
 const router = newRouter()
@@ -53,12 +48,8 @@ newApi()
 
 // App
 newApp()
-  .authDirective(store.state.security.authComponents)
   .use(store)
   .use(router)
-  .mount();
-
-// 图标加载
-jobInitIcon();
-healthyInitIcon();
-baseInitIcon();
+  .mount()
+  .authDirective(store)
+  .icon(baseInitIcon, jobInitIcon, healthyInitIcon);
