@@ -19,6 +19,7 @@ import { healthyRouter, healthyInitIcon } from "@izhimu/seas-healthy-view";
 import {
   baseRouter,
   baseHomePage,
+  baseIndexPage,
   baseInitIcon,
   basePermit,
   baseStore,
@@ -30,11 +31,11 @@ const store = newStore().add(securityStore).add(baseStore).build();
 // 路由
 const router = newRouter()
   .root(securityRootRouter())
-  .home(securityHomeRouter())
-  .home(jobRouter())
-  .home(healthyRouter())
-  .home(baseRouter())
-  .homePage(baseHomePage())
+  .add(securityHomeRouter())
+  .add(jobRouter())
+  .add(healthyRouter())
+  .add(baseRouter(baseIndexPage()))
+  .home(baseHomePage())
   .addBeforeEach(
     securityHandler(store, [...corePermit, ...securityPermit, ...basePermit])
   )

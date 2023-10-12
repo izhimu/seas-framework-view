@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Seas Framework View",
   "main": "src/index.d.ts",
   "author": {
@@ -14,7 +14,7 @@
     "preview": "vite preview",
     "push": "npm publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases/"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@fingerprintjs/fingerprintjs": "^3.4.1",
     "@vicons/ionicons5": "^0.12.0",
     "axios": "^1.4.0",

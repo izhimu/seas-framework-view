@@ -1,8 +1,9 @@
 import { RouteRecordRaw } from "vue-router";
 
-export const baseRouter = (
-  index = () => import("../view/IndexPage.vue")
-): RouteRecordRaw[] => {
+export const baseHomePage = () => () => import("../view/HomePage.vue");
+export const baseIndexPage = () => () => import("../view/IndexPage.vue");
+
+export const baseRouter = (index = baseIndexPage()): RouteRecordRaw[] => {
   return [
     {
       path: "index",
@@ -51,7 +52,5 @@ export const baseRouter = (
     },
   ];
 };
-
-export const baseHomePage = () => () => import("../view/HomePage.vue");
 
 export const basePermit = ["index"];

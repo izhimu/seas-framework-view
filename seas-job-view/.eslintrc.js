@@ -39,6 +39,13 @@ module.exports = {
         ],
       },
     ],
+    "import/no-extraneous-dependencies": [
+      2,
+      {
+        devDependencies: true,
+        peerDependencies: true,
+      },
+    ],
   },
   settings: {
     "import/resolver": {

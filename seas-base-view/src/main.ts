@@ -24,9 +24,9 @@ const store = newStore().add(securityStore).add(baseStore).build();
 // 路由
 const router = newRouter()
   .root(securityRootRouter())
-  .home(securityHomeRouter())
-  .home(baseRouter())
-  .homePage(() => import("./view/HomePage.vue"))
+  .add(securityHomeRouter())
+  .add(baseRouter())
+  .home(() => import("./view/HomePage.vue"))
   .addBeforeEach(
     securityHandler(store, [...corePermit, ...securityPermit, ...basePermit])
   )

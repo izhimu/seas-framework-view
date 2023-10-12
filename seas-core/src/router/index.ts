@@ -18,9 +18,9 @@ export interface ISeasRouter {
 
   root(value: RouteRecordRaw[]): this;
 
-  home(value: RouteRecordRaw[]): this;
+  add(value: RouteRecordRaw[]): this;
 
-  homePage(page: any): this;
+  home(page: any): this;
 
   addBeforeEach(func: BeforeEachFunc): this;
 
@@ -43,12 +43,12 @@ export class SeasRouter implements ISeasRouter {
     return this;
   }
 
-  home(value: RouteRecordRaw[]): this {
+  add(value: RouteRecordRaw[]): this {
     this.homeRoutes.push(...value);
     return this;
   }
 
-  homePage(page: any): this {
+  home(page: any): this {
     this.homePageComponent = page;
     return this;
   }

@@ -15,24 +15,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fingerprintjs/fingerprintjs": "^3.4.1",
-    "@izhimu/seas-base-view": "^1.0.2",
-    "@izhimu/seas-core": "^1.0.2",
+    "@izhimu/seas-base-view": "^1.0.3",
+    "@izhimu/seas-core": "^1.0.3",
     "@izhimu/seas-healthy-view": "^1.0.2",
     "@izhimu/seas-job-view": "^1.0.2",
     "@izhimu/seas-security-view": "^1.0.2",
-    "@izhimu/seas-storage-view": "^1.0.2",
-    "@vicons/ionicons5": "^0.12.0",
-    "axios": "^1.4.0",
-    "echarts": "^5.4.2",
-    "highlight.js": "^11.8.0",
-    "mitt": "^3.0.0",
-    "naive-ui": "^2.34.4",
-    "qs": "^6.11.2",
-    "sm-crypto": "^0.3.12",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.2",
-    "vuex": "^4.1.0"
+    "@izhimu/seas-storage-view": "^1.0.2"
   },
   "devDependencies": {
     "@types/qs": "^6.9.7",

@@ -2,7 +2,7 @@ import { AxiosProgressEvent } from "axios";
 import { Result, api } from "@izhimu/seas-core";
 import { File } from "../entity/file.ts";
 
-const url = "/sys/file";
+const url = "/sto/file";
 
 export function getInfo(id: string): Promise<Result<File>> {
   return api().get(`${url}/info/${id}`);
