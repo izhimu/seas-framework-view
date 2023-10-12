@@ -31,6 +31,8 @@ export interface ISeasApi {
   build(): AxiosInstance;
 }
 
+export const apiPath = "/api";
+
 export class SeasApi implements ISeasApi {
   static instance: AxiosInstance;
 
@@ -59,7 +61,7 @@ export class SeasApi implements ISeasApi {
     return this;
   }
 
-  build(path = "/api", timeout = 60000): AxiosInstance {
+  build(path = apiPath, timeout = 60000): AxiosInstance {
     SeasApi.instance = axios.create({
       baseURL: path,
       timeout,

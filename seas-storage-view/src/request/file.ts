@@ -1,5 +1,5 @@
 import { AxiosProgressEvent } from "axios";
-import { Result, api } from "@izhimu/seas-core";
+import { apiPath, Result, api } from "@izhimu/seas-core";
 import { File } from "../entity/file.ts";
 
 const url = "/sto/file";
@@ -44,4 +44,16 @@ export function dels(bindId: string): Promise<Result<void>> {
 
 export function snowflake(): Promise<Result<string>> {
   return api().get(`${url}/snowflake`);
+}
+
+export function downloadUrl(id: string, token: string): string {
+  return `${apiPath}${url}/${id}?X-Auth-Token=${token}`;
+}
+
+export function downloadsUrl(bindId: string, token: string): string {
+  return `${apiPath}${url}/bind/${bindId}?X-Auth-Token=${token}`;
+}
+
+export function previewUrl(id: string, token: string): string {
+  return `${apiPath}${url}/preview/${id}?X-Auth-Token=${token}`;
 }
