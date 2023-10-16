@@ -63,7 +63,6 @@ export default function useUpload(store: Store<any>) {
         }
       })
       .catch((e) => {
-        console.error(e);
         onError();
       });
   };
