@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, h, onMounted, ref, shallowRef } from "vue";
 import { useStore } from "vuex";
-import { RouterLink, useRouter } from "vue-router";
+import { RouterLink } from "vue-router";
 import {
   NLayout,
   NLayoutHeader,
@@ -17,6 +17,7 @@ import {
   NDropdown,
   NDrawer,
   NScrollbar,
+  NText,
   useMessage,
   useDialog,
   useNotification,
@@ -33,7 +34,12 @@ import {
 } from "@vicons/ionicons5";
 import LockPage from "@izhimu/seas-security-view/src/view/LockPage.vue";
 import { logout } from "@izhimu/seas-security-view/src/request/security";
-import { useIcon, event, CoreStore } from "@izhimu/seas-core";
+import {
+  useIcon,
+  router as useRouter,
+  event,
+  CoreStore,
+} from "@izhimu/seas-core";
 import { SecurityState } from "@izhimu/seas-security-view";
 import { auth } from "../request/menu";
 import UserInfo from "./UserInfo.vue";
@@ -57,19 +63,6 @@ const {
   base: baseStore,
 }: { core: CoreStore; security: SecurityState; base: BaseState } = store.state;
 
-const renderLink = (name: string, title: string) => {
-  return () =>
-    h(
-      RouterLink,
-      {
-        to: {
-          name,
-        },
-      },
-      { default: () => title }
-    );
-};
-
 const activeKey = ref<unknown>(null);
 const collapsed = ref(true);
 const menuOptions = ref();
@@ -91,7 +84,7 @@ const loadMenuData = () => {
             } else {
               map.set(item.id, {
                 id: item.id,
-                label: renderLink(item.menuCode, item.menuName),
+                label: item.menuName,
                 key: item.menuCode,
               });
             }
@@ -122,6 +115,10 @@ const loadMenuData = () => {
       store.commit("setAuthComponents", authComponents);
     }
   });
+};
+
+const handleMenuClick = (key: string) => {
+  router.push({ name: key });
 };
 
 /**
@@ -244,9 +241,9 @@ onMounted(() => {
               :height="baseStore.logoConfig.iconSize"
               style="margin: 16px"
             />
-            <n-el class="home-logo-text">{{
-              baseStore.logoConfig?.title ?? coreStore.appName
-            }}</n-el>
+            <n-el class="home-logo-text"
+              >{{ baseStore.logoConfig?.title ?? coreStore.appName }}
+            </n-el>
           </n-el>
           <n-el class="home-top"></n-el>
           <n-space class="home-esc" justify="end" size="small">
@@ -254,9 +251,9 @@ onMounted(() => {
               <n-icon :component="themeIcon" />
             </n-button>
             <n-dropdown :options="escOptions" @select="handleEscClick">
-              <n-button quaternary round>{{
-                securityStore?.loginUser?.userName
-              }}</n-button>
+              <n-button quaternary round
+                >{{ securityStore?.loginUser?.userName }}
+              </n-button>
             </n-dropdown>
           </n-space>
         </n-el>
@@ -280,6 +277,7 @@ onMounted(() => {
             :collapsed-width="64"
             :collapsed-icon-size="22"
             :options="menuOptions"
+            :on-update:value="handleMenuClick"
           />
         </n-layout-sider>
         <n-layout-content class="home-content">

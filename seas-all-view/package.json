@@ -15,12 +15,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@izhimu/seas-base-view": "^1.0.3",
-    "@izhimu/seas-core": "^1.0.3",
+    "@izhimu/seas-base-view": "^1.0.4",
+    "@izhimu/seas-core": "^1.0.5",
     "@izhimu/seas-healthy-view": "^1.0.2",
     "@izhimu/seas-job-view": "^1.0.2",
     "@izhimu/seas-security-view": "^1.0.2",
-    "@izhimu/seas-storage-view": "^1.0.2"
+    "@izhimu/seas-storage-view": "^1.0.4"
   },
   "devDependencies": {
     "@types/qs": "^6.9.7",

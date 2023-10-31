@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-base-view",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Seas Framework View",
   "main": "src/index.d.ts",
   "author": {
@@ -15,7 +15,7 @@
     "push": "npm publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases/"
   },
   "dependencies": {
-    "@izhimu/seas-core": "^1.0.3",
+    "@izhimu/seas-core": "^1.0.5",
     "@izhimu/seas-security-view": "^1.0.2"
   },
   "devDependencies": {

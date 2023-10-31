@@ -19,7 +19,6 @@ import { healthyRouter, healthyInitIcon } from "@izhimu/seas-healthy-view";
 import {
   baseRouter,
   baseHomePage,
-  baseIndexPage,
   baseInitIcon,
   basePermit,
   baseStore,
@@ -34,7 +33,7 @@ const router = newRouter()
   .add(securityHomeRouter())
   .add(jobRouter())
   .add(healthyRouter())
-  .add(baseRouter(baseIndexPage()))
+  .add(baseRouter())
   .home(baseHomePage())
   .addBeforeEach(
     securityHandler(store, [...corePermit, ...securityPermit, ...basePermit])

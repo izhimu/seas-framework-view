@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Seas Framework View",
   "main": "src/index.d.ts",
   "author": {
@@ -21,7 +21,7 @@
     "echarts": "^5.4.2",
     "highlight.js": "^11.7.0",
     "mitt": "^3.0.0",
-    "naive-ui": "^2.34.4",
+    "naive-ui": "^2.35.0",
     "qs": "^6.11.2",
     "sm-crypto": "^0.3.12",
     "vue": "^3.3.4",
