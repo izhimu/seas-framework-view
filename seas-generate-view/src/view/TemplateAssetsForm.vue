@@ -124,6 +124,14 @@ const handleSubmit = (e: MouseEvent) => {
   });
 };
 
+const handleTabChange = (name: string) => {
+  fileTab.value = name;
+  const { value: file } = fileList;
+  const nameIndex = file.findIndex((v) => v.id === name || v.tabId === name);
+  model.assetsName = file[nameIndex]?.assetsName;
+  model.outPath = file[nameIndex]?.outPath;
+};
+
 const handleTabClose = (name: string) => {
   const { value: file } = fileList;
   if (file.length === 1) {
@@ -132,17 +140,11 @@ const handleTabClose = (name: string) => {
   const nameIndex = file.findIndex((v) => v.id === name || v.tabId === name);
   file.splice(nameIndex, 1);
   if (name === fileTab.value) {
-    fileTab.value =
+    handleTabChange(
       file[Math.min(nameIndex, file.length - 1)]?.id ||
-      file[Math.min(nameIndex, file.length - 1)]?.tabId;
+        file[Math.min(nameIndex, file.length - 1)]?.tabId
+    );
   }
-};
-
-const handleTabChange = (name: string) => {
-  fileTab.value = name;
-  const { value: file } = fileList;
-  const nameIndex = file.findIndex((v) => v.id === name || v.tabId === name);
-  model.assetsName = file[nameIndex]?.assetsName;
 };
 
 const handleInputChange = () => {

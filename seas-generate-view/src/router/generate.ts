@@ -1,7 +1,12 @@
 import { RouteRecordRaw } from "vue-router";
 
-const healthyRouter = (): RouteRecordRaw[] => {
+const generateRouter = (): RouteRecordRaw[] => {
   return [
+    {
+      path: "generate/info",
+      name: "generate.info",
+      component: () => import("../view/InfoPage.vue"),
+    },
     {
       path: "generate/datasource",
       name: "generate.datasource",
@@ -15,4 +20,4 @@ const healthyRouter = (): RouteRecordRaw[] => {
   ];
 };
 
-export default healthyRouter;
+export default generateRouter;

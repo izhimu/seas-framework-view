@@ -41,3 +41,17 @@ export const del = (id: string): Promise<Result<void>> => {
 export const test = (id: string): Promise<Result<boolean>> => {
   return api().post(`${url}/test/${id}`);
 };
+
+export const list = (): Promise<Result<Array<Entity>>> => {
+  return api().get(`${url}/list`);
+};
+
+export const tables = (
+  id: string,
+  like?: string
+): Promise<Result<Array<string>>> => {
+  if (like) {
+    return api().get(`${url}/tables/${id}?like=${like}`);
+  }
+  return api().get(`${url}/tables/${id}`);
+};

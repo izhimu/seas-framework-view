@@ -5,7 +5,7 @@ import generateRouter from "./router/generate.ts";
 const store = newStore().build();
 
 // 路由
-const router = newRouter().add(generateRouter()).build("generate/datasource");
+const router = newRouter().add(generateRouter()).build("generate/info");
 
 // 请求
 newApi().build();
