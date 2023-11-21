@@ -2,18 +2,21 @@ export interface Template {
   id: string | null;
   templateName: string | null;
   templateVersion: string | null;
+  remark: string | null;
 }
 
 export const pTemplate = (): Template => ({
   id: null,
   templateName: null,
   templateVersion: null,
+  remark: null,
 });
 
 export const dTemplate = (): Template => ({
   id: null,
   templateName: null,
   templateVersion: null,
+  remark: null,
 });
 
 export interface TemplateAssets {

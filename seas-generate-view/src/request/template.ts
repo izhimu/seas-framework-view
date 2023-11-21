@@ -47,3 +47,7 @@ export const assetsSave = (
 ): Promise<Result<Array<TemplateAssets>>> => {
   return api().post(`${url}/assets`, assetsList);
 };
+
+export const list = (): Promise<Result<Array<Entity>>> => {
+  return api().get(`${url}/list`);
+};

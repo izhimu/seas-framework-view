@@ -22,6 +22,7 @@ module.exports = {
     "prettier/prettier": "error",
     "import/extensions": "off",
     "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": "off",
     "no-param-reassign": [
       "error",
       {
@@ -37,13 +38,6 @@ module.exports = {
           "config",
           "item",
         ],
-      },
-    ],
-    "import/no-extraneous-dependencies": [
-      2,
-      {
-        devDependencies: true,
-        peerDependencies: true,
       },
     ],
   },

@@ -119,6 +119,14 @@ defineExpose({
             @keydown.enter.prevent
           />
         </n-form-item>
+        <n-form-item path="name" label="备注">
+          <n-input
+            v-model:value="model.remark"
+            type="textarea"
+            placeholder="请输入备注"
+            @keydown.enter.prevent
+          />
+        </n-form-item>
       </n-form>
     </n-spin>
     <template #action>
