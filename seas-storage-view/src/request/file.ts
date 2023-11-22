@@ -55,5 +55,5 @@ export function downloadsUrl(bindId: string, token: string): string {
 }
 
 export function previewUrl(id: string, token: string): string {
-  return `${apiPath}${url}/preview/${id}?X-Auth-Token=${token}`;
+  return `${apiPath}${url}/preview/pdf/${id}?X-Auth-Token=${token}`;
 }
