@@ -160,7 +160,7 @@ const osData: Array<{
   },
   { name: "Debian", group: "linux_server", identifier: "Debian" },
   { name: "Gentoo", group: "linux_server", identifier: "Gentoo" },
-  { name: "国产系统", group: "linux", identifier: "Linux" },
+  { name: "其他Linux", group: "linux", identifier: "Linux" },
 ];
 
 export const system = () => {
