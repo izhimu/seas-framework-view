@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, h, onMounted, ref, shallowRef } from "vue";
+import { computed, onMounted, ref, shallowRef } from "vue";
 import { useStore } from "vuex";
-import { RouterLink } from "vue-router";
 import {
   NLayout,
   NLayoutHeader,
@@ -17,7 +16,6 @@ import {
   NDropdown,
   NDrawer,
   NScrollbar,
-  NText,
   useMessage,
   useDialog,
   useNotification,
@@ -31,6 +29,7 @@ import {
   Share,
   Sunny,
   Moon,
+  Key,
 } from "@vicons/ionicons5";
 import LockPage from "@izhimu/seas-security-view/src/view/LockPage.vue";
 import { logout } from "@izhimu/seas-security-view/src/request/security";
@@ -144,6 +143,11 @@ const escOptions = [
     icon: renderIcon(PersonCircle),
   },
   {
+    label: "修改密码",
+    key: "password",
+    icon: renderIcon(Key),
+  },
+  {
     label: "临时锁定",
     key: "lock",
     icon: renderIcon(LockClosed),
@@ -154,6 +158,15 @@ const escOptions = [
     icon: renderIcon(Share),
   },
 ];
+
+const handlePassword = () => {
+  dialog.warning({
+    title: "修改密码",
+    content: "是否修改当前账号的密码？",
+    positiveText: "确定",
+    negativeText: "取消",
+  });
+};
 
 const handleLock = () => {
   dialog.create({
@@ -198,6 +211,8 @@ const handleLogout = () => {
 const handleEscClick = (key: string) => {
   if (key === "profile") {
     userInfoRef.value.open();
+  } else if (key === "password") {
+    handlePassword();
   } else if (key === "lock") {
     handleLock();
   } else if (key === "logout") {
