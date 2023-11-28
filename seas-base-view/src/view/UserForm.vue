@@ -164,6 +164,7 @@ const handleSubmit = (e: MouseEvent) => {
             }
             item.userCertificate = `04${encryptPassword}`;
             item.passwordKey = encryptKey.key;
+            item.tmpPassword = null;
           }
         }
       }

@@ -1,6 +1,7 @@
 import Qs from "qs";
 import { Page, Result, Select, api } from "@izhimu/seas-core";
 import { User } from "../entity/user";
+import { Password } from "../entity/account";
 
 const url = "/bas/user";
 const accountUrl = "/bas/account";
@@ -57,4 +58,8 @@ export function current(): Promise<Result<User>> {
 
 export function checkAccount(data: object): Promise<Result<boolean>> {
   return api().post(`${accountUrl}/check`, data);
+}
+
+export function changePassword(data: Password): Promise<Result<boolean>> {
+  return api().post(`${accountUrl}/change/password`, data);
 }

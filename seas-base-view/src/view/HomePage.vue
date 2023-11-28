@@ -43,6 +43,7 @@ import { SecurityState } from "@izhimu/seas-security-view";
 import { auth } from "../request/menu";
 import UserInfo from "./UserInfo.vue";
 import { BaseState } from "../store/module/base.ts";
+import ChangePasswordForm from "./ChangePasswordForm.vue";
 
 /**
  * 挂载全局对象
@@ -159,13 +160,10 @@ const escOptions = [
   },
 ];
 
+const changePasswordRef = ref();
+
 const handlePassword = () => {
-  dialog.warning({
-    title: "修改密码",
-    content: "是否修改当前账号的密码？",
-    positiveText: "确定",
-    negativeText: "取消",
-  });
+  changePasswordRef.value.openModel();
 };
 
 const handleLock = () => {
@@ -317,6 +315,7 @@ onMounted(() => {
     </n-drawer>
     <n-card style="display: none"></n-card>
     <user-info ref="userInfoRef" @logout="handleLogout" @lock="handleLock" />
+    <change-password-form ref="changePasswordRef" />
   </div>
 </template>
 

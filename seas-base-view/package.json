@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@izhimu/seas-core": "^1.0.5",
-    "@izhimu/seas-security-view": "^1.0.3"
+    "@izhimu/seas-security-view": "^1.0.4"
   },
   "devDependencies": {
     "@types/qs": "^6.9.7",
