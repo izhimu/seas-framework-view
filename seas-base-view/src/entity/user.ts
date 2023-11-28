@@ -11,7 +11,7 @@ export interface User {
   email: string | null;
   face: string | null;
   faceSmall: string | null;
-  status: 0 | 1 | null;
+  status: 0 | 1 | 2 | 3 | null;
   accounts: Array<Account>;
   account: string | null;
   orgId: string | number | null;
@@ -138,6 +138,20 @@ export const mStatus = new Map<number, TagMap>([
     {
       title: "锁定",
       tag: "error",
+    },
+  ],
+  [
+    2,
+    {
+      title: "密码过期",
+      tag: "error",
+    },
+  ],
+  [
+    3,
+    {
+      title: "临时锁定",
+      tag: "warning",
     },
   ],
 ]);

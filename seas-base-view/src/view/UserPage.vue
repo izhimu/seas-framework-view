@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, onMounted, reactive, ref } from "vue";
+import { h, onMounted, reactive, ref, VNode } from "vue";
 import {
   NCard,
   NInput,
@@ -19,7 +19,7 @@ import {
 import { SearchSharp as SearchIcon } from "@vicons/ionicons5";
 import { usePage, useTableButton, useTree } from "@izhimu/seas-core";
 import { pUser, oSex, oStatus, mSex, mStatus } from "../entity/user";
-import { page, del } from "../request/user";
+import { page, del, unlock } from "../request/user";
 import UserForm from "./UserForm.vue";
 import { tree } from "../request/org.ts";
 
@@ -115,7 +115,8 @@ const {
     title: "操作",
     key: "actions",
     render(rowData) {
-      return [
+      const actions: Array<VNode | null> = [];
+      actions.push(
         actionButton(
           "修改",
           "info",
@@ -126,7 +127,28 @@ const {
           {
             style: "margin-right: 8px;",
           }
-        ),
+        )
+      );
+      if (rowData.status === 3) {
+        actions.push(
+          confirmButton(
+            "解除锁定",
+            "确认解除临时锁定状态？",
+            "warning",
+            "system.user.unlock",
+            () => {
+              if (rowData.id) {
+                unlock(rowData.id).then(queryPage);
+              }
+            },
+            undefined,
+            {
+              style: "margin-right: 8px;",
+            }
+          )
+        );
+      }
+      actions.push(
         confirmButton(
           "删除",
           "确认删除数据？",
@@ -137,8 +159,9 @@ const {
               del(rowData.id).then(queryPage);
             }
           }
-        ),
-      ];
+        )
+      );
+      return actions;
     },
   },
 ]);

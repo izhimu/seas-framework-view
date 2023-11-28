@@ -63,3 +63,7 @@ export function checkAccount(data: object): Promise<Result<boolean>> {
 export function changePassword(data: Password): Promise<Result<boolean>> {
   return api().post(`${accountUrl}/change/password`, data);
 }
+
+export function unlock(id: string): Promise<Result<boolean>> {
+  return api().post(`${url}/unlock/${id}`);
+}
