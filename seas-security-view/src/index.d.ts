@@ -9,6 +9,7 @@ export {
   securityRequestInterceptor,
   securityResponseRejectedInterceptor,
 } from "./request";
+export { encrypt } from "./request/security";
 export { Captcha, dCaptcha } from "./entity/captcha.ts";
 export {
   Login,
