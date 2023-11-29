@@ -4,12 +4,18 @@ export interface LogoConfig {
   icon: boolean;
   iconSrc: string;
   iconSize: string;
+  iconStyle: object;
   title: string | null;
-  titleWidth: string;
+  titleStyle: object;
+}
+
+export interface HomeConfig {
+  menuCollapsed: boolean;
 }
 
 export interface BaseState {
   logoConfig: LogoConfig | null;
+  homeConfig: HomeConfig | null;
 }
 
 export const baseStore: ModuleTree<BaseState> = {
@@ -19,12 +25,19 @@ export const baseStore: ModuleTree<BaseState> = {
         icon: true,
         iconSrc: "/img/logo.png",
         iconSize: "32",
-        titleWidth: "284px",
+        iconStyle: { margin: "16px" },
+        titleStyle: { width: "284px" },
+      },
+      homeConfig: {
+        menuCollapsed: true,
       },
     },
     mutations: {
       setLogoConfig(state, config) {
         Object.assign(state.logoConfig, config);
+      },
+      setHomeConfig(state, config) {
+        Object.assign(state.homeConfig, config);
       },
     },
   },

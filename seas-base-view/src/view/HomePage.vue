@@ -64,7 +64,7 @@ const {
 }: { core: CoreStore; security: SecurityState; base: BaseState } = store.state;
 
 const activeKey = ref<unknown>(null);
-const collapsed = ref(true);
+const collapsed = ref(baseStore.homeConfig?.menuCollapsed);
 const menuOptions = ref();
 const loadMenuData = () => {
   const result: Array<MenuOption> = [];
@@ -244,15 +244,15 @@ onMounted(() => {
         <n-el class="home-header n-card n-card--bordered">
           <n-el
             class="home-logo"
-            :style="{ width: baseStore.logoConfig?.titleWidth }"
+            :style="baseStore.logoConfig?.titleStyle"
             @click="router.push('/index')"
           >
             <n-image
               v-if="baseStore.logoConfig?.icon"
               preview-disabled
               :src="baseStore.logoConfig?.iconSrc"
-              :height="baseStore.logoConfig.iconSize"
-              style="margin: 16px"
+              :height="baseStore.logoConfig?.iconSize"
+              :style="baseStore.logoConfig?.iconStyle"
             />
             <n-el class="home-logo-text"
               >{{ baseStore.logoConfig?.title ?? coreStore.appName }}
