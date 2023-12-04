@@ -16,6 +16,18 @@ export function getInfosToCompression(bindId: string): Promise<Result<File>> {
   return api().get(`${url}/info/bind/compression/${bindId}`);
 }
 
+export function del(id: string): Promise<Result<void>> {
+  return api().delete(`${url}/info/${id}`);
+}
+
+export function dels(bindId: string): Promise<Result<void>> {
+  return api().delete(`${url}/info/bind/${bindId}`);
+}
+
+export function snowflake(): Promise<Result<string>> {
+  return api().get(`${url}/info/snowflake`);
+}
+
 export function download(id: string): Promise<Blob> {
   return api().get(`${url}/${id}`, { responseType: "blob" });
 }
@@ -32,18 +44,6 @@ export function upload(
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress,
   });
-}
-
-export function del(id: string): Promise<Result<void>> {
-  return api().delete(`${url}/${id}`);
-}
-
-export function dels(bindId: string): Promise<Result<void>> {
-  return api().delete(`${url}/bind/${bindId}`);
-}
-
-export function snowflake(): Promise<Result<string>> {
-  return api().get(`${url}/snowflake`);
 }
 
 export function downloadUrl(id: string, token: string): string {
