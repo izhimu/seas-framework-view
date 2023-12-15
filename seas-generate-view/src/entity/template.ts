@@ -23,7 +23,7 @@ export interface TemplateAssets {
   id: string | null;
   templateId: string | null;
   assetsName: string | null;
-  assetsData: string | null;
+  assetsDataStr: string | null;
   outPath: string | null;
   tabId: string;
 }
@@ -32,7 +32,7 @@ export const pTemplateAssets = (): TemplateAssets => ({
   id: null,
   templateId: null,
   assetsName: null,
-  assetsData: null,
+  assetsDataStr: null,
   outPath: null,
   tabId: "",
 });
@@ -41,7 +41,7 @@ export const dTemplateAssets = (): TemplateAssets => ({
   id: null,
   templateId: null,
   assetsName: null,
-  assetsData: null,
+  assetsDataStr: null,
   outPath: null,
   tabId: "",
 });

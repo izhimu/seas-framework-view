@@ -220,7 +220,7 @@ defineExpose({
                 :tab="file.assetsName ?? ''"
               >
                 <n-input
-                  v-model:value="file.assetsData"
+                  v-model:value="file.assetsDataStr"
                   style="height: calc(100vh - 240px)"
                   type="textarea"
                   placeholder="请输入模板文件内容"

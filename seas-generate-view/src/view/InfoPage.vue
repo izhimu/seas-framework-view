@@ -14,14 +14,15 @@ import {
   NTag,
   NCheckbox,
   NSwitch,
+  NText,
   useMessage,
 } from "naive-ui";
 import { BrowsersOutline } from "@vicons/ionicons5";
-import { onMounted, reactive, ref, h } from "vue";
+import { onMounted, reactive, ref, h, VNode } from "vue";
 import { useTableButton } from "@izhimu/seas-core";
 import { Columns } from "@izhimu/seas-core/src/types";
 import { SelectMixedOption } from "naive-ui/es/select/src/interface";
-import { get } from "../request/info";
+import { get, create, preview } from "../request/info";
 import { list as datasourceList, tables } from "../request/datasource";
 import { list as templateList } from "../request/template";
 import { FieldInfo, dInfo, oSearchType } from "../entity/info";
@@ -29,6 +30,7 @@ import { FieldInfo, dInfo, oSearchType } from "../entity/info";
 const message = useMessage();
 const { actionButton } = useTableButton();
 
+const loading = ref(false);
 const sourceRef = ref<Array<SelectMixedOption>>([]);
 const tableRef = ref<Array<string>>([]);
 const templateRef = ref<Array<SelectMixedOption>>([]);
@@ -56,262 +58,151 @@ const down = (list: Array<FieldInfo>, index: number) => {
   }
 };
 
+const hInput = (rowData: FieldInfo, field: string) =>
+  h(NInput, {
+    value: rowData[field],
+    disabled: !!rowData.isPk,
+    onUpdateValue(value) {
+      // eslint-disable-next-line no-param-reassign
+      rowData[field] = value;
+    },
+  });
+
+const hCheckboxTitle = (title: string, field: string) =>
+  h(
+    NCheckbox,
+    {
+      defaultChecked: true,
+      onUpdateChecked(value) {
+        // eslint-disable-next-line no-param-reassign
+        model.fieldList
+          .filter((item) => !item.isPk)
+          .forEach((item) => {
+            item[field] = value ? 1 : 0;
+          });
+      },
+    },
+    { default: () => title }
+  );
+
+const hSwitch = (rowData: FieldInfo, field: string) =>
+  h(NSwitch, {
+    checkedValue: 1,
+    uncheckedValue: 0,
+    value: rowData[field] ?? 0,
+    disabled: !!rowData.isPk,
+    onUpdateValue(value) {
+      // eslint-disable-next-line no-param-reassign
+      rowData[field] = value;
+    },
+  });
+
 const columns: Columns<FieldInfo> = [
   {
     title: "排序",
     key: "no",
     fixed: "left",
     width: 90,
-    render(rowData, rowIndex) {
-      return [
-        actionButton(
-          "↑",
-          "info",
-          undefined,
-          () => {
-            up(model.fieldList, rowIndex);
-          },
-          {
-            style: "margin-right: 8px;",
-            disabled: rowIndex === 0,
-          }
-        ),
-        actionButton(
-          "↓",
-          "info",
-          undefined,
-          () => {
-            down(model.fieldList, rowIndex);
-          },
-          {
-            disabled: rowIndex === model.fieldList.length - 1,
-          }
-        ),
-      ];
-    },
+    render: (_, rowIndex) => [
+      actionButton(
+        "↑",
+        "info",
+        undefined,
+        () => up(model.fieldList, rowIndex),
+        {
+          style: "margin-right: 8px;",
+          disabled: rowIndex === 0,
+        }
+      ),
+      actionButton(
+        "↓",
+        "info",
+        undefined,
+        () => down(model.fieldList, rowIndex),
+        {
+          disabled: rowIndex === model.fieldList.length - 1,
+        }
+      ),
+    ],
   },
   {
     title: "字段名称",
     key: "fieldName",
     fixed: "left",
     width: 200,
+    render(rowData) {
+      const arr: VNode[] = [
+        h(NText, { strong: true }, { default: () => rowData.fieldName }),
+      ];
+      if (rowData.isPk) {
+        arr.push(
+          h(NTag, { type: "info", size: "small" }, { default: () => "P" })
+        );
+      }
+      if (rowData.isPk) {
+        arr.push(
+          h(NTag, { type: "warning", size: "small" }, { default: () => "N" })
+        );
+      }
+      return h(NSpace, { size: "small" }, { default: () => arr });
+    },
   },
   {
     title: "显示名称",
     key: "showName",
     fixed: "left",
     width: 200,
-    render(rowData) {
-      return h(NInput, {
-        value: rowData.showName,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.showName = value;
-        },
-      });
-    },
+    render: (rowData) => hInput(rowData, "showName"),
   },
   {
     title: "属性名称",
     key: "attrName",
-    render(rowData) {
-      return h(NInput, {
-        value: rowData.attrName,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.attrName = value;
-        },
-      });
-    },
+    render: (rowData) => hInput(rowData, "attrName"),
   },
   {
     title: "字段类型",
     key: "fieldType",
-    render(rowData) {
-      return h(NInput, {
-        value: rowData.fieldType,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.fieldType = value;
-        },
-      });
-    },
+    render: (rowData) => hInput(rowData, "fieldType"),
   },
   {
     title: "Java类型",
     key: "javaType",
-    render(rowData) {
-      return h(NInput, {
-        value: rowData.javaType,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.javaType = value;
-        },
-      });
-    },
+    render: (rowData) => hInput(rowData, "javaType"),
   },
   {
     title: "Js类型",
     key: "jsType",
-    render(rowData) {
-      return h(NInput, {
-        value: rowData.jsType,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.jsType = value;
-        },
-      });
-    },
-  },
-  {
-    title: "是否主键",
-    key: "isPk",
-    width: 100,
-    render(rowData) {
-      return h(
-        NTag,
-        {
-          type: rowData.isPk ? "info" : undefined,
-        },
-        { default: () => (rowData.isPk ? "是" : "否") }
-      );
-    },
-  },
-  {
-    title: "是否非空",
-    key: "isNull",
-    width: 100,
-    render(rowData) {
-      return h(
-        NTag,
-        {
-          type: rowData.isNull ? "warning" : undefined,
-        },
-        { default: () => (rowData.isNull ? "是" : "否") }
-      );
-    },
+    render: (rowData) => hInput(rowData, "jsType"),
   },
   {
     key: "insertable",
     width: 120,
-    title() {
-      return h(
-        NCheckbox,
-        {
-          onUpdateChecked(value) {
-            // eslint-disable-next-line no-param-reassign
-            model.fieldList.forEach((item) => {
-              item.insertable = value ? 1 : 0;
-            });
-          },
-        },
-        { default: () => "新增编辑" }
-      );
-    },
-    render(rowData) {
-      return h(NSwitch, {
-        checkedValue: 1,
-        uncheckedValue: 0,
-        value: rowData.insertable ?? 0,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.insertable = value;
-        },
-      });
-    },
+    title: () => hCheckboxTitle("新增编辑", "insertable"),
+    render: (rowData) => hSwitch(rowData, "insertable"),
   },
   {
     key: "listable",
     width: 120,
-    title() {
-      return h(
-        NCheckbox,
-        {
-          onUpdateChecked(value) {
-            // eslint-disable-next-line no-param-reassign
-            model.fieldList.forEach((item) => {
-              item.listable = value ? 1 : 0;
-            });
-          },
-        },
-        { default: () => "列表显示" }
-      );
-    },
-    render(rowData) {
-      return h(NSwitch, {
-        checkedValue: 1,
-        uncheckedValue: 0,
-        value: rowData.listable ?? 0,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.listable = value;
-        },
-      });
-    },
+    title: () => hCheckboxTitle("列表显示", "listable"),
+    render: (rowData) => hSwitch(rowData, "listable"),
   },
   {
     key: "searchable",
     width: 120,
-    title() {
-      return h(
-        NCheckbox,
-        {
-          onUpdateChecked(value) {
-            // eslint-disable-next-line no-param-reassign
-            model.fieldList.forEach((item) => {
-              item.searchable = value ? 1 : 0;
-            });
-          },
-        },
-        { default: () => "查询" }
-      );
-    },
-    render(rowData) {
-      return h(NSwitch, {
-        checkedValue: 1,
-        uncheckedValue: 0,
-        value: rowData.searchable ?? 0,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.searchable = value;
-        },
-      });
-    },
+    title: () => hCheckboxTitle("查询", "searchable"),
+    render: (rowData) => hSwitch(rowData, "searchable"),
   },
   {
     key: "sortable",
     width: 120,
-    title() {
-      return h(
-        NCheckbox,
-        {
-          onUpdateChecked(value) {
-            // eslint-disable-next-line no-param-reassign
-            model.fieldList.forEach((item) => {
-              item.sortable = value ? 1 : 0;
-            });
-          },
-        },
-        { default: () => "排序" }
-      );
-    },
-    render(rowData) {
-      return h(NSwitch, {
-        checkedValue: 1,
-        uncheckedValue: 0,
-        value: rowData.sortable ?? 0,
-        onUpdateValue(value) {
-          // eslint-disable-next-line no-param-reassign
-          rowData.sortable = value;
-        },
-      });
-    },
+    title: () => hCheckboxTitle("排序", "sortable"),
+    render: (rowData) => hSwitch(rowData, "sortable"),
   },
   {
     title: "查询类型",
     key: "searchType",
-    render(rowData) {
-      return h(NSelect, {
+    render: (rowData) =>
+      h(NSelect, {
         value: rowData.searchType ?? "LIKE",
         disabled: rowData.searchable === 0,
         options: oSearchType,
@@ -319,8 +210,7 @@ const columns: Columns<FieldInfo> = [
           // eslint-disable-next-line no-param-reassign
           rowData.searchType = value;
         },
-      });
-    },
+      }),
   },
 ];
 
@@ -388,42 +278,55 @@ const underlineToHump = (str: string) => {
 const handleTableClick = (v: string) => {
   model.tableName = v;
   if (model.sourceId && model.tableName) {
-    get(model.sourceId, model.tableName).then((res) => {
-      if (res.code) {
-        Object.assign(model, res.data);
-        if (model.fieldList.length === 0) {
-          message.warning("当前表无字段信息！");
-        }
-        if (model.tablePrefix) {
-          const str = model.tableName?.replace(model.tablePrefix, "");
-          if (str) {
-            const name = underlineToHump(str);
-            model.className = name.charAt(0).toUpperCase() + name.slice(1);
+    loading.value = true;
+    get(model.sourceId, model.tableName)
+      .then((res) => {
+        if (res.code) {
+          Object.assign(model, res.data);
+          if (model.fieldList.length === 0) {
+            message.warning("当前表无字段信息！");
+          }
+          if (model.tablePrefix) {
+            const str = model.tableName?.replace(model.tablePrefix, "");
+            if (str) {
+              const name = underlineToHump(str);
+              model.className = name.charAt(0).toUpperCase() + name.slice(1);
+            }
           }
         }
-      }
-    });
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   }
 };
 
-const paramVerify = () => {
+const paramVerify = (): boolean => {
   if (!model.tableName) {
     message.warning("请选择表!");
+    return false;
   }
   if (!model.templateId) {
     message.warning("请选择模板!");
+    return false;
   }
   if (!model.packageName) {
     message.warning("请填写包名!");
+    return false;
   }
+  return true;
 };
 
 const handlePreviewClick = () => {
-  paramVerify();
+  if (paramVerify()) {
+    create(model);
+  }
 };
 
 const handleCreateClick = () => {
-  paramVerify();
+  if (paramVerify()) {
+    preview(model);
+  }
 };
 
 onMounted(() => {
@@ -493,6 +396,7 @@ onMounted(() => {
               <n-card>
                 <div style="height: calc(100vh - 258px)">
                   <n-data-table
+                    :loading="loading"
                     :bordered="false"
                     :columns="columns"
                     :data="model.fieldList"
@@ -527,10 +431,16 @@ onMounted(() => {
                     />
                   </n-space>
                   <n-space justify="end">
-                    <n-button type="primary" @click="handlePreviewClick"
+                    <n-button
+                      type="primary"
+                      :disabled="loading"
+                      @click="handlePreviewClick"
                       >预览
                     </n-button>
-                    <n-button type="success" @click="handleCreateClick"
+                    <n-button
+                      type="success"
+                      :disabled="loading"
+                      @click="handleCreateClick"
                       >生成
                     </n-button>
                   </n-space>
