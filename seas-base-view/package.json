@@ -12,7 +12,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "push": "npm publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases/"
+    "push": "npm publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases/",
+    "push-open": "npm publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases-open/"
   },
   "dependencies": {
     "@izhimu/seas-core": "^1.0.5",
