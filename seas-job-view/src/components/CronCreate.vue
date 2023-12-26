@@ -377,7 +377,7 @@ defineExpose({
               <n-input-number
                 style="width: 60px"
                 :show-button="false"
-                :max="23"
+                :max="59"
                 :min="0"
                 :precision="0"
                 size="small"
