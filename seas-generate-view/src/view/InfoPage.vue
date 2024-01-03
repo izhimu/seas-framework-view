@@ -319,13 +319,13 @@ const paramVerify = (): boolean => {
 
 const handlePreviewClick = () => {
   if (paramVerify()) {
-    create(model);
+    preview(model);
   }
 };
 
 const handleCreateClick = () => {
   if (paramVerify()) {
-    preview(model);
+    create(model);
   }
 };
 

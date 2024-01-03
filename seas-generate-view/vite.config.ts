@@ -21,7 +21,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["highlight.js/es/**", "highlight.js/lib/**"],
+    include: ["date-fns-tz/**", "highlight.js/es/**", "highlight.js/lib/**"],
   },
   resolve: {
     alias: [
