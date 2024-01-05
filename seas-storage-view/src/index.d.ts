@@ -1,5 +1,5 @@
 export { useUpload, useDownload } from "./hooks/index.ts";
-export { File } from "./entity/file.ts";
+export * from "./entity/file.ts";
 export {
   getInfo,
   getInfos,

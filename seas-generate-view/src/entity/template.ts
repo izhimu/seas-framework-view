@@ -119,6 +119,10 @@ export const valData = [
     template: "fieldList[].sortable",
   },
   {
+    name: "查询模式",
+    template: "fieldList[].searchType",
+  },
+  {
     name: "导包",
     template: "importList",
   },

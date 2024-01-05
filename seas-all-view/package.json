@@ -20,7 +20,8 @@
     "@izhimu/seas-healthy-view": "^1.0.3",
     "@izhimu/seas-job-view": "^1.0.3",
     "@izhimu/seas-security-view": "^1.0.4",
-    "@izhimu/seas-storage-view": "^1.0.6"
+    "@izhimu/seas-storage-view": "^1.0.9",
+    "@izhimu/seas-generate-view": "^1.0.3"
   },
   "devDependencies": {
     "@types/qs": "^6.9.11",

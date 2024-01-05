@@ -16,6 +16,7 @@ import {
 } from "@izhimu/seas-security-view";
 import { jobRouter, jobInitIcon } from "@izhimu/seas-job-view";
 import { healthyRouter, healthyInitIcon } from "@izhimu/seas-healthy-view";
+import { generateRouter, generateInitIcon } from "@izhimu/seas-generate-view";
 import {
   baseRouter,
   baseHomePage,
@@ -33,10 +34,11 @@ const router = newRouter()
   .add(securityHomeRouter())
   .add(jobRouter())
   .add(healthyRouter())
+  .add(generateRouter())
   .add(baseRouter())
   .home(baseHomePage())
   .addBeforeEach(
-    securityHandler(store, [...corePermit, ...securityPermit, ...basePermit])
+    securityHandler(store, [...corePermit, ...securityPermit, ...basePermit]),
   )
   .build();
 
@@ -52,4 +54,4 @@ newApp()
   .use(router)
   .mount()
   .authDirective(store)
-  .icon(baseInitIcon, jobInitIcon, healthyInitIcon);
+  .icon(baseInitIcon, jobInitIcon, healthyInitIcon, generateInitIcon);

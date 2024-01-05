@@ -390,7 +390,7 @@ onMounted(() => {
           />
         </n-space>
         <n-divider />
-        <n-scrollbar style="height: calc(100vh - 180px)">
+        <n-scrollbar style="height: calc(100vh - 242px)">
           <n-button
             v-for="item in tableRef"
             :key="item"
@@ -430,13 +430,13 @@ onMounted(() => {
                 </n-space>
               </n-card>
               <n-card>
-                <div style="height: calc(100vh - 258px)">
+                <div style="height: calc(100vh - 322px)">
                   <n-data-table
                     :loading="loading"
                     :bordered="false"
                     :columns="columns"
                     :data="model.fieldList"
-                    max-height="calc(100vh - 258px)"
+                    max-height="calc(100vh - 364px)"
                     :scroll-x="2000"
                   ></n-data-table>
                 </div>
