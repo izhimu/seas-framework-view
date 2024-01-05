@@ -15,7 +15,13 @@ import {
   GlobalThemeOverrides,
 } from "naive-ui";
 import hljs from "highlight.js/lib/core";
+import java from "highlight.js/lib/languages/java";
+import javascript from "highlight.js/lib/languages/javascript";
+import typescript from "highlight.js/lib/languages/typescript";
+import css from "highlight.js/lib/languages/css";
 import json from "highlight.js/lib/languages/json";
+import sql from "highlight.js/lib/languages/sql";
+import rust from "highlight.js/lib/languages/rust";
 
 const store = useStore();
 
@@ -55,7 +61,13 @@ window.addEventListener("beforeunload", () => {
 /**
  * 代码高亮
  */
+hljs.registerLanguage("java", java);
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("typescript", typescript);
+hljs.registerLanguage("css", css);
 hljs.registerLanguage("json", json);
+hljs.registerLanguage("sql", sql);
+hljs.registerLanguage("rust", rust);
 </script>
 
 <template>
@@ -107,10 +119,12 @@ hljs.registerLanguage("json", json);
 .fade-bottom-leave-active {
   transition: opacity 0.3s, transform 0.3s;
 }
+
 .fade-bottom-enter-from {
   opacity: 0;
   transform: translateY(-10%);
 }
+
 .fade-bottom-leave-to {
   opacity: 0;
   transform: translateY(10%);

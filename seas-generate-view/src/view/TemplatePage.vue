@@ -22,7 +22,7 @@ const {
   {
     title: "序号",
     key: "no",
-    render(rowData, rowIndex: number) {
+    render(_, rowIndex: number) {
       return rowIndex + 1;
     },
   },

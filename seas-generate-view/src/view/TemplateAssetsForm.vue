@@ -17,11 +17,34 @@ import {
   NTabPane,
   NCard,
   NTag,
+  NDataTable,
+  NCollapse,
+  NCollapseItem,
+  NDivider,
   useMessage,
 } from "naive-ui";
 import { useFormModel } from "@izhimu/seas-core";
-import { TemplateAssets, dTemplateAssets as entity } from "../entity/template";
+import {
+  TemplateAssets,
+  dTemplateAssets as entity,
+  valData,
+} from "../entity/template";
 import { assets, assetsSave } from "../request/template";
+
+const valColumns = [
+  {
+    title: "变量",
+    key: "name",
+    width: 60,
+  },
+  {
+    title: "标识",
+    key: "template",
+    render(rowData) {
+      return `\${${rowData.template}}`;
+    },
+  },
+];
 
 const message = useMessage();
 const { btnLoading, dataLoading, showModel, open, close } = useFormModel();
@@ -55,7 +78,7 @@ const handleTabAdd = () => {
   index += 1;
   const templateAssets = entity();
   templateAssets.tabId = `${new Date().getTime()}${Math.round(
-    Math.random() * 10
+    Math.random() * 10,
   )}`;
   templateAssets.templateId = idRef.value ?? null;
   templateAssets.assetsName = `新建文件${index}`;
@@ -142,7 +165,7 @@ const handleTabClose = (name: string) => {
   if (name === fileTab.value) {
     handleTabChange(
       file[Math.min(nameIndex, file.length - 1)]?.id ||
-        file[Math.min(nameIndex, file.length - 1)]?.tabId
+        file[Math.min(nameIndex, file.length - 1)]?.tabId,
     );
   }
 };
@@ -150,7 +173,7 @@ const handleTabClose = (name: string) => {
 const handleInputChange = () => {
   const { value: file } = fileList;
   const nameIndex = file.findIndex(
-    (v) => v.id === fileTab.value || v.tabId === fileTab.value
+    (v) => v.id === fileTab.value || v.tabId === fileTab.value,
   );
   file[nameIndex].assetsName = model.assetsName;
   file[nameIndex].outPath = model.outPath;
@@ -198,6 +221,16 @@ defineExpose({
             </n-form-item>
           </n-form>
         </n-spin>
+        <n-divider />
+        <n-collapse>
+          <n-collapse-item title="可选变量">
+            <n-data-table
+              :columns="valColumns"
+              :data="valData"
+              max-height="calc(100vh - 500px)"
+            />
+          </n-collapse-item>
+        </n-collapse>
       </n-layout-sider>
       <n-layout>
         <n-layout-content>

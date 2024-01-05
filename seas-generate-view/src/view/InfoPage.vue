@@ -22,15 +22,22 @@ import { onMounted, reactive, ref, h, VNode } from "vue";
 import { useTableButton } from "@izhimu/seas-core";
 import { Columns } from "@izhimu/seas-core/src/types";
 import { SelectMixedOption } from "naive-ui/es/select/src/interface";
+import { useDownload } from "@izhimu/seas-storage-view";
 import { get, create, preview } from "../request/info";
 import { list as datasourceList, tables } from "../request/datasource";
 import { list as templateList } from "../request/template";
 import { FieldInfo, dInfo, oSearchType } from "../entity/info";
+import InfoPreview from "./InfoPreview.vue";
 
 const message = useMessage();
+const { ofBlob } = useDownload();
 const { actionButton } = useTableButton();
 
+const previewRef = ref();
+
 const loading = ref(false);
+const previewLoading = ref(false);
+const createLoading = ref(false);
 const sourceRef = ref<Array<SelectMixedOption>>([]);
 const tableRef = ref<Array<string>>([]);
 const templateRef = ref<Array<SelectMixedOption>>([]);
@@ -82,7 +89,7 @@ const hCheckboxTitle = (title: string, field: string) =>
           });
       },
     },
-    { default: () => title }
+    { default: () => title },
   );
 
 const hSwitch = (rowData: FieldInfo, field: string) =>
@@ -112,7 +119,7 @@ const columns: Columns<FieldInfo> = [
         {
           style: "margin-right: 8px;",
           disabled: rowIndex === 0,
-        }
+        },
       ),
       actionButton(
         "↓",
@@ -121,7 +128,7 @@ const columns: Columns<FieldInfo> = [
         () => down(model.fieldList, rowIndex),
         {
           disabled: rowIndex === model.fieldList.length - 1,
-        }
+        },
       ),
     ],
   },
@@ -136,12 +143,12 @@ const columns: Columns<FieldInfo> = [
       ];
       if (rowData.isPk) {
         arr.push(
-          h(NTag, { type: "info", size: "small" }, { default: () => "P" })
+          h(NTag, { type: "info", size: "small" }, { default: () => "P" }),
         );
       }
       if (rowData.isPk) {
         arr.push(
-          h(NTag, { type: "warning", size: "small" }, { default: () => "N" })
+          h(NTag, { type: "warning", size: "small" }, { default: () => "N" }),
         );
       }
       return h(NSpace, { size: "small" }, { default: () => arr });
@@ -319,13 +326,42 @@ const paramVerify = (): boolean => {
 
 const handlePreviewClick = () => {
   if (paramVerify()) {
-    preview(model);
+    previewLoading.value = true;
+    preview(model)
+      .then((res) => {
+        if (res.data) {
+          previewRef.value.openModel(res.data);
+        }
+      })
+      .finally(() => {
+        previewLoading.value = false;
+      });
   }
 };
 
 const handleCreateClick = () => {
   if (paramVerify()) {
-    create(model);
+    createLoading.value = true;
+    create(model)
+      .then((blob) => {
+        ofBlob(blob, `${model.className}.zip`);
+      })
+      .finally(() => {
+        createLoading.value = false;
+      });
+  }
+};
+
+const firstUpper = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+const handleUpdateClassName = (val: string) => {
+  if (model.tableName) {
+    // eslint-disable-next-line no-eval
+    const tableName = model.tableName.replace(eval(`/^${val}/g`), "");
+    const str = tableName.split("_");
+    model.className = str.map(firstUpper).join("");
   }
 };
 
@@ -428,18 +464,21 @@ onMounted(() => {
                       v-model:value="model.tablePrefix"
                       style="width: 220px"
                       placeholder="请输入表前缀"
+                      @input="handleUpdateClassName"
                     />
                   </n-space>
                   <n-space justify="end">
                     <n-button
                       type="primary"
                       :disabled="loading"
+                      :loading="previewLoading"
                       @click="handlePreviewClick"
                       >预览
                     </n-button>
                     <n-button
                       type="success"
                       :disabled="loading"
+                      :loading="createLoading"
                       @click="handleCreateClick"
                       >生成
                     </n-button>
@@ -451,6 +490,7 @@ onMounted(() => {
         </n-layout-content>
       </n-layout>
     </n-layout>
+    <info-preview ref="previewRef" />
   </div>
 </template>
 

@@ -22,7 +22,8 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
-    "allowJs": true
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*.ts",
