@@ -2,6 +2,7 @@
   "name": "@izhimu/seas-all",
   "private": true,
   "main": "src/main.ts",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
