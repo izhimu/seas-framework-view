@@ -14,15 +14,10 @@ export {
   dAuthOrg,
 } from "./entity/role";
 export { type User, type UserRole, dUser, dUserRole } from "./entity/user";
-export {
-  baseRouter,
-  baseHomePage,
-  baseIndexPage,
-  basePermit,
-} from "./router/base";
+export { baseRouter, baseHomePage, baseIndexPage, basePermit } from "./router";
 export {
   baseStore,
   type BaseState,
   type LogoConfig,
 } from "./store/module/base";
-export { default as baseInitIcon } from "./style/base";
+export { default as baseInitIcon } from "./style";

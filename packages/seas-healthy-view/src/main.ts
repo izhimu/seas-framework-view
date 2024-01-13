@@ -1,5 +1,5 @@
 import { newRouter, newStore, newApi, newApp } from "@izhimu/seas-core/src";
-import healthyRouter from "./router/healthy.ts";
+import healthyRouter from "./router";
 
 // Vuex
 const store = newStore().build();

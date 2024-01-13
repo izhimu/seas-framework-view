@@ -1,4 +1,4 @@
-export { default as healthyRouter } from "./router/healthy";
+export { default as healthyRouter } from "./router";
 export {
   type CpuInfo,
   type Disk,
@@ -9,4 +9,4 @@ export {
   dMemory,
   dSensors,
 } from "./entity/os";
-export { default as healthyInitIcon } from "./style/healthy";
+export { default as healthyInitIcon } from "./style";

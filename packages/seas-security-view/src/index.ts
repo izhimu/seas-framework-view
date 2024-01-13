@@ -3,7 +3,7 @@ export {
   securityHomeRouter,
   securityHandler,
   securityPermit,
-} from "./router/security.ts";
+} from "./router";
 export { securityStore, type SecurityState } from "./store/module/security.ts";
 export {
   securityRequestInterceptor,

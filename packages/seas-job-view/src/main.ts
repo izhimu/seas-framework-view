@@ -1,5 +1,5 @@
 import { newRouter, newStore, newApi, newApp } from "@izhimu/seas-core/src";
-import jobRouter from "./router/job.ts";
+import jobRouter from "./router";
 
 // Vuex
 const store = newStore().build();

@@ -10,7 +10,7 @@ import {
   securityHomeRouter,
   securityHandler,
   securityPermit,
-} from "./router/security.ts";
+} from "./router";
 import { securityStore } from "./store/module/security.ts";
 import {
   securityRequestInterceptor,

@@ -14,8 +14,8 @@ import {
   securityRequestInterceptor,
   securityResponseRejectedInterceptor,
 } from "@izhimu/seas-security-view/src";
-import { baseRouter, basePermit } from "./router/base.ts";
-import baseInitIcon from "./style/base.ts";
+import { baseRouter, basePermit } from "./router";
+import baseInitIcon from "./style";
 import { baseStore } from "./store/module/base.ts";
 
 // Vuex
