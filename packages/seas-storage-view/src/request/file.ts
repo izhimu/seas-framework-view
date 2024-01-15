@@ -1,5 +1,5 @@
 import { AxiosProgressEvent } from "axios";
-import { apiPath, Result, api } from "@izhimu/seas-core/src";
+import { Result, api, path } from "@izhimu/seas-core";
 import { File } from "../entity/file.ts";
 
 const url = "/sto/file";
@@ -48,21 +48,21 @@ export function upload(
 
 export function downloadUrl(id: string, token?: string): string {
   if (token) {
-    return `${apiPath}${url}/${id}?X-Auth-Token=${token}`;
+    return `${path()}${url}/${id}?X-Auth-Token=${token}`;
   }
-  return `${apiPath}${url}/${id}`;
+  return `${path()}${url}/${id}`;
 }
 
 export function downloadsUrl(bindId: string, token?: string): string {
   if (token) {
-    return `${apiPath}${url}/bind/${bindId}?X-Auth-Token=${token}`;
+    return `${path()}${url}/bind/${bindId}?X-Auth-Token=${token}`;
   }
-  return `${apiPath}${url}/bind/${bindId}`;
+  return `${path()}${url}/bind/${bindId}`;
 }
 
 export function previewUrl(id: string, token?: string): string {
   if (token) {
-    return `${apiPath}${url}/preview/pdf/${id}?X-Auth-Token=${token}`;
+    return `${path()}${url}/preview/pdf/${id}?X-Auth-Token=${token}`;
   }
-  return `${apiPath}${url}/preview/pdf/${id}`;
+  return `${path()}${url}/preview/pdf/${id}`;
 }

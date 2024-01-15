@@ -10,6 +10,7 @@ export * from "./hooks";
 export {
   createRequest,
   api,
+  path,
   addRequestInterceptor,
   addResponseFulfilledInterceptor,
   addResponseRejectedInterceptor,

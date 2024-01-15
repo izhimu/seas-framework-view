@@ -29,6 +29,7 @@ const requestInterceptors: Array<RequestInterceptorFunc> = [];
 const responseFulfilledInterceptors: Array<ResponseFulfilledInterceptorFunc> =
   [];
 const responseRejectedInterceptors: Array<ResponseRejectedInterceptorFunc> = [];
+let apiPath: string = "/api";
 
 export const addRequestInterceptor = (interceptor: RequestInterceptorFunc) => {
   requestInterceptors.push(interceptor);
@@ -48,9 +49,12 @@ export const addResponseRejectedInterceptor = (
 
 export const createRequest = (requestConfig?: RequestConfig) => {
   instance = axios.create({
-    baseURL: requestConfig?.path ?? "/api",
+    baseURL: requestConfig?.path ?? apiPath,
     timeout: requestConfig?.timeout ?? 60000,
   });
+  if (requestConfig?.path) {
+    apiPath = requestConfig.path;
+  }
   // 请求拦截器
   instance.interceptors.request.use((config: ExtendAxiosRequestConfig) => {
     // 加载条
@@ -120,3 +124,5 @@ export const createRequest = (requestConfig?: RequestConfig) => {
 };
 
 export const api = (): AxiosInstance => instance;
+
+export const path = () => apiPath;
