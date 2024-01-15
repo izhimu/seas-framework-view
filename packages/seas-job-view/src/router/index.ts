@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
+import { addHomeRoute } from "@izhimu/seas-core";
 
 const jobRouter = (): RouteRecordRaw[] => {
   return [
@@ -11,3 +12,5 @@ const jobRouter = (): RouteRecordRaw[] => {
 };
 
 export default jobRouter;
+
+addHomeRoute(jobRouter());

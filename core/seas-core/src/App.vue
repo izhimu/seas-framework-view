@@ -1,7 +1,6 @@
 <!--suppress ALL -->
 <script setup lang="ts">
 import { computed, reactive } from "vue";
-import { useStore } from "vuex";
 import {
   NConfigProvider,
   NNotificationProvider,
@@ -22,16 +21,14 @@ import css from "highlight.js/lib/languages/css";
 import json from "highlight.js/lib/languages/json";
 import sql from "highlight.js/lib/languages/sql";
 import rust from "highlight.js/lib/languages/rust";
+import { useThemeStore } from "./store";
 
-const store = useStore();
+const coreStore = useThemeStore();
 
 /**
  * 主题配置
  */
-const theme = computed(() => store.state.core.theme);
-const bodyColor = computed(() =>
-  store.state.core.theme ? "#101014FF" : "#F8F8F8",
-);
+const bodyColor = computed(() => (coreStore.theme ? "#101014FF" : "#F8F8F8"));
 const themeOverrides: GlobalThemeOverrides = reactive({
   common: {
     primaryColor: "#448cfe",
@@ -40,22 +37,6 @@ const themeOverrides: GlobalThemeOverrides = reactive({
     primaryColorSuppl: "#205dbe",
     bodyColor,
   },
-});
-
-/**
- * 处理Vuex刷新数据丢失
- */
-if (sessionStorage.getItem("store")) {
-  const sessionStore = sessionStorage.getItem("store");
-  if (sessionStore) {
-    store.replaceState({
-      ...store.state,
-      ...JSON.parse(sessionStore),
-    });
-  }
-}
-window.addEventListener("beforeunload", () => {
-  sessionStorage.setItem("store", JSON.stringify(store.state));
 });
 
 /**
@@ -74,7 +55,7 @@ hljs.registerLanguage("rust", rust);
   <n-config-provider
     :locale="zhCN"
     :date-locale="dateZhCN"
-    :theme="theme"
+    :theme="coreStore.theme"
     :theme-overrides="themeOverrides"
     :hljs="hljs"
   >

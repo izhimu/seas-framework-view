@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { useStore } from "vuex";
 import {
   FormInst,
   FormRules,
@@ -18,7 +17,8 @@ import {
 } from "naive-ui";
 import { sm2 } from "sm-crypto";
 import { ChevronForward as ArrowIcon } from "@vicons/ionicons5";
-import { CoreStore } from "@izhimu/seas-core/src";
+import { useCommonStore, useThemeStore } from "@izhimu/seas-core";
+import { useUserStore } from "../store";
 import { system, webview } from "../assets/js/osInfo";
 import { encrypt, login } from "../request/security";
 import { dEncryptKey, dLogin, dLoginUser } from "../entity/security";
@@ -29,13 +29,13 @@ import VerifyBox from "../components/VerifyBox.vue";
  */
 window.$message = useMessage();
 
-const store = useStore();
+const userStore = useUserStore();
+const commonStore = useCommonStore();
+const themeStore = useThemeStore();
 const formRef = ref<FormInst | null>(null);
 const time = ref(new Date());
 const loading = ref(false);
 const verifyRef = ref();
-const { state } = store;
-const { core: coreStore }: { core: CoreStore } = state;
 
 const emit = defineEmits(["unlock"]);
 
@@ -85,7 +85,7 @@ const loginHandler = async () => {
   if (!encryptPassword) {
     return;
   }
-  model.account = store.state.security.lockUser?.account;
+  model.account = userStore.locked.account;
   model.passwordKey = encryptKey.key;
   model.password = `04${encryptPassword}`;
   model.timestamp = new Date().getTime();
@@ -96,9 +96,8 @@ const loginHandler = async () => {
     .then((res) => {
       if (res.code === "000") {
         Object.assign(loginUser, res.data);
-        loginUser.account = store.state.security.lockUser?.account;
-        store.commit("setLoginUser", loginUser);
-        store.commit("setLockUser", null);
+        loginUser.account = userStore.locked.account;
+        userStore.login(loginUser);
         emit("unlock");
       } else {
         getEncryptKey();
@@ -122,11 +121,11 @@ const onSuccess = (v: { key: string; verify: string }) => {
   <div>
     <div class="inner-header">
       <n-layout-content
-        :class="coreStore.theme ? 'lock-page-dark' : 'lock-page'"
+        :class="themeStore.theme ? 'lock-page-dark' : 'lock-page'"
       >
         <div class="lock-grid">
           <div class="lock-head">
-            <div class="lock-title">{{ coreStore.appName }}</div>
+            <div class="lock-title">{{ commonStore.name }}</div>
             <div class="lock-time">
               <n-time :time="time" format="HH:mm:ss" />
             </div>
@@ -193,25 +192,31 @@ const onSuccess = (v: { key: string; verify: string }) => {
             xlink:href="#gentle-wave"
             x="48"
             y="0"
-            :fill="state.theme ? 'rgba(9,4,38,0.7)' : 'rgba(255,255,255,0.7)'"
+            :fill="
+              themeStore.theme ? 'rgba(9,4,38,0.7)' : 'rgba(255,255,255,0.7)'
+            "
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="3"
-            :fill="state.theme ? 'rgba(9,4,38,0.5)' : 'rgba(255,255,255,0.5)'"
+            :fill="
+              themeStore.theme ? 'rgba(9,4,38,0.5)' : 'rgba(255,255,255,0.5)'
+            "
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="5"
-            :fill="state.theme ? 'rgba(9,4,38,0.3)' : 'rgba(255,255,255,0.3)'"
+            :fill="
+              themeStore.theme ? 'rgba(9,4,38,0.3)' : 'rgba(255,255,255,0.3)'
+            "
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="7"
-            :fill="state.theme ? 'rgb(9,4,38)' : 'rgb(255,255,255)'"
+            :fill="themeStore.theme ? 'rgb(9,4,38)' : 'rgb(255,255,255)'"
           />
         </g>
       </svg>

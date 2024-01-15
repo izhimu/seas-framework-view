@@ -1,11 +1,11 @@
 import { h } from "vue";
-import { useStore } from "vuex";
 import { Type } from "naive-ui/lib/button/src/interface";
 import { MaybeArray } from "naive-ui/lib/_utils";
 import { NButton, NPopconfirm } from "naive-ui";
+import { useCommonStore } from "../store";
 
 export default function useTableButton() {
-  const store = useStore();
+  const commonStore = useCommonStore();
   const actionButton = (
     name: string,
     type: Type,
@@ -13,7 +13,7 @@ export default function useTableButton() {
     onClick?: MaybeArray<(e: MouseEvent) => void>,
     config?: object,
   ) => {
-    if (auth && store.state.security?.authComponents.indexOf(auth) === -1) {
+    if (auth && commonStore.auth.indexOf(auth) === -1) {
       return null;
     }
     return h(
@@ -39,7 +39,7 @@ export default function useTableButton() {
     onNegativeClick?: (e: MouseEvent) => any,
     config?: object,
   ) => {
-    if (auth && store.state.security?.authComponents.indexOf(auth) === -1) {
+    if (auth && commonStore.auth.indexOf(auth) === -1) {
       return null;
     }
     return h(

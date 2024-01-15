@@ -1,3 +1,5 @@
+import "./style";
+
 export { type Account, dAccount } from "./entity/account";
 export { type Conf, dConf } from "./entity/conf";
 export { type Dict, dDict } from "./entity/dict";
@@ -15,9 +17,4 @@ export {
 } from "./entity/role";
 export { type User, type UserRole, dUser, dUserRole } from "./entity/user";
 export { baseRouter, baseHomePage, baseIndexPage, basePermit } from "./router";
-export {
-  baseStore,
-  type BaseState,
-  type LogoConfig,
-} from "./store/module/base";
-export { default as baseInitIcon } from "./style";
+export * from "./store";

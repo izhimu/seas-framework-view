@@ -1,0 +1,60 @@
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { type MenuOption } from "naive-ui";
+import { useIcon, useCommonStore } from "@izhimu/seas-core";
+import { auth } from "../request/menu";
+
+export type MenuOptions = Array<MenuOption>;
+export default function useMenu() {
+  const router = useRouter();
+  const commonStore = useCommonStore();
+  const { iconMap } = useIcon();
+  const menuActiveKey = ref<unknown>(null);
+  const menuCollapsed = ref(false);
+  const menuOptions = reactive<MenuOptions>([]);
+  const loadMenuData = async () => {
+    const map = new Map();
+    const res = await auth();
+    if (res.code !== "000" || !res.data) {
+      return;
+    }
+    res.data.forEach((item) => {
+      if (item.id && item.id !== "1" && item.menuCode && item.menuName) {
+        if (item.menuType === 0) {
+          map.set(item.id, {
+            id: item.id,
+            label: item.menuName,
+            key: item.menuCode,
+            icon: iconMap.get(item.menuCode),
+          });
+        }
+        commonStore.auth.push(item.menuCode);
+      }
+    });
+    res.data.forEach((item) => {
+      if (
+        item.id &&
+        item.parentId &&
+        item.parentId !== "0" &&
+        item.menuType === 0
+      ) {
+        const parent = map.get(item.parentId);
+        if (parent) {
+          (parent.children || (parent.children = [])).push(map.get(item.id));
+        } else {
+          menuOptions.push(map.get(item.id));
+        }
+      }
+    });
+  };
+  const handleMenuClick = (key: string) => {
+    router.push({ name: key });
+  };
+  return {
+    menuActiveKey,
+    menuCollapsed,
+    menuOptions,
+    loadMenuData,
+    handleMenuClick,
+  };
+}

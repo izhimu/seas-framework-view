@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { useStore } from "vuex";
 import {
   NModal,
   NForm,
@@ -12,17 +11,12 @@ import {
   useMessage,
 } from "naive-ui";
 import { sm2 } from "sm-crypto";
-import { useFormModel } from "@izhimu/seas-core/src";
-import {
-  SecurityState,
-  dEncryptKey,
-  encrypt,
-} from "@izhimu/seas-security-view/src";
+import { useFormModel } from "@izhimu/seas-core";
+import { dEncryptKey, encrypt, useUserStore } from "@izhimu/seas-security-view";
 import { dPassword } from "../entity/account";
 import { changePassword } from "../request/user";
 
-const store = useStore();
-const { security }: { security: SecurityState } = store.state;
+const userStore = useUserStore();
 const message = useMessage();
 const { btnLoading, showModel } = useFormModel();
 
@@ -93,7 +87,7 @@ const handleSubmit = async () => {
   if (!encryptNewPassword || !encryptOriginalPassword) {
     return;
   }
-  model.userAccount = security.loginUser?.account ?? null;
+  model.userAccount = userStore.current.account;
   model.userCertificate = `04${encryptNewPassword}`;
   model.originalCertificate = `04${encryptOriginalPassword}`;
   model.passwordKey = encryptKey.key;

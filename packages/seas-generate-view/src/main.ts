@@ -1,8 +1,5 @@
-import { newRouter, newStore, newApi, newApp } from "@izhimu/seas-core/src";
+import { newRouter, newApi, newApp } from "@izhimu/seas-core/src";
 import generateRouter from "./router";
-
-// Vuex
-const store = newStore().build();
 
 // 路由
 const router = newRouter().add(generateRouter()).build("generate/info");
@@ -11,4 +8,4 @@ const router = newRouter().add(generateRouter()).build("generate/info");
 newApi().build();
 
 // App
-newApp().use(store).use(router).mount().authDirective(store);
+newApp().use(router).mount();

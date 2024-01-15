@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
+import { addHomeRoute, addPermit, setHomeComponent } from "@izhimu/seas-core";
 
 export const baseHomePage = () => () => import("../view/HomePage.vue");
 export const baseIndexPage = () => () => import("../view/IndexPage.vue");
@@ -54,3 +55,7 @@ export const baseRouter = (index = baseIndexPage()): RouteRecordRaw[] => {
 };
 
 export const basePermit = ["index"];
+
+addPermit(basePermit);
+addHomeRoute(baseRouter());
+setHomeComponent(baseHomePage());

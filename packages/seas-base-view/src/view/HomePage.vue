@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, shallowRef } from "vue";
-import { useStore } from "vuex";
+import { onMounted, ref, shallowRef } from "vue";
+import { useRouter } from "vue-router";
 import {
   NLayout,
   NLayoutHeader,
@@ -20,8 +20,6 @@ import {
   useDialog,
   useNotification,
   useLoadingBar,
-  darkTheme,
-  MenuOption,
 } from "naive-ui";
 import {
   PersonCircle,
@@ -35,15 +33,15 @@ import LockPage from "@izhimu/seas-security-view/src/view/LockPage.vue";
 import { logout } from "@izhimu/seas-security-view/src/request/security";
 import {
   useIcon,
-  router as useRouter,
   event,
-  CoreStore,
-} from "@izhimu/seas-core/src";
-import { SecurityState } from "@izhimu/seas-security-view/src";
-import { auth } from "../request/menu";
+  useThemeStore,
+  useCommonStore,
+} from "@izhimu/seas-core";
+import { useUserStore } from "@izhimu/seas-security-view";
+import { useBaseConfigStore } from "../store";
 import UserInfo from "./UserInfo.vue";
-import { BaseState } from "../store/module/base.ts";
 import ChangePasswordForm from "./ChangePasswordForm.vue";
+import { useMenu } from "../hooks";
 
 /**
  * 挂载全局对象
@@ -52,70 +50,15 @@ window.$message = useMessage();
 window.$notification = useNotification();
 window.$loadingBar = useLoadingBar();
 
-const store = useStore();
+const userStore = useUserStore();
+const themeStore = useThemeStore();
+const commonStore = useCommonStore();
+const baseConfigStore = useBaseConfigStore();
 const router = useRouter();
 const dialog = useDialog();
 const message = useMessage();
-const { renderIcon, iconMap } = useIcon();
-const {
-  core: coreStore,
-  security: securityStore,
-  base: baseStore,
-}: { core: CoreStore; security: SecurityState; base: BaseState } = store.state;
-
-const activeKey = ref<unknown>(null);
-const collapsed = ref(baseStore.homeConfig?.menuCollapsed);
-const menuOptions = ref();
-const loadMenuData = () => {
-  const result: Array<MenuOption> = [];
-  const authComponents: string[] = [];
-  const map = new Map();
-  auth().then((res) => {
-    if (res.code === "000") {
-      res.data?.forEach((item) => {
-        if (item.id && item.id !== "1" && item.menuCode && item.menuName) {
-          if (item.menuType === 0) {
-            if (item.menuUrl === "") {
-              map.set(item.id, {
-                id: item.id,
-                label: item.menuName,
-                key: item.menuCode,
-              });
-            } else {
-              map.set(item.id, {
-                id: item.id,
-                label: item.menuName,
-                key: item.menuCode,
-              });
-            }
-            const icon = iconMap.get(item.menuCode);
-            if (icon) {
-              map.get(item.id).icon = icon;
-            }
-          }
-          authComponents.push(item.menuCode);
-        }
-      });
-      res.data?.forEach((item) => {
-        if (
-          item.id &&
-          item.parentId &&
-          item.parentId !== "0" &&
-          item.menuType === 0
-        ) {
-          const parent = map.get(item.parentId);
-          if (parent) {
-            (parent.children || (parent.children = [])).push(map.get(item.id));
-          } else {
-            result.push(map.get(item.id));
-          }
-        }
-      });
-      menuOptions.value = result;
-      store.commit("setAuthComponents", authComponents);
-    }
-  });
-};
+const { renderIcon } = useIcon();
+const { menuActiveKey, menuCollapsed, menuOptions, loadMenuData } = useMenu();
 
 const handleMenuClick = (key: string) => {
   router.push({ name: key });
@@ -124,13 +67,11 @@ const handleMenuClick = (key: string) => {
 /**
  * 切换主题
  */
-const themeNight = computed(() => !!store.state.core.theme);
-const themeIcon = shallowRef(themeNight.value ? Moon : Sunny);
-const theme = (isNight: boolean) => {
-  themeIcon.value = isNight ? Moon : Sunny;
-  store.commit("switchTheme", isNight ? darkTheme : null);
+const themeIcon = shallowRef(themeStore.theme ? Moon : Sunny);
+const handleThemeClick = () => {
+  themeIcon.value = themeStore.theme ? Sunny : Moon;
+  themeStore.toggle();
 };
-const handleThemeClick = () => theme(!themeNight.value);
 
 /**
  * 系统菜单
@@ -175,12 +116,7 @@ const handleLock = () => {
     onPositiveClick: () => {
       logout().then((res) => {
         if (res.code === "000") {
-          const lockUser = {
-            account: store.state.security?.loginUser?.account,
-            userName: "系统管理员",
-          };
-          store.commit("setLoginUser", null);
-          store.commit("setLockUser", lockUser);
+          userStore.lock();
           lock.value = true;
         }
       });
@@ -197,7 +133,7 @@ const handleLogout = () => {
     onPositiveClick: () => {
       logout().then((res) => {
         if (res.code === "000") {
-          store.commit("setLoginUser", null);
+          userStore.logout();
           message.success("退出成功");
           router.push({ path: "/login" });
         }
@@ -225,10 +161,10 @@ const handleUnlock = () => {
  * 事件监听
  */
 event.on("routerChange", (data) => {
-  activeKey.value = data;
+  menuActiveKey.value = data;
 });
 event.on("toLogin", () => {
-  store.commit("setLoginUser", null);
+  userStore.logout();
   router.push({ path: "/login" });
 });
 
@@ -244,18 +180,22 @@ onMounted(() => {
         <n-el class="home-header n-card n-card--bordered">
           <n-el
             class="home-logo"
-            :style="baseStore.logoConfig?.titleStyle"
+            :style="baseConfigStore.logo.titleStyle"
             @click="router.push('/index')"
           >
             <n-image
-              v-if="baseStore.logoConfig?.icon"
+              v-if="baseConfigStore.logo.icon"
               preview-disabled
-              :src="baseStore.logoConfig?.iconSrc"
-              :height="baseStore.logoConfig?.iconSize"
-              :style="baseStore.logoConfig?.iconStyle"
+              :src="baseConfigStore.logo.iconSrc"
+              :height="baseConfigStore.logo.iconSize"
+              :style="baseConfigStore.logo.iconStyle"
             />
             <n-el class="home-logo-text"
-              >{{ baseStore.logoConfig?.title ?? coreStore.appName }}
+              >{{
+                baseConfigStore.logo.title
+                  ? baseConfigStore.logo.title
+                  : commonStore.name
+              }}
             </n-el>
           </n-el>
           <n-el class="home-top"></n-el>
@@ -265,7 +205,7 @@ onMounted(() => {
             </n-button>
             <n-dropdown :options="escOptions" @select="handleEscClick">
               <n-button quaternary round
-                >{{ securityStore?.loginUser?.userName }}
+                >{{ userStore.current.userName }}
               </n-button>
             </n-dropdown>
           </n-space>
@@ -278,15 +218,15 @@ onMounted(() => {
           collapse-mode="width"
           :collapsed-width="64"
           :width="260"
-          :collapsed="collapsed"
+          :collapsed="menuCollapsed"
           :native-scrollbar="false"
           show-trigger
-          @collapse="collapsed = true"
-          @expand="collapsed = false"
+          @collapse="menuCollapsed = true"
+          @expand="menuCollapsed = false"
         >
           <n-menu
-            v-model:value="activeKey"
-            :collapsed="collapsed"
+            v-model:value="menuActiveKey"
+            :collapsed="menuCollapsed"
             :collapsed-width="64"
             :collapsed-icon-size="22"
             :options="menuOptions"

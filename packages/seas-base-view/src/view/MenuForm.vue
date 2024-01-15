@@ -161,6 +161,13 @@ defineExpose({
               @keydown.enter.prevent
             />
           </n-form-item>
+          <n-form-item path="menuUrl" label="图标">
+            <n-input
+              v-model:value="model.menuIcon"
+              placeholder="请输入图标组件"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
         </n-collapse-transition>
         <n-form-item path="sort" label="排序">
           <n-input-number

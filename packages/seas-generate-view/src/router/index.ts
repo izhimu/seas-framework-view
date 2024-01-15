@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
+import { addHomeRoute } from "@izhimu/seas-core";
 
 const generateRouter = (): RouteRecordRaw[] => {
   return [
@@ -21,3 +22,5 @@ const generateRouter = (): RouteRecordRaw[] => {
 };
 
 export default generateRouter;
+
+addHomeRoute(generateRouter());

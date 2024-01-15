@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, onMounted, reactive, ref } from "vue";
+import { h, onMounted, reactive, ref, VNode } from "vue";
 import {
   NLayout,
   NLayoutSider,
@@ -16,11 +16,20 @@ import {
   TreeOption,
 } from "naive-ui";
 import { SearchSharp as SearchIcon } from "@vicons/ionicons5";
-import { usePage, useTableButton, useTree } from "@izhimu/seas-core/src";
+import {
+  useIcon,
+  usePage,
+  useTableButton,
+  useTree,
+} from "@izhimu/seas-core/src";
 import { pMenu, Menu, mType, mDisplay } from "../entity/menu";
 import { tree, page, del } from "../request/menu";
 import MenuForm from "./MenuForm.vue";
 
+const { loadIcon } = useIcon();
+import("@vicons/ionicons5/Copy").then((icon) =>
+  loadIcon("generate", icon.default),
+);
 const {
   columns,
   pagination,
@@ -111,7 +120,7 @@ columns.value.push({
   title: "操作",
   key: "actions",
   render(rowData: Menu) {
-    const button: Array<any> = [];
+    const button: Array<VNode | null> = [];
     button.push(
       actionButton(
         "修改",

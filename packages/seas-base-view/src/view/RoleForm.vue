@@ -26,9 +26,8 @@ import {
   useMessage,
 } from "naive-ui";
 import { Option } from "naive-ui/es/transfer/src/interface";
-import { useStore } from "vuex";
 import { CheckboxOutline } from "@vicons/ionicons5";
-import { useFormModel, useTree } from "@izhimu/seas-core/src";
+import { useFormModel, useTree, useCommonStore } from "@izhimu/seas-core";
 import {
   get,
   save,
@@ -54,7 +53,7 @@ import { dUserRole } from "../entity/user";
 import { tree as menuTree } from "../request/menu";
 import { tree as orgTree } from "../request/org";
 
-const store = useStore();
+const commonStore = useCommonStore();
 const message = useMessage();
 const { btnLoading, dataLoading, showModel, addStatus } = useFormModel();
 
@@ -241,10 +240,7 @@ defineExpose({
           </n-form>
         </n-tab-pane>
         <n-tab-pane
-          v-if="
-            store.state.security?.authComponents.indexOf('system.role.user') !==
-            -1
-          "
+          v-if="commonStore.auth.indexOf('system.role.user') !== -1"
           class="tab-box"
           name="user"
           tab="用户分配"
@@ -260,10 +256,7 @@ defineExpose({
           />
         </n-tab-pane>
         <n-tab-pane
-          v-if="
-            store.state.security?.authComponents.indexOf('system.role.menu') !==
-            -1
-          "
+          v-if="commonStore.auth.indexOf('system.role.menu') !== -1"
           class="tab-box"
           name="menu"
           tab="菜单权限"
@@ -294,10 +287,7 @@ defineExpose({
           </n-card>
         </n-tab-pane>
         <n-tab-pane
-          v-if="
-            store.state.security?.authComponents.indexOf('system.role.dept') !==
-            -1
-          "
+          v-if="commonStore.auth.indexOf('system.role.dept') !== -1"
           class="tab-box"
           name="dept"
           tab="数据权限"

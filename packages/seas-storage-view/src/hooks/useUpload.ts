@@ -1,5 +1,4 @@
 import { ref } from "vue";
-import { Store } from "vuex";
 import { UploadCustomRequestOptions, UploadFileInfo } from "naive-ui";
 import { upload, getInfos, del, downloadUrl } from "../request/file.ts";
 import { File, File as FileInfo } from "../entity/file.ts";
@@ -7,7 +6,7 @@ import { File, File as FileInfo } from "../entity/file.ts";
 const toFileList = (
   file: FileInfo,
   fileList: UploadFileInfo[],
-  store: Store<any>,
+  token?: string,
 ) => {
   const fileObj: UploadFileInfo = {
     id: file.id,
@@ -16,15 +15,12 @@ const toFileList = (
     status: "finished",
   };
   if (file.fileUrl) {
-    const user = store.state.security.loginUser;
-    if (user) {
-      fileObj.url = downloadUrl(file.id, user.token);
-    }
+    fileObj.url = downloadUrl(file.id, token);
   }
   fileList.push(fileObj);
 };
 
-export default function useUpload(store: Store<any>) {
+export default function useUpload(token?: string) {
   const bindId = ref();
   const fileList = ref<UploadFileInfo[]>([]);
   let finishFun: (files: Array<File>) => void;
@@ -53,7 +49,7 @@ export default function useUpload(store: Store<any>) {
       .then((res) => {
         if (res.code === "000") {
           fileList.value.pop();
-          res.data?.forEach((item) => toFileList(item, fileList.value, store));
+          res.data?.forEach((item) => toFileList(item, fileList.value, token));
           if (finishFun) {
             finishFun(res.data);
           }
@@ -70,7 +66,7 @@ export default function useUpload(store: Store<any>) {
   const fileLoad = () => {
     fileList.value = [];
     getInfos(bindId.value).then((res) => {
-      res.data?.forEach((item) => toFileList(item, fileList.value, store));
+      res.data?.forEach((item) => toFileList(item, fileList.value, token));
     });
   };
 

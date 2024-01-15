@@ -16,5 +16,5 @@ export default function useIcon() {
     iconMap.set(key, renderIcon(icon));
   };
 
-  return { renderIcon, loadIcon, iconMap };
+  return { renderIcon, loadIcon, iconMap, SearchIcon };
 }

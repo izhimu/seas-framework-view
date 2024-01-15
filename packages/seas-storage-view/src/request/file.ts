@@ -46,14 +46,23 @@ export function upload(
   });
 }
 
-export function downloadUrl(id: string, token: string): string {
-  return `${apiPath}${url}/${id}?X-Auth-Token=${token}`;
+export function downloadUrl(id: string, token?: string): string {
+  if (token) {
+    return `${apiPath}${url}/${id}?X-Auth-Token=${token}`;
+  }
+  return `${apiPath}${url}/${id}`;
 }
 
-export function downloadsUrl(bindId: string, token: string): string {
-  return `${apiPath}${url}/bind/${bindId}?X-Auth-Token=${token}`;
+export function downloadsUrl(bindId: string, token?: string): string {
+  if (token) {
+    return `${apiPath}${url}/bind/${bindId}?X-Auth-Token=${token}`;
+  }
+  return `${apiPath}${url}/bind/${bindId}`;
 }
 
-export function previewUrl(id: string, token: string): string {
-  return `${apiPath}${url}/preview/pdf/${id}?X-Auth-Token=${token}`;
+export function previewUrl(id: string, token?: string): string {
+  if (token) {
+    return `${apiPath}${url}/preview/pdf/${id}?X-Auth-Token=${token}`;
+  }
+  return `${apiPath}${url}/preview/pdf/${id}`;
 }

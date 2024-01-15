@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, h } from "vue";
-import { useStore } from "vuex";
+import { ref, reactive, onMounted, h } from "vue";
+import { useRouter } from "vue-router";
 import {
   FormInst,
   FormRules,
@@ -17,12 +17,12 @@ import {
   useMessage,
   useOsTheme,
   useLoadingBar,
-  darkTheme,
 } from "naive-ui";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { sm2 } from "sm-crypto";
 import { ChevronForward as ArrowIcon } from "@vicons/ionicons5";
-import { CoreStore, router } from "@izhimu/seas-core/src";
+import { useCommonStore, useThemeStore } from "@izhimu/seas-core";
+import { useUserStore } from "../store";
 import { system, webview } from "../assets/js/osInfo";
 import { encrypt, login } from "../request/security";
 import { dEncryptKey, dLogin, dLoginUser } from "../entity/security";
@@ -35,14 +35,15 @@ window.$message = useMessage();
 window.$notification = useNotification();
 window.$loadingBar = useLoadingBar();
 
-const store = useStore();
+const router = useRouter();
 const message = useMessage();
 const notification = useNotification();
+const userStore = useUserStore();
+const commonStore = useCommonStore();
+const themeStore = useThemeStore();
 const formRef = ref<FormInst | null>(null);
 const loading = ref(false);
 const verifyRef = ref();
-const { state } = store;
-const { core: coreStore }: { core: CoreStore } = state;
 
 const rules = ref<FormRules>({
   account: [
@@ -106,10 +107,9 @@ const loginHandler = async () => {
       if (res.code === "000") {
         Object.assign(loginUser, res.data);
         loginUser.account = model.account;
-        store.commit("setLoginUser", loginUser);
-        store.commit("setLockUser", null);
+        userStore.login(loginUser);
         message.success("登录成功");
-        router().push({ path: "/" });
+        router.push({ path: "/" });
       } else {
         getEncryptKey();
       }
@@ -123,9 +123,8 @@ const loginHandler = async () => {
  * 自动切换主题
  */
 const osTheme = useOsTheme();
-const themeNight = computed(() => !!store.state.core.theme);
 const autoTheme = () => {
-  if (osTheme.value === "dark" && !themeNight.value) {
+  if (osTheme.value === "dark" && !themeStore.theme) {
     const n = notification.create({
       title: "深色模式",
       content: "当前系统为深色模式，是否将页面切换为深色模式",
@@ -138,7 +137,7 @@ const autoTheme = () => {
             type: "primary",
             onClick: () => {
               n.destroy();
-              store.commit("switchTheme", darkTheme);
+              themeStore.dark();
             },
           },
           {
@@ -166,11 +165,11 @@ onMounted(() => {
   <div>
     <div class="inner-header">
       <n-layout-content
-        :class="coreStore.theme ? 'login-page-dark' : 'login-page'"
+        :class="themeStore.theme ? 'login-page-dark' : 'login-page'"
       >
         <div class="login-grid">
           <div class="login-head">
-            <div class="login-title">{{ coreStore.appName }}</div>
+            <div class="login-title">{{ commonStore.name }}</div>
           </div>
         </div>
         <div class="login-grid">
@@ -242,25 +241,31 @@ onMounted(() => {
             xlink:href="#gentle-wave"
             x="48"
             y="0"
-            :fill="state.theme ? 'rgba(9,4,38,0.7)' : 'rgba(255,255,255,0.7)'"
+            :fill="
+              themeStore.theme ? 'rgba(9,4,38,0.7)' : 'rgba(255,255,255,0.7)'
+            "
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="3"
-            :fill="state.theme ? 'rgba(9,4,38,0.5)' : 'rgba(255,255,255,0.5)'"
+            :fill="
+              themeStore.theme ? 'rgba(9,4,38,0.5)' : 'rgba(255,255,255,0.5)'
+            "
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="5"
-            :fill="state.theme ? 'rgba(9,4,38,0.3)' : 'rgba(255,255,255,0.3)'"
+            :fill="
+              themeStore.theme ? 'rgba(9,4,38,0.3)' : 'rgba(255,255,255,0.3)'
+            "
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="7"
-            :fill="state.theme ? 'rgb(9,4,38)' : 'rgb(255,255,255)'"
+            :fill="themeStore.theme ? 'rgb(9,4,38)' : 'rgb(255,255,255)'"
           />
         </g>
       </svg>

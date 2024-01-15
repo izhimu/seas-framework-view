@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
+import { addHomeRoute } from "@izhimu/seas-core";
 
 const healthyRouter = (): RouteRecordRaw[] => {
   return [
@@ -11,3 +12,5 @@ const healthyRouter = (): RouteRecordRaw[] => {
 };
 
 export default healthyRouter;
+
+addHomeRoute(healthyRouter());

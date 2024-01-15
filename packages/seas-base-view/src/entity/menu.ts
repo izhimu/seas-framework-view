@@ -2,7 +2,7 @@ import { TagMap } from "../types";
 
 export interface Menu {
   id: string | null;
-  parentId: string | number | null;
+  parentId: string | null;
   sort: number | null;
   menuName: string | null;
   menuCode: string | null;

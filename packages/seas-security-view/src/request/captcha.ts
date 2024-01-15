@@ -1,4 +1,4 @@
-import { Result, api } from "@izhimu/seas-core/src";
+import { type Result, api } from "@izhimu/seas-core";
 import { Captcha } from "../entity/captcha";
 
 const url = "/captcha";

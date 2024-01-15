@@ -1,57 +1,11 @@
-import {
-  newRouter,
-  newStore,
-  newApi,
-  newApp,
-  corePermit,
-} from "@izhimu/seas-core/src";
-import {
-  securityRootRouter,
-  securityHomeRouter,
-  securityHandler,
-  securityPermit,
-  securityStore,
-  securityRequestInterceptor,
-  securityResponseRejectedInterceptor,
-} from "@izhimu/seas-security-view/src";
-import { jobRouter, jobInitIcon } from "@izhimu/seas-job-view/src";
-import { healthyRouter, healthyInitIcon } from "@izhimu/seas-healthy-view";
-import { generateRouter, generateInitIcon } from "@izhimu/seas-generate-view";
-import {
-  baseRouter,
-  baseHomePage,
-  baseInitIcon,
-  basePermit,
-  baseStore,
-} from "@izhimu/seas-base-view";
-
-// Vuex
-const store = newStore().add(securityStore).add(baseStore).build();
-
-// 路由
-const router = newRouter()
-  .root(securityRootRouter())
-  .add(securityHomeRouter())
-  .add(jobRouter())
-  .add(healthyRouter())
-  .add(generateRouter())
-  .add(baseRouter())
-  .home(baseHomePage())
-  .addBeforeEach(
-    securityHandler(store, [...corePermit, ...securityPermit, ...basePermit]),
-  )
-  .build();
-
-// 请求
-newApi()
-  .addRequestInterceptor(securityRequestInterceptor(store))
-  .addResponseRejectedInterceptor(securityResponseRejectedInterceptor())
-  .build();
+import { createRouter, createPinia, createApp } from "@izhimu/seas-core/src";
+import "@izhimu/seas-base-view";
+import "@izhimu/seas-generate-view";
+import "@izhimu/seas-healthy-view";
+import "@izhimu/seas-job-view/src";
+import "@izhimu/seas-security-view";
 
 // App
-newApp()
-  .use(store)
-  .use(router)
-  .mount()
-  .authDirective(store)
-  .icon(baseInitIcon, jobInitIcon, healthyInitIcon, generateInitIcon);
+createApp({
+  plugins: [createPinia(), createRouter()],
+});

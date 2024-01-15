@@ -1,3 +1,6 @@
+import "./router";
+import "./style";
+
 export { default as healthyRouter } from "./router";
 export {
   type CpuInfo,
@@ -9,4 +12,3 @@ export {
   dMemory,
   dSensors,
 } from "./entity/os";
-export { default as healthyInitIcon } from "./style";

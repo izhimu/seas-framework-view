@@ -60,3 +60,8 @@ export const dLoginUser = (): LoginUser => ({
   account: "",
   userName: "",
 });
+
+export const dLockUser = (): LockUser => ({
+  account: "",
+  userName: "",
+});

@@ -32,11 +32,12 @@
     "highlight.js": "^11.9.0",
     "mitt": "^3.0.1",
     "naive-ui": "^2.37.3",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "qs": "^6.11.2",
     "sm-crypto": "^0.3.13",
     "vue": "^3.4.10",
-    "vue-router": "^4.2.5",
-    "vuex": "^4.1.0"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@types/qs": "^6.9.11",
