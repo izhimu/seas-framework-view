@@ -34,3 +34,4 @@ export {
 export * from "./store";
 export { createApp, type AppConfig } from "./main.ts";
 export { SearchIcon } from "./hooks/useIcon.ts";
+export * from "./utils/log";

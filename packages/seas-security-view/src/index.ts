@@ -1,17 +1,8 @@
-import "./request";
-import "./router";
+import "./init";
 
-export {
-  securityRootRouter,
-  securityHomeRouter,
-  securityHandler,
-  securityPermit,
-} from "./router";
+export * from "./router";
 export * from "./store";
-export {
-  securityRequestInterceptor,
-  securityResponseRejectedInterceptor,
-} from "./request";
+export * from "./request";
 export { encrypt } from "./request/security";
 export { type Captcha, dCaptcha } from "./entity/captcha.ts";
 export {

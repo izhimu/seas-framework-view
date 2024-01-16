@@ -1,7 +1,7 @@
-import "./router";
-import "./style";
+import "./init";
 
-export { default as healthyRouter } from "./router";
+export * from "./router";
+export * from "./style";
 export {
   type CpuInfo,
   type Disk,

@@ -1,4 +1,4 @@
-import "./router";
-import "./style";
-// eslint-disable-next-line import/prefer-default-export
-export { default as generateRouter } from "./router";
+import "./init";
+
+export * from "./router";
+export * from "./style";

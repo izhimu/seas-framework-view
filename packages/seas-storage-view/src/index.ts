@@ -1,5 +1,5 @@
-export { useUpload, useDownload } from "./hooks/index.ts";
-export * from "./entity/file.ts";
+export * from "./hooks/index";
+export * from "./entity/file";
 export {
   getInfo,
   getInfos,
@@ -13,4 +13,4 @@ export {
   downloadUrl,
   downloadsUrl,
   previewUrl,
-} from "./request/file.ts";
+} from "./request/file";

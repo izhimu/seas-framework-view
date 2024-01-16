@@ -1,11 +1,5 @@
-import { newRouter, newApi, newApp } from "@izhimu/seas-core/src";
-import generateRouter from "./router";
-
-// 路由
-const router = newRouter().add(generateRouter()).build("generate/info");
-
-// 请求
-newApi().build();
+import { createApp } from "@izhimu/seas-core";
+import "./init";
 
 // App
-newApp().use(router).mount();
+createApp();

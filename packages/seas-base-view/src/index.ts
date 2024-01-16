@@ -1,4 +1,4 @@
-import "./style";
+import "./init";
 
 export { type Account, dAccount } from "./entity/account";
 export { type Conf, dConf } from "./entity/conf";
@@ -16,5 +16,6 @@ export {
   dAuthOrg,
 } from "./entity/role";
 export { type User, type UserRole, dUser, dUserRole } from "./entity/user";
-export { baseRouter, baseHomePage, baseIndexPage, basePermit } from "./router";
+export * from "./router";
 export * from "./store";
+export * from "./style";

@@ -1,11 +1,5 @@
-import { createRequest, newRouter, newApp } from "@izhimu/seas-core/src";
-import healthyRouter from "./router";
-
-// 路由
-const router = newRouter().add(healthyRouter()).build("healthy/os");
-
-// 请求
-createRequest();
+import { createApp } from "@izhimu/seas-core";
+import "./init";
 
 // App
-newApp().use(router).mount();
+createApp();
