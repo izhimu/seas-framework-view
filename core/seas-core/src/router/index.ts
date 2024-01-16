@@ -8,6 +8,7 @@ import {
 } from "vue-router";
 import { Component } from "vue";
 import event from "../event";
+import { useCommonStore } from "../store";
 
 export type BeforeEachFunc = (to: RouteLocationNormalized) => string | boolean;
 
@@ -86,6 +87,9 @@ export const createRouter = (routerConfig?: RouterConfig): Router => {
       if (result !== true) {
         return result;
       }
+    }
+    if (to.name && to.name !== "index") {
+      useCommonStore().currentRoute = to.name.toString();
     }
     event.emit("routerChange", to.name);
     return true;

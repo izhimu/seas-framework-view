@@ -50,7 +50,7 @@ const router = useRouter();
 const dialog = useDialog();
 const message = useMessage();
 const { renderIcon } = useIcon();
-const { menuCollapsed, menuOptions, loadMenuData } = useMenu();
+const { menuRef, menuCollapsed, menuOptions, loadMenuData } = useMenu();
 
 const handleMenuClick = (key: string) => {
   router.push({ name: key });
@@ -162,6 +162,10 @@ event.on("toLogin", () => {
 
 onMounted(() => {
   loadMenuData();
+  // 加载历史路由
+  if (commonStore.currentRoute !== "") {
+    router.push({ name: commonStore.currentRoute });
+  }
 });
 </script>
 
@@ -217,6 +221,7 @@ onMounted(() => {
           @expand="menuCollapsed = false"
         >
           <n-menu
+            ref="menuRef"
             v-model:value="menuStore.active"
             :collapsed="menuCollapsed"
             :collapsed-width="64"

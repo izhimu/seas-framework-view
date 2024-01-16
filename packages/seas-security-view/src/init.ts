@@ -22,7 +22,7 @@ import {
   securityResponseRejectedInterceptor,
 } from "./request";
 
-group("[security] init");
+group("security init");
 addRootRoute(securityRootRouter());
 debug("loaded root route");
 addHomeRoute(securityHomeRouter());

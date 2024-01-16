@@ -3,11 +3,14 @@ import { useRouter } from "vue-router";
 import { type MenuOption } from "naive-ui";
 import { useIcon, useCommonStore } from "@izhimu/seas-core";
 import { auth } from "../request/menu";
+import { useMenuStore } from "../store";
 
 export type MenuOptions = Array<MenuOption>;
 export default function useMenu() {
   const router = useRouter();
   const commonStore = useCommonStore();
+  const menuRef = ref();
+  const menuStore = useMenuStore();
   const { iconMap } = useIcon();
   const menuActiveKey = ref<unknown>(null);
   const menuCollapsed = ref(false);
@@ -49,12 +52,16 @@ export default function useMenu() {
           }
         }
       });
+      if (menuStore.active) {
+        menuRef.value?.showOption(menuStore.active);
+      }
     });
   };
   const handleMenuClick = (key: string) => {
     router.push({ name: key });
   };
   return {
+    menuRef,
     menuActiveKey,
     menuCollapsed,
     menuOptions,

@@ -9,7 +9,7 @@ import {
 import { baseHomePage, baseRouter, basePermit } from "./router";
 import loadIcons from "./style";
 
-group("[base] init");
+group("base init");
 addHomeRoute(baseRouter());
 debug("loaded route");
 setHomeComponent(baseHomePage());

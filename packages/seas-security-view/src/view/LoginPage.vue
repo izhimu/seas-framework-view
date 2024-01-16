@@ -184,7 +184,7 @@ onMounted(() => {
                     v-model:value="model.tmpPassword"
                     type="password"
                     show-password-on="mousedown"
-                    autocomplete="off"
+                    :input-props="{ autocomplete: 'off' }"
                     @keydown.enter.prevent
                   />
                 </n-form-item>

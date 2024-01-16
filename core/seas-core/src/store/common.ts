@@ -5,11 +5,12 @@ const useCommonStore = defineStore("core.common", () => {
   const name = ref<string>("Seas开发框架");
   const auth = ref<string[]>([]);
   const menu = ref<string[]>([]);
+  const currentRoute = ref<string>("");
   const resetAuth = () => {
     auth.value = [];
     menu.value = [];
   };
-  return { name, auth, menu, resetAuth };
+  return { name, auth, menu, currentRoute, resetAuth };
 });
 
 export default useCommonStore;

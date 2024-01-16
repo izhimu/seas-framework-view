@@ -11,7 +11,7 @@ export const debug = (msg: string) =>
     dateStyle,
     "color:#51952A",
     dateStyle,
-    msgStyle,
+    dateStyle,
   );
 
 export const info = (msg: string) =>
@@ -24,21 +24,21 @@ export const info = (msg: string) =>
   );
 
 export const warn = (msg: string) =>
-  console.warn(
+  console.info(
     format("WAR", msg),
     dateStyle,
     "color:#A68A0D",
     dateStyle,
-    msgStyle,
+    "color:#A68A0D;",
   );
 
 export const error = (msg: string) =>
-  console.error(
+  console.info(
     format("ERR", msg),
     dateStyle,
     "color:#EF4736",
     dateStyle,
-    msgStyle,
+    "color:#EF4736",
   );
 
 export const group = (msg: string) =>

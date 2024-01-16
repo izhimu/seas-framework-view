@@ -4,8 +4,8 @@ import {
   type App,
   type Component,
   type Plugin,
+  type Directive,
 } from "vue";
-import { Directive } from "vue";
 import { createPinia } from "./store";
 import { createRequest } from "./request";
 import { createRouter } from "./router";
@@ -14,11 +14,11 @@ import { debug, group, end, MASCOT } from "./utils/log";
 import { version } from "../package.json";
 
 console.log(
-  "%c__________________ ________\n" +
+  "%c\n__________________ ________\n" +
     "__  ___/  _ \\  __ `/_  ___/\n" +
     "_(__  )/  __/ /_/ /_(__  )\n" +
     "/____/ \\___/\\__,_/ /____/\n\n" +
-    `%c${MASCOT} seas-framework-view: v${version}\n\n`,
+    `%c${MASCOT} seas-framework-view: v${version}\n`,
   "color:#00E5E5;",
   "color:#7F7B63;",
 );
