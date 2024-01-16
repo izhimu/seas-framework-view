@@ -8,7 +8,9 @@ import {
   addPermit,
   addRequestInterceptor,
   addResponseRejectedInterceptor,
+  addDirective,
 } from "@izhimu/seas-core";
+import authDirective from "./directives/auth";
 import {
   securityHandler,
   securityHomeRouter,
@@ -33,4 +35,6 @@ addRequestInterceptor(securityRequestInterceptor());
 debug("loaded axios request interceptor");
 addResponseRejectedInterceptor(securityResponseRejectedInterceptor());
 debug("loaded axios response rejected interceptor");
+addDirective(authDirective());
+debug("loaded auth directive");
 end();

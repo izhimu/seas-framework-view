@@ -1,5 +1,6 @@
 import "./init";
 
+export * from "./directives/auth";
 export * from "./router";
 export * from "./store";
 export * from "./request";

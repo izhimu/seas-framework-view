@@ -32,6 +32,6 @@ export {
   type RouterConfig,
 } from "./router";
 export * from "./store";
-export { createApp, type AppConfig } from "./main.ts";
+export * from "./main.ts";
 export { SearchIcon } from "./hooks/useIcon.ts";
 export * from "./utils/log";

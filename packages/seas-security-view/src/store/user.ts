@@ -1,5 +1,6 @@
 import { reactive } from "vue";
 import { defineStore } from "pinia";
+import { useCommonStore } from "@izhimu/seas-core";
 import {
   type LockUser,
   type LoginUser,
@@ -21,6 +22,7 @@ const useUserStore = defineStore("security.user", () => {
   const logout = () => {
     Object.assign(current, dLoginUser());
     Object.assign(locked, dLockUser());
+    useCommonStore().resetAuth();
   };
   const isLogin = () => current.account !== "";
   return { current, locked, login, lock, logout, isLogin };

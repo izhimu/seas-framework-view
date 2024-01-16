@@ -5,7 +5,8 @@ import {
   type Component,
   type Plugin,
 } from "vue";
-import { createPinia, useCommonStore } from "./store";
+import { Directive } from "vue";
+import { createPinia } from "./store";
 import { createRequest } from "./request";
 import { createRouter } from "./router";
 import SeasApp from "./App.vue";
@@ -22,10 +23,19 @@ console.log(
   "color:#7F7B63;",
 );
 
+export type DirectiveFunction = { name: string; directive: Directive };
+
+export const directives: Array<DirectiveFunction> = [];
+
+export const addDirective = (directive: DirectiveFunction): void => {
+  directives.push(directive);
+};
+
 export interface AppConfig {
   root?: Component;
   mount?: string;
   plugins?: Array<Plugin>;
+  directives?: DirectiveFunction;
   authDirectiveName?: string;
   autoRegisterPlugin?: boolean;
 }
@@ -50,13 +60,13 @@ export const createApp = (appConfig?: AppConfig): App => {
   app.mount(appConfig?.mount ?? "#app");
   debug("mounted");
   // 权限指令
-  const commonStore = useCommonStore();
-  app.directive(appConfig?.authDirectiveName ?? "auth", (el, binding) => {
-    if (commonStore.auth.indexOf(binding.value) === -1) {
-      el.remove();
-    }
+  if (appConfig?.directives) {
+    directives.push(appConfig.directives);
+  }
+  directives.forEach((directive) => {
+    app.directive(directive.name, directive.directive);
   });
-  debug("loaded auth directive");
+  debug("loaded directives");
   end();
   return app;
 };

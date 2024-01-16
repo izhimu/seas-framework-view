@@ -48,7 +48,7 @@ export const securityHandler =
     if (
       permits.indexOf(to.name) === -1 &&
       to.name &&
-      commonStore.auth.indexOf(to.name.toString()) === -1
+      commonStore.menu.indexOf(to.name.toString()) === -1
     ) {
       return "/403";
     }
