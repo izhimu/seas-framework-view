@@ -23,12 +23,14 @@ import sql from "highlight.js/lib/languages/sql";
 import rust from "highlight.js/lib/languages/rust";
 import { useThemeStore } from "./store";
 
-const coreStore = useThemeStore();
+const themeStore = useThemeStore();
 
 /**
  * 主题配置
  */
-const bodyColor = computed(() => (coreStore.theme ? "#101014FF" : "#F8F8F8"));
+const bodyColor = computed(() =>
+  themeStore.isDark() ? "#101014FF" : "#F8F8F8",
+);
 const themeOverrides: GlobalThemeOverrides = reactive({
   common: {
     primaryColor: "#448cfe",
@@ -55,7 +57,7 @@ hljs.registerLanguage("rust", rust);
   <n-config-provider
     :locale="zhCN"
     :date-locale="dateZhCN"
-    :theme="coreStore.theme"
+    :theme="themeStore.theme"
     :theme-overrides="themeOverrides"
     :hljs="hljs"
   >

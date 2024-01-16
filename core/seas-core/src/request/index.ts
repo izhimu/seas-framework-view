@@ -1,5 +1,7 @@
+import { createDiscreteApi } from "naive-ui";
 import axios, { type AxiosInstance, type AxiosResponse } from "axios";
 import { type ExtendAxiosRequestConfig } from "../entity";
+import { useThemeStore } from "../store";
 
 let instance: AxiosInstance;
 
@@ -48,6 +50,11 @@ export const addResponseRejectedInterceptor = (
 };
 
 export const createRequest = (requestConfig?: RequestConfig) => {
+  const { message, notification, loadingBar } = createDiscreteApi([
+    "message",
+    "notification",
+    "loadingBar",
+  ]);
   instance = axios.create({
     baseURL: requestConfig?.path ?? apiPath,
     timeout: requestConfig?.timeout ?? 60000,
@@ -59,7 +66,7 @@ export const createRequest = (requestConfig?: RequestConfig) => {
   instance.interceptors.request.use((config: ExtendAxiosRequestConfig) => {
     // 加载条
     if (!config.disableBar) {
-      window.$loadingBar?.start();
+      loadingBar.start();
     }
     // 自定义拦截器
     let newConfig = config;
@@ -91,10 +98,10 @@ export const createRequest = (requestConfig?: RequestConfig) => {
       const { data } = response;
       // 加载条
       if (data.code !== "000" && data.tips) {
-        window.$message.warning(data.tips);
-        window.$loadingBar?.error();
+        message.warning(data.tips);
+        loadingBar.error();
       }
-      window.$loadingBar?.finish();
+      loadingBar.finish();
       return data;
     },
     (error) => {
@@ -109,10 +116,10 @@ export const createRequest = (requestConfig?: RequestConfig) => {
         }
       }
       // 加载条
-      window.$loadingBar?.error();
+      loadingBar.error();
       const { response } = error;
       if (!response) {
-        window.$notification.error({
+        notification.error({
           content: "错误",
           meta: "网络连接异常，请检查网络！",
         });

@@ -16,7 +16,6 @@ import {
   useNotification,
   useMessage,
   useOsTheme,
-  useLoadingBar,
 } from "naive-ui";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { sm2 } from "sm-crypto";
@@ -27,13 +26,6 @@ import { system, webview } from "../assets/js/osInfo";
 import { encrypt, login } from "../request/security";
 import { dEncryptKey, dLogin, dLoginUser } from "../entity/security";
 import VerifyBox from "../components/VerifyBox.vue";
-
-/**
- * 挂载全局对象
- */
-window.$message = useMessage();
-window.$notification = useNotification();
-window.$loadingBar = useLoadingBar();
 
 const router = useRouter();
 const message = useMessage();
@@ -124,7 +116,7 @@ const loginHandler = async () => {
  */
 const osTheme = useOsTheme();
 const autoTheme = () => {
-  if (osTheme.value === "dark" && !themeStore.theme) {
+  if (osTheme.value === "dark" && !themeStore.isDark()) {
     const n = notification.create({
       title: "深色模式",
       content: "当前系统为深色模式，是否将页面切换为深色模式",
@@ -165,7 +157,7 @@ onMounted(() => {
   <div>
     <div class="inner-header">
       <n-layout-content
-        :class="themeStore.theme ? 'login-page-dark' : 'login-page'"
+        :class="themeStore.isDark() ? 'login-page-dark' : 'login-page'"
       >
         <div class="login-grid">
           <div class="login-head">
@@ -242,7 +234,7 @@ onMounted(() => {
             x="48"
             y="0"
             :fill="
-              themeStore.theme ? 'rgba(9,4,38,0.7)' : 'rgba(255,255,255,0.7)'
+              themeStore.isDark() ? 'rgba(9,4,38,0.7)' : 'rgba(255,255,255,0.7)'
             "
           />
           <use
@@ -250,7 +242,7 @@ onMounted(() => {
             x="48"
             y="3"
             :fill="
-              themeStore.theme ? 'rgba(9,4,38,0.5)' : 'rgba(255,255,255,0.5)'
+              themeStore.isDark() ? 'rgba(9,4,38,0.5)' : 'rgba(255,255,255,0.5)'
             "
           />
           <use
@@ -258,14 +250,14 @@ onMounted(() => {
             x="48"
             y="5"
             :fill="
-              themeStore.theme ? 'rgba(9,4,38,0.3)' : 'rgba(255,255,255,0.3)'
+              themeStore.isDark() ? 'rgba(9,4,38,0.3)' : 'rgba(255,255,255,0.3)'
             "
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="7"
-            :fill="themeStore.theme ? 'rgb(9,4,38)' : 'rgb(255,255,255)'"
+            :fill="themeStore.isDark() ? 'rgb(9,4,38)' : 'rgb(255,255,255)'"
           />
         </g>
       </svg>

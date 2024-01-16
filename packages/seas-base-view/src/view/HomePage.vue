@@ -18,8 +18,6 @@ import {
   NScrollbar,
   useMessage,
   useDialog,
-  useNotification,
-  useLoadingBar,
 } from "naive-ui";
 import {
   PersonCircle,
@@ -43,13 +41,6 @@ import UserInfo from "./UserInfo.vue";
 import ChangePasswordForm from "./ChangePasswordForm.vue";
 import { useMenu } from "../hooks";
 
-/**
- * 挂载全局对象
- */
-window.$message = useMessage();
-window.$notification = useNotification();
-window.$loadingBar = useLoadingBar();
-
 const userStore = useUserStore();
 const themeStore = useThemeStore();
 const commonStore = useCommonStore();
@@ -67,9 +58,9 @@ const handleMenuClick = (key: string) => {
 /**
  * 切换主题
  */
-const themeIcon = shallowRef(themeStore.theme ? Moon : Sunny);
+const themeIcon = shallowRef(themeStore.isDark() ? Moon : Sunny);
 const handleThemeClick = () => {
-  themeIcon.value = themeStore.theme ? Sunny : Moon;
+  themeIcon.value = themeStore.isDark() ? Sunny : Moon;
   themeStore.toggle();
 };
 

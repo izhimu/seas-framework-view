@@ -13,7 +13,6 @@ import {
   NCard,
   NIcon,
   NTime,
-  useMessage,
 } from "naive-ui";
 import { sm2 } from "sm-crypto";
 import { ChevronForward as ArrowIcon } from "@vicons/ionicons5";
@@ -23,11 +22,6 @@ import { system, webview } from "../assets/js/osInfo";
 import { encrypt, login } from "../request/security";
 import { dEncryptKey, dLogin, dLoginUser } from "../entity/security";
 import VerifyBox from "../components/VerifyBox.vue";
-
-/**
- * 挂载全局对象
- */
-window.$message = useMessage();
 
 const userStore = useUserStore();
 const commonStore = useCommonStore();
@@ -121,7 +115,7 @@ const onSuccess = (v: { key: string; verify: string }) => {
   <div>
     <div class="inner-header">
       <n-layout-content
-        :class="themeStore.theme ? 'lock-page-dark' : 'lock-page'"
+        :class="themeStore.isDark() ? 'lock-page-dark' : 'lock-page'"
       >
         <div class="lock-grid">
           <div class="lock-head">
@@ -193,7 +187,7 @@ const onSuccess = (v: { key: string; verify: string }) => {
             x="48"
             y="0"
             :fill="
-              themeStore.theme ? 'rgba(9,4,38,0.7)' : 'rgba(255,255,255,0.7)'
+              themeStore.isDark() ? 'rgba(9,4,38,0.7)' : 'rgba(255,255,255,0.7)'
             "
           />
           <use
@@ -201,7 +195,7 @@ const onSuccess = (v: { key: string; verify: string }) => {
             x="48"
             y="3"
             :fill="
-              themeStore.theme ? 'rgba(9,4,38,0.5)' : 'rgba(255,255,255,0.5)'
+              themeStore.isDark() ? 'rgba(9,4,38,0.5)' : 'rgba(255,255,255,0.5)'
             "
           />
           <use
@@ -209,14 +203,14 @@ const onSuccess = (v: { key: string; verify: string }) => {
             x="48"
             y="5"
             :fill="
-              themeStore.theme ? 'rgba(9,4,38,0.3)' : 'rgba(255,255,255,0.3)'
+              themeStore.isDark() ? 'rgba(9,4,38,0.3)' : 'rgba(255,255,255,0.3)'
             "
           />
           <use
             xlink:href="#gentle-wave"
             x="48"
             y="7"
-            :fill="themeStore.theme ? 'rgb(9,4,38)' : 'rgb(255,255,255)'"
+            :fill="themeStore.isDark() ? 'rgb(9,4,38)' : 'rgb(255,255,255)'"
           />
         </g>
       </svg>

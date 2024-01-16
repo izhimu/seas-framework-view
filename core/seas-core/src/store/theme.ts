@@ -1,19 +1,25 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import { type GlobalTheme, darkTheme } from "naive-ui";
+import { lightTheme, darkTheme } from "naive-ui";
 
 const useThemeStore = defineStore("core.theme", () => {
-  const theme = ref<GlobalTheme | null>(null);
+  const themeRef = ref<"light" | "dark">("light");
+  const theme = computed(() =>
+    themeRef.value === "light" ? lightTheme : darkTheme,
+  );
   const dark = () => {
-    theme.value = darkTheme;
+    themeRef.value = "dark";
   };
   const light = () => {
-    theme.value = null;
+    themeRef.value = "light";
+  };
+  const isDark = () => {
+    return themeRef.value === "dark";
   };
   const toggle = () => {
-    theme.value = theme.value ? null : darkTheme;
+    themeRef.value = isDark() ? "light" : "dark";
   };
-  return { theme, light, dark, toggle };
+  return { themeRef, theme, light, dark, isDark, toggle };
 });
 
 export default useThemeStore;

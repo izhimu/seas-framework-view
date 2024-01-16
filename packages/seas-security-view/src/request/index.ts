@@ -3,6 +3,7 @@ import {
   addRequestInterceptor,
   addResponseRejectedInterceptor,
 } from "@izhimu/seas-core";
+import { createDiscreteApi } from "naive-ui";
 import { useUserStore } from "../store";
 
 export const securityRequestInterceptor = () => (config) => {
@@ -15,6 +16,7 @@ export const securityRequestInterceptor = () => (config) => {
 };
 
 export const securityResponseRejectedInterceptor = () => (error) => {
+  const { message } = createDiscreteApi(["message"]);
   const { response } = error;
   if (response.data) {
     const { data } = response;
@@ -23,7 +25,7 @@ export const securityResponseRejectedInterceptor = () => (error) => {
         event.emit("toLogin");
       }
     }
-    window.$message.error(data.tips);
+    message.error(data.tips);
     return Promise.reject(data);
   }
   return true;
