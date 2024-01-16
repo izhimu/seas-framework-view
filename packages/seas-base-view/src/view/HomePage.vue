@@ -36,7 +36,7 @@ import {
   useCommonStore,
 } from "@izhimu/seas-core";
 import { useUserStore } from "@izhimu/seas-security-view";
-import { useBaseConfigStore } from "../store";
+import { useConfigStore, useMenuStore } from "../store";
 import UserInfo from "./UserInfo.vue";
 import ChangePasswordForm from "./ChangePasswordForm.vue";
 import { useMenu } from "../hooks";
@@ -44,12 +44,13 @@ import { useMenu } from "../hooks";
 const userStore = useUserStore();
 const themeStore = useThemeStore();
 const commonStore = useCommonStore();
-const baseConfigStore = useBaseConfigStore();
+const configStore = useConfigStore();
+const menuStore = useMenuStore();
 const router = useRouter();
 const dialog = useDialog();
 const message = useMessage();
 const { renderIcon } = useIcon();
-const { menuActiveKey, menuCollapsed, menuOptions, loadMenuData } = useMenu();
+const { menuCollapsed, menuOptions, loadMenuData } = useMenu();
 
 const handleMenuClick = (key: string) => {
   router.push({ name: key });
@@ -152,7 +153,7 @@ const handleUnlock = () => {
  * 事件监听
  */
 event.on("routerChange", (data) => {
-  menuActiveKey.value = data;
+  menuStore.active = data;
 });
 event.on("toLogin", () => {
   userStore.logout();
@@ -171,20 +172,20 @@ onMounted(() => {
         <n-el class="home-header n-card n-card--bordered">
           <n-el
             class="home-logo"
-            :style="baseConfigStore.logo.titleStyle"
+            :style="configStore.logo.titleStyle"
             @click="router.push('/index')"
           >
             <n-image
-              v-if="baseConfigStore.logo.icon"
+              v-if="configStore.logo.icon"
               preview-disabled
-              :src="baseConfigStore.logo.iconSrc"
-              :height="baseConfigStore.logo.iconSize"
-              :style="baseConfigStore.logo.iconStyle"
+              :src="configStore.logo.iconSrc"
+              :height="configStore.logo.iconSize"
+              :style="configStore.logo.iconStyle"
             />
             <n-el class="home-logo-text"
               >{{
-                baseConfigStore.logo.title
-                  ? baseConfigStore.logo.title
+                configStore.logo.title
+                  ? configStore.logo.title
                   : commonStore.name
               }}
             </n-el>
@@ -216,7 +217,7 @@ onMounted(() => {
           @expand="menuCollapsed = false"
         >
           <n-menu
-            v-model:value="menuActiveKey"
+            v-model:value="menuStore.active"
             :collapsed="menuCollapsed"
             :collapsed-width="64"
             :collapsed-icon-size="22"

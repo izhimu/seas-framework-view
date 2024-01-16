@@ -27,7 +27,7 @@ export const dHomeConfig = (): HomeConfig => ({
   menuCollapsed: false,
 });
 
-export const useBaseConfigStore = defineStore("base.config", () => {
+export const useConfigStore = defineStore("base.config", () => {
   const logo = reactive<LogoConfig>(dLogoConfig());
   const home = reactive<HomeConfig>(dHomeConfig());
   return { logo, home };
