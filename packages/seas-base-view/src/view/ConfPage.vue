@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
 import { NCard, NInput, NButton, NDataTable, NSpace, NIcon } from "naive-ui";
-import { SearchSharp as SearchIcon } from "@vicons/ionicons5";
-import { usePage, useTableButton } from "@izhimu/seas-core/src";
+import { usePage, useTableButton, SearchIcon } from "@izhimu/seas-core";
 import { dConf as defEntity } from "../entity/conf";
 import { page, del } from "../request/conf";
 import DataForm from "./ConfForm.vue";

@@ -71,6 +71,18 @@ export const valData = [
     template: "className",
   },
   {
+    name: "文件名",
+    template: "fileName",
+  },
+  {
+    name: "路径名",
+    template: "pathName",
+  },
+  {
+    name: "键名",
+    template: "KeyName",
+  },
+  {
     name: "字段名",
     template: "fieldList[].fieldName",
   },
