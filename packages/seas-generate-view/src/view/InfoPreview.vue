@@ -6,6 +6,7 @@ import {
   NButton,
   NTabs,
   NTabPane,
+  NText,
   NCode,
   NCard,
   NScrollbar,
@@ -44,17 +45,16 @@ defineExpose({
   >
     <n-tabs
       v-model:value="fileTab"
-      type="card"
-      :animated="true"
+      type="line"
+      placement="left"
       tab-style="min-width: 80px;"
     >
-      <n-tab-pane
-        v-for="file in fileList"
-        :key="file.id"
-        :name="file.id"
-        :tab="file.assetsName"
-      >
-        <n-scrollbar style="height: calc(100vh - 240px)">
+      <n-tab-pane v-for="file in fileList" :key="file.id" :name="file.id">
+        <template #tab>
+          <n-text depth="3">{{ file.outPath + "/" }}</n-text>
+          {{ file.assetsName }}
+        </template>
+        <n-scrollbar x-scrollable style="height: calc(100vh - 240px)">
           <n-card embedded :bordered="false">
             <n-code
               :code="file.assetsDataStr ?? ''"
