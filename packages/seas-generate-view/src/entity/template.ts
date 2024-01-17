@@ -80,7 +80,7 @@ export const valData = [
   },
   {
     name: "键名",
-    template: "KeyName",
+    template: "keyName",
   },
   {
     name: "字段名",
