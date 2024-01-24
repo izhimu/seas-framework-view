@@ -10,7 +10,7 @@ import { createPinia } from "./store";
 import { createRequest } from "./request";
 import { createRouter } from "./router";
 import SeasApp from "./App.vue";
-import { debug, group, end, MASCOT } from "./utils/log";
+import { debug, group, end } from "./utils/log";
 import { version } from "../package.json";
 
 console.log(
@@ -18,7 +18,7 @@ console.log(
     "__  ___/  _ \\  __ `/_  ___/\n" +
     "_(__  )/  __/ /_/ /_(__  )\n" +
     "/____/ \\___/\\__,_/ /____/\n\n" +
-    `%c${MASCOT} seas-framework-view: v${version}\n`,
+    `%c> seas-framework-view: v${version}\n`,
   "color:#00E5E5;",
   "color:#7F7B63;",
 );

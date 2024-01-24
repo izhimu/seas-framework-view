@@ -50,5 +50,3 @@ export const group = (msg: string) =>
     msgStyle,
   );
 export const end = () => console.groupEnd();
-
-export const MASCOT = "🐋";
