@@ -4,6 +4,7 @@ import "@izhimu/seas-generate-view";
 import "@izhimu/seas-healthy-view";
 import "@izhimu/seas-job-view";
 import "@izhimu/seas-security-view";
+import "@izhimu/seas-mqtt-view";
 
 // App
 createApp();

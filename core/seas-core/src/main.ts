@@ -8,7 +8,7 @@ import {
 } from "vue";
 import { createPinia } from "./store";
 import { createRequest } from "./request";
-import { createRouter } from "./router";
+import { createRouter, RouterConfig } from "./router";
 import SeasApp from "./App.vue";
 import { debug, group, end } from "./utils/log";
 import { version } from "../package.json";
@@ -38,6 +38,7 @@ export interface AppConfig {
   directives?: DirectiveFunction;
   authDirectiveName?: string;
   autoRegisterPlugin?: boolean;
+  router?: RouterConfig;
 }
 
 export const createApp = (appConfig?: AppConfig): App => {
@@ -53,7 +54,7 @@ export const createApp = (appConfig?: AppConfig): App => {
     debug("auto loaded axios");
     app.use(createPinia());
     debug("auto loaded pinia");
-    app.use(createRouter());
+    app.use(createRouter(appConfig?.router));
     debug("auto loaded router");
   }
   debug("loaded all plugins");

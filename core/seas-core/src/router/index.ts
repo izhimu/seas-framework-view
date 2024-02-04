@@ -25,7 +25,7 @@ export interface RouterConfig {
 const roots: RouteRecordRaw[] = [];
 const homes: RouteRecordRaw[] = [];
 const beforeEachFunctions: BeforeEachFunc[] = [];
-let homeComponent: Component = {};
+let homeComponent: Component = () => import("../view/DefHomePage.vue");
 
 export const permits: PermitNames = [];
 

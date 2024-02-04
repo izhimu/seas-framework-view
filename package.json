@@ -21,6 +21,7 @@
     "dev:job": "pnpm --parallel --filter @izhimu/seas-job-view run dev",
     "dev:security": "pnpm --parallel --filter @izhimu/seas-security-view run dev",
     "dev:storage": "pnpm --parallel --filter @izhimu/seas-storage-view run dev",
+    "dev:mqtt": "pnpm --parallel --filter @izhimu/seas-mqtt-view run dev",
     "publish": "pnpm -r --no-git-checks publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases/",
     "publish:open": "pnpm -r --no-git-checks publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases-open/"
   },

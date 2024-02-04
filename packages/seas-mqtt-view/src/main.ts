@@ -4,6 +4,6 @@ import "./init";
 // App
 createApp({
   router: {
-    redirect: "/generate/info",
+    redirect: "/mqtt/user",
   },
 });

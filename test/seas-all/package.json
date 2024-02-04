@@ -15,6 +15,7 @@
     "@izhimu/seas-job-view": "workspace:*",
     "@izhimu/seas-security-view": "workspace:*",
     "@izhimu/seas-storage-view": "workspace:*",
-    "@izhimu/seas-generate-view": "workspace:*"
+    "@izhimu/seas-generate-view": "workspace:*",
+    "@izhimu/seas-mqtt-view": "workspace:*"
   }
 }

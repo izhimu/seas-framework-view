@@ -1,7 +1,7 @@
 import { reactive, ref } from "vue";
 import { PaginationProps } from "naive-ui/lib/pagination";
 import { SortState } from "naive-ui/lib/data-table/src/interface";
-import { Page, Result } from "../entity/core.ts";
+import { Page, Result } from "../entity";
 import { Column, Columns } from "../types";
 
 interface QueryFun<T, S> {
