@@ -1,4 +1,2 @@
-import "./init";
-
-export * from "./router";
-export * from "./style";
+export { default as mqttRouter } from "./router";
+export { default as mqttLoadIcons } from "./style";

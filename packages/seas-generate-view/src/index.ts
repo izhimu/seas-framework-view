@@ -1,4 +1,2 @@
-import "./init";
-
-export * from "./router";
-export * from "./style";
+export { default as generateRouter } from "./router";
+export { default as generateLoadIcons } from "./style";

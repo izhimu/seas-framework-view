@@ -1,10 +1,9 @@
 import { debug, group, end, addHomeRoute } from "@izhimu/seas-core";
-import mqttRouter from "./router";
-import loadIcons from "./style";
+import { mqttRouter, mqttLoadIcons } from "./src";
 
 group("mqtt init");
 addHomeRoute(mqttRouter());
 debug("loaded route");
-loadIcons();
+mqttLoadIcons();
 debug("loaded icon");
 end();

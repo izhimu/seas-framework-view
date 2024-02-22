@@ -1,7 +1,5 @@
-import "./init";
-
-export * from "./router";
-export * from "./style";
+export { default as healthyRouter } from "./router";
+export { default as healthyLoadIcons } from "./style";
 export {
   type CpuInfo,
   type Disk,

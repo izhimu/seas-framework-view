@@ -1,5 +1,5 @@
-import { createApp } from "@izhimu/seas-core";
-import "./init";
+import { createSeasApp } from "@izhimu/seas-core";
+import "../init";
 
 // App
-createApp();
+createSeasApp();

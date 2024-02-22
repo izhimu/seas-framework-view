@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-job-view",
-  "version": "1.1.0",
+  "version": "1.1.25",
   "type": "module",
   "description": "Seas Framework View",
   "main": "src/index.ts",
@@ -8,13 +8,13 @@
     "name": "izhimu",
     "email": "1334642674@qq.com"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
+  "devDependencies": {
     "@izhimu/seas-core": "workspace:*"
   }
 }

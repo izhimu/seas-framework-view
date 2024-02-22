@@ -1,5 +1,3 @@
-import "./init";
-
 export { type Account, dAccount } from "./entity/account";
 export { type Conf, dConf } from "./entity/conf";
 export { type Dict, dDict } from "./entity/dict";
@@ -18,4 +16,4 @@ export {
 export { type User, type UserRole, dUser, dUserRole } from "./entity/user";
 export * from "./router";
 export * from "./store";
-export * from "./style";
+export { default as baseLoadIcons } from "./style";

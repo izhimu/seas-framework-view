@@ -8,7 +8,7 @@ export type {
 export { default as event } from "./event";
 export * from "./hooks";
 export {
-  createRequest,
+  createSeasRequest,
   api,
   path,
   addRequestInterceptor,
@@ -20,7 +20,7 @@ export {
   type RequestConfig,
 } from "./request";
 export {
-  createRouter,
+  createSeasRouter,
   addPermit,
   addRootRoute,
   addHomeRoute,
@@ -32,6 +32,6 @@ export {
   type RouterConfig,
 } from "./router";
 export * from "./store";
-export * from "./main.ts";
+export * from "./main";
 export { SearchIcon } from "./hooks/useIcon.ts";
 export * from "./utils/log";

@@ -1,10 +1,9 @@
 import { debug, group, end, addHomeRoute } from "@izhimu/seas-core";
-import healthyRouter from "./router";
-import loadIcons from "./style";
+import { healthyRouter, healthyLoadIcons } from "./src";
 
 group("healthy init");
 addHomeRoute(healthyRouter());
 debug("loaded route");
-loadIcons();
+healthyLoadIcons();
 debug("loaded icon");
 end();

@@ -1,4 +1,4 @@
-import { Result, api } from "@izhimu/seas-core/src";
+import { type Result, api } from "@izhimu/seas-core";
 import { EncryptKey, Login, LoginUser } from "../entity/security";
 
 const url = "/security";

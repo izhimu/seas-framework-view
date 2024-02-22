@@ -1,5 +1,5 @@
 import {
-  createRouter as create,
+  createRouter,
   createWebHistory,
   RouteLocationNormalized,
   Router,
@@ -49,8 +49,8 @@ export const setHomeComponent = (component: Component): void => {
   homeComponent = component;
 };
 
-export const createRouter = (routerConfig?: RouterConfig): Router => {
-  const router = create({
+export const createSeasRouter = (routerConfig?: RouterConfig): Router => {
+  const router = createRouter({
     history: createWebHistory(),
     routes: [
       ...roots,

@@ -10,17 +10,15 @@ import {
   addResponseRejectedInterceptor,
   addDirective,
 } from "@izhimu/seas-core";
-import authDirective from "./directives/auth";
 import {
+  securityPermit,
+  authDirective,
   securityHandler,
   securityHomeRouter,
-  securityPermit,
   securityRootRouter,
-} from "./router";
-import {
   securityRequestInterceptor,
   securityResponseRejectedInterceptor,
-} from "./request";
+} from "./src";
 
 group("security init");
 addRootRoute(securityRootRouter());

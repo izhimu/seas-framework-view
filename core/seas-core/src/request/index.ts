@@ -1,7 +1,6 @@
 import { createDiscreteApi } from "naive-ui";
 import axios, { type AxiosInstance, type AxiosResponse } from "axios";
 import { type ExtendAxiosRequestConfig } from "../entity";
-import { useThemeStore } from "../store";
 
 let instance: AxiosInstance;
 
@@ -15,7 +14,7 @@ export type ResponseFulfilledInterceptorFunc = (
 
 export type ResponseRejectedInterceptorFunc = (
   // eslint-disable-next-line
-  error: any,
+    error: any,
   // eslint-disable-next-line
 ) => Promise<any> | boolean;
 
@@ -49,7 +48,7 @@ export const addResponseRejectedInterceptor = (
   responseRejectedInterceptors.push(interceptor);
 };
 
-export const createRequest = (requestConfig?: RequestConfig) => {
+export const createSeasRequest = (requestConfig?: RequestConfig) => {
   const { message, notification, loadingBar } = createDiscreteApi([
     "message",
     "notification",

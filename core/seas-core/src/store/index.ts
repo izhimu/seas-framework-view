@@ -1,8 +1,8 @@
-import { createPinia as create, Pinia } from "pinia";
+import { createPinia, Pinia } from "pinia";
 import { createPersistedState } from "pinia-plugin-persistedstate";
 
-export const createPinia = (): Pinia => {
-  const pinia = create();
+export const createSeasPinia = (): Pinia => {
+  const pinia = createPinia();
   pinia.use(createPersistedState({ auto: true, storage: localStorage }));
   return pinia;
 };

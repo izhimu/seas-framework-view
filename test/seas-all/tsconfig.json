@@ -25,10 +25,10 @@
     "allowJs": true
   },
   "include": [
-    "seas-all-test/src/**/*.ts",
-    "seas-all-test/src/**/*.d.ts",
-    "seas-all-test/src/**/*.tsx",
-    "seas-all-test/src/**/*.vue"
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
   ],
   "references": [{ "path": "./tsconfig.node.json"}]
 }

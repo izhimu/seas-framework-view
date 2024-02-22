@@ -1,10 +1,9 @@
 import { debug, group, end, addHomeRoute } from "@izhimu/seas-core";
-import generateRouter from "./router";
-import loadIcons from "./style";
+import { generateRouter, generateLoadIcons } from "./src";
 
 group("generate init");
 addHomeRoute(generateRouter());
 debug("loaded route");
-loadIcons();
+generateLoadIcons();
 debug("loaded icon");
 end();

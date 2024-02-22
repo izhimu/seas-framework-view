@@ -6,16 +6,15 @@ import {
   addPermit,
   setHomeComponent,
 } from "@izhimu/seas-core";
-import { baseHomePage, baseRouter, basePermit } from "./router";
-import loadIcons from "./style";
+import { basePermit, baseHomePage, baseRouter, baseLoadIcons } from "./src";
 
 group("base init");
 addHomeRoute(baseRouter());
 debug("loaded route");
-setHomeComponent(baseHomePage());
+setHomeComponent(baseHomePage);
 debug("loaded home page");
 addPermit(basePermit);
 debug("loaded route permit");
-loadIcons();
+baseLoadIcons();
 debug("loaded icon");
 end();

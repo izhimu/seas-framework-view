@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-core",
-  "version": "1.1.0",
+  "version": "1.1.25",
   "type": "module",
   "description": "Seas Framework View",
   "main": "src/index.ts",
@@ -8,10 +8,25 @@
     "name": "izhimu",
     "email": "1334642674@qq.com"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.2.1",
+    "@vicons/ionicons5": "^0.12.0",
+    "axios": "^1.6.5",
+    "echarts": "^5.4.3",
+    "highlight.js": "^11.9.0",
+    "mitt": "^3.0.1",
+    "naive-ui": "^2.37.3",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
+    "qs": "^6.11.2",
+    "sm-crypto": "^0.3.13",
+    "vue": "^3.4.19",
+    "vue-router": "^4.2.5"
   }
 }
