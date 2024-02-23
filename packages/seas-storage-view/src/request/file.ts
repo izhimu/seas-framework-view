@@ -1,8 +1,19 @@
 import { AxiosProgressEvent } from "axios";
 import { Result, api, path } from "@izhimu/seas-core";
+import { useUserStore } from "@izhimu/seas-security-view";
 import { File } from "../entity/file.ts";
 
 const url = "/sto/file";
+
+const getToken = () => {
+  let token;
+  try {
+    const userStore = useUserStore();
+    token = userStore.current.token;
+    // eslint-disable-next-line no-empty
+  } catch (_) {}
+  return token;
+};
 
 export function getInfo(id: string): Promise<Result<File>> {
   return api().get(`${url}/info/${id}`);
@@ -46,21 +57,24 @@ export function upload(
   });
 }
 
-export function downloadUrl(id: string, token?: string): string {
+export function downloadUrl(id: string): string {
+  const token = getToken();
   if (token) {
     return `${path()}${url}/${id}?X-Auth-Token=${token}`;
   }
   return `${path()}${url}/${id}`;
 }
 
-export function downloadsUrl(bindId: string, token?: string): string {
+export function downloadsUrl(bindId: string): string {
+  const token = getToken();
   if (token) {
     return `${path()}${url}/bind/${bindId}?X-Auth-Token=${token}`;
   }
   return `${path()}${url}/bind/${bindId}`;
 }
 
-export function previewUrl(id: string, token?: string): string {
+export function previewUrl(id: string): string {
+  const token = getToken();
   if (token) {
     return `${path()}${url}/preview/pdf/${id}?X-Auth-Token=${token}`;
   }

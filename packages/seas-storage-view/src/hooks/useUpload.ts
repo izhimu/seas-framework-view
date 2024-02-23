@@ -1,13 +1,9 @@
 import { ref } from "vue";
 import { UploadCustomRequestOptions, UploadFileInfo } from "naive-ui";
 import { upload, getInfos, del, downloadUrl } from "../request/file.ts";
-import { File, File as FileInfo } from "../entity/file.ts";
+import { File as FileInfo } from "../entity/file.ts";
 
-const toFileList = (
-  file: FileInfo,
-  fileList: UploadFileInfo[],
-  token?: string,
-) => {
+const toFileList = (file: FileInfo, fileList: UploadFileInfo[]) => {
   const fileObj: UploadFileInfo = {
     id: file.id,
     name: `${file.fileName}.${file.fileSuffix}`,
@@ -15,16 +11,16 @@ const toFileList = (
     status: "finished",
   };
   if (file.fileUrl) {
-    fileObj.url = downloadUrl(file.id, token);
+    fileObj.url = downloadUrl(file.id);
   }
   fileList.push(fileObj);
 };
 
-export default function useUpload(token?: string) {
+export default function useUpload() {
   const bindId = ref();
   const fileList = ref<UploadFileInfo[]>([]);
-  let finishFun: (files: Array<File>) => void;
-  const onFinish = (fun: (files: Array<File>) => void) => {
+  let finishFun: (files: Array<FileInfo>) => void;
+  const onFinish = (fun: (files: Array<FileInfo>) => void) => {
     finishFun = fun;
   };
   let removeFun: (id: string) => void;
@@ -34,6 +30,7 @@ export default function useUpload(token?: string) {
 
   const fileUpload = ({
     file,
+    // eslint-disable-next-line no-shadow
     onFinish,
     onError,
     onProgress,
@@ -49,16 +46,16 @@ export default function useUpload(token?: string) {
       .then((res) => {
         if (res.code === "000") {
           fileList.value.pop();
-          res.data?.forEach((item) => toFileList(item, fileList.value, token));
+          res.data?.forEach((item) => toFileList(item, fileList.value));
           if (finishFun) {
-            finishFun(res.data);
+            finishFun(res.data ?? []);
           }
           onFinish();
         } else {
           onError();
         }
       })
-      .catch((e) => {
+      .catch(() => {
         onError();
       });
   };
@@ -66,7 +63,7 @@ export default function useUpload(token?: string) {
   const fileLoad = () => {
     fileList.value = [];
     getInfos(bindId.value).then((res) => {
-      res.data?.forEach((item) => toFileList(item, fileList.value, token));
+      res.data?.forEach((item) => toFileList(item, fileList.value));
     });
   };
 
