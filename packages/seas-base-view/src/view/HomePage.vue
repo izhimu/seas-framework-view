@@ -163,7 +163,13 @@ event.on("toLogin", () => {
 onMounted(() => {
   loadMenuData();
   // 加载历史路由
-  if (commonStore.currentRoute !== "") {
+  if (
+    commonStore.currentRoute !== "" &&
+    router
+      .getRoutes()
+      .flatMap((v) => v.name)
+      .indexOf(commonStore.currentRoute) >= 0
+  ) {
     router.push({ name: commonStore.currentRoute });
   }
 });

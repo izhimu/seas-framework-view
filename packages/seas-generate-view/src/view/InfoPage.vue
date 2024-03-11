@@ -19,8 +19,8 @@ import {
 } from "naive-ui";
 import { BrowsersOutline } from "@vicons/ionicons5";
 import { onMounted, reactive, ref, h, VNode } from "vue";
-import { useTableButton } from "@izhimu/seas-core/src";
-import { Columns } from "@izhimu/seas-core/src/types";
+import { useTableButton } from "@izhimu/seas-core";
+import { type Columns } from "@izhimu/seas-core/src/types";
 import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 import { useDownload } from "@izhimu/seas-storage-view/src";
 import { get, create, preview } from "../request/info";
