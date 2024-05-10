@@ -12,7 +12,7 @@ export default defineConfig({
     port: 30000,
     proxy: {
       "/api": {
-        target: "http://localhost:8080/",
+        target: "http://192.168.31.226:90/api",
         changeOrigin: true,
         secure: false,
         // eslint-disable-next-line no-shadow

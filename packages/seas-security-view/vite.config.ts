@@ -2,18 +2,17 @@
 import { defineConfig } from "vite";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import vue from "@vitejs/plugin-vue";
-import dts from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), dts()],
+  plugins: [vue()],
   server: {
     open: true,
     host: "0.0.0.0",
     port: 30000,
     proxy: {
       "/api": {
-        target: "http://localhost:8080/",
+        target: "http://192.168.31.221:18080/api/",
         changeOrigin: true,
         secure: false,
         // eslint-disable-next-line no-shadow

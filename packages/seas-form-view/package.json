@@ -1,0 +1,34 @@
+{
+  "name": "@izhimu/seas-form-view",
+  "version": "1.1.25",
+  "type": "module",
+  "description": "Seas Framework View",
+  "main": "src/index.ts",
+  "author": {
+    "name": "izhimu",
+    "email": "1334642674@qq.com"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ace-builds": "^1.4.12",
+    "lodash": "^4.17.21",
+    "uuid": "^8.3.2",
+    "vue3-i18n-plugin": "^1.0.9",
+    "vuedraggable": "^4.0.1",
+    "vuex": "^4.0.2",
+    "wangeditor": "^4.7.15"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.182",
+    "@types/uuid": "^8.3.4",
+    "@vue/compiler-sfc": "^3.2.37",
+    "fast-glob": "^3.2.11",
+    "less": "^4.1.2",
+    "less-loader": "^9.1.0"
+  }
+}

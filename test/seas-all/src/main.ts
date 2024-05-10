@@ -1,4 +1,5 @@
-import { createSeasApp } from "@izhimu/seas-core";
+import { createSeasApp, useCommonStore } from "@izhimu/seas-core";
+import { useConfigStore } from "@izhimu/seas-base-view";
 import "@izhimu/seas-base-view/init";
 import "@izhimu/seas-generate-view/init";
 import "@izhimu/seas-healthy-view/init";
@@ -8,3 +9,8 @@ import "@izhimu/seas-mqtt-view/init";
 
 // App
 createSeasApp();
+
+const commonStore = useCommonStore();
+const configStore = useConfigStore();
+commonStore.name = "Seas 开发框架";
+configStore.logo.icon = true;
