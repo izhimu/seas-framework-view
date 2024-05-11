@@ -19,11 +19,6 @@ export const securityRootRouter = (): RouteRecordRaw[] => [
     name: "login",
     component: () => import("../view/LoginPage.vue"),
   },
-  {
-    path: "/verify",
-    name: "verify",
-    component: () => import("../view/VerifyPage.vue"),
-  },
 ];
 
 export const securityHomeRouter = (): RouteRecordRaw[] => [
@@ -34,18 +29,18 @@ export const securityHomeRouter = (): RouteRecordRaw[] => [
   },
 ];
 
-export const securityPermit = ["login", "verify", "403"];
+export const securityPermit = ["login", "403"];
 
 export const securityHandler =
   (allPermit?: Array<RouteRecordName | null | undefined>) =>
   (to: RouteLocationNormalized) => {
-    if (permits.indexOf(to.name) >= 0) {
-      return true;
-    }
     const userStore = useUserStore();
     const commonStore = useCommonStore();
     if (to.name === "login" && userStore.isLogin()) {
       return "/";
+    }
+    if (permits.indexOf(to.name) >= 0) {
+      return true;
     }
     if (to.name !== "login" && !userStore.isLogin()) {
       return "/login";

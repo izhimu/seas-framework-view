@@ -7,10 +7,6 @@
     "email": "1334642674@qq.com"
   },
   "license": "Apache-2.0",
-  "workspaces": [
-    "core/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "pnpm -r run build",
     "dev": "pnpm --parallel --filter @izhimu/seas-all run dev",
@@ -21,6 +17,7 @@
     "dev:security": "pnpm --parallel --filter @izhimu/seas-security-view run dev",
     "dev:storage": "pnpm --parallel --filter @izhimu/seas-storage-view run dev",
     "dev:mqtt": "pnpm --parallel --filter @izhimu/seas-mqtt-view run dev",
+    "dev:mobile-security": "pnpm --parallel --filter @izhimu/seas-security-mobile-view run dev",
     "publish": "pnpm -r --no-git-checks publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases/",
     "publish:open": "pnpm -r --no-git-checks publish --registry=https://izhimu-npm.pkg.coding.net/seas/npm-releases-open/"
   },
@@ -36,6 +33,7 @@
     "pinia-plugin-persistedstate": "^3.2.1",
     "qs": "^6.11.2",
     "sm-crypto": "^0.3.13",
+    "vant": "^4.9.0",
     "vue": "^3.4.19",
     "vue-router": "^4.2.5"
   },
