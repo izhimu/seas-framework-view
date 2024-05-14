@@ -75,10 +75,15 @@ const refreshCaptcha = () => {
   loadCaptcha();
 };
 
+let compensate = 0;
+
 function start(e: TouchEvent | MouseEvent) {
   moveTime.start = +new Date();
   const x = e instanceof MouseEvent ? e.clientX : e.touches[0].pageX;
-  startLeft.value = Math.floor(x - barArea.value.getBoundingClientRect().left);
+  const barAreaLeft = barArea.value.getBoundingClientRect().left;
+  const moveLeft = x - barAreaLeft;
+  compensate = 23.5 - moveLeft;
+  startLeft.value = Math.floor(moveLeft);
   moveTime.start = +new Date(); // 开始滑动的时间
   if (isEnd.value === false) {
     [[moveStyle.blockBg], [moveStyle.barBg]] = colors;
@@ -93,15 +98,15 @@ function move(e: TouchEvent | MouseEvent) {
     const x = e instanceof MouseEvent ? e.clientX : e.touches[0].pageX;
     const barAreaLeft = barArea.value.getBoundingClientRect().left;
     let moveLeft = x - barAreaLeft; // 小方块相对于父元素的left值
-    if (moveLeft >= barArea.value.offsetWidth - 23) {
-      moveLeft = barArea.value.offsetWidth - 23;
+    if (moveLeft >= barArea.value.offsetWidth - compensate - 23.5) {
+      moveLeft = barArea.value.offsetWidth - compensate - 23.5;
     }
-    if (moveLeft <= 0) {
-      moveLeft = 25;
+    if (moveLeft <= -compensate + 23.5) {
+      moveLeft = -compensate + 23.5;
     }
     // 拖动后小方块的left值
     moveStyle.blockLeft = moveLeft - startLeft.value;
-    moveStyle.barWidth = moveLeft - startLeft.value + 20;
+    moveStyle.barWidth = moveLeft - startLeft.value + 23.5;
   }
 }
 
