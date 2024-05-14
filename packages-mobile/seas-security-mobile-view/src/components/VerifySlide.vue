@@ -7,7 +7,6 @@ import { Captcha, dCaptcha } from "../entity/captcha";
 
 const { clientWidth } = document.documentElement;
 const scale = clientWidth / 310;
-console.log(scale);
 
 const colors = [
   ["#448cfe", "#5cb85c", "#d9534f"],
@@ -64,10 +63,15 @@ const refreshCaptcha = () => {
   loadCaptcha();
 };
 
+let compensate = 0;
+
 function start(e: TouchEvent | MouseEvent) {
   moveTime.start = +new Date();
   const x = e instanceof MouseEvent ? e.clientX : e.touches[0].pageX;
-  startLeft.value = Math.floor(x - barArea.value.getBoundingClientRect().left);
+  const barAreaLeft = barArea.value.getBoundingClientRect().left;
+  const moveLeft = x - barAreaLeft;
+  compensate = 23.5 * scale - moveLeft;
+  startLeft.value = Math.floor(moveLeft);
   moveTime.start = +new Date(); // 开始滑动的时间
   if (isEnd.value === false) {
     [[moveStyle.blockBg], [moveStyle.barBg]] = colors;
@@ -82,15 +86,15 @@ function move(e: TouchEvent | MouseEvent) {
     const x = e instanceof MouseEvent ? e.clientX : e.touches[0].pageX;
     const barAreaLeft = barArea.value.getBoundingClientRect().left;
     let moveLeft = x - barAreaLeft; // 小方块相对于父元素的left值
-    if (moveLeft >= barArea.value.offsetWidth - 23 * scale) {
-      moveLeft = barArea.value.offsetWidth - 23 * scale;
+    if (moveLeft >= barArea.value.offsetWidth - compensate - 23.5 * scale) {
+      moveLeft = barArea.value.offsetWidth - compensate - 23.5 * scale;
     }
-    if (moveLeft <= 23 * scale) {
-      moveLeft = 23 * scale;
+    if (moveLeft <= -compensate + 23.5 * scale) {
+      moveLeft = -compensate + 23.5 * scale;
     }
     // 拖动后小方块的left值
     moveStyle.blockLeft = moveLeft - startLeft.value;
-    moveStyle.barWidth = moveLeft - startLeft.value + 23 * scale;
+    moveStyle.barWidth = moveLeft - startLeft.value + 23.5 * scale;
   }
 }
 
@@ -121,25 +125,20 @@ function end() {
           y: 5.0,
         })}`;
         const captchaVerification = sm2.doEncrypt(content, captcha.secretKey);
-        setTimeout(() => {
-          window.kmpJsBridge.callNative(
-            "verifyCode",
-            JSON.stringify({
-              key: captcha.token,
-              verify: `04${captchaVerification}`,
-            }),
-          );
-        }, 1000);
+        emits("onSuccess", {
+          key: captcha.token,
+          verify: `04${captchaVerification}`,
+        });
       } else {
         [[, , moveStyle.blockBg], [, , moveStyle.barBg]] = colors;
         setTimeout(() => {
           refreshCaptcha();
         }, 1000);
-        emits("onError");
         showNotify({
           type: "danger",
           message: "验证失败",
         });
+        emits("onError");
       }
     });
     status.value = false;
@@ -180,8 +179,11 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="verify-img-out" :style="{ marginBottom: `${scale * 10}px` }">
-    <div class="verify-img-panel">
+  <div class="verify-img-out" :style="{ marginBottom: `${scale * 14}px` }">
+    <div
+      class="verify-img-panel"
+      :style="{ width: `${310 * scale}px`, height: `${155 * scale}px` }"
+    >
       <van-image
         v-show="!loading"
         :src="`data:image/png;base64,${captcha.originalImage}`"
@@ -231,7 +233,7 @@ onMounted(() => {
         @mousedown="start"
       >
         <van-icon :size="22" name="arrow" color="#ffffff" />
-        <div class="verify-sub-block" :style="{ top: `-${170 * scale}px` }">
+        <div class="verify-sub-block" :style="{ top: `-${169 * scale}px` }">
           <van-image
             v-show="!loading"
             :src="`data:image/png;base64,${captcha.blockImage}`"
