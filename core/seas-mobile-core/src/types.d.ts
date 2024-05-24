@@ -15,10 +15,19 @@ import { LoadingBarApiInjection } from "naive-ui/lib/loading-bar/src/LoadingBarP
 export {};
 
 declare global {
+  type KMPJsBridge = {
+    callNative: (
+      methodName: string,
+      params?: string,
+      callback?: (data: string) => void,
+    ) => void;
+  };
   interface Window {
     $message: MessageApiInjection;
     $notification: NotificationApiInjection;
     $loadingBar: LoadingBarApiInjection;
+    kmpJsBridge: KMPJsBridge;
+    token: string;
   }
 }
 

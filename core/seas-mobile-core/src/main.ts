@@ -6,7 +6,7 @@ import {
   type Plugin,
   type Directive,
 } from "vue";
-import { createSeasPinia } from "./store";
+import { createSeasPinia, useCommonStore } from "./store";
 import { createSeasRequest } from "./request";
 import { createSeasRouter, RouterConfig } from "./router";
 import SeasApp from "./App.vue";

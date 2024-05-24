@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
-import { Icon as VanIcon, Image as VanImage, showNotify } from "vant";
+import {
+  Icon as VanIcon,
+  Image as VanImage,
+  Loading as VanLoading,
+  showNotify,
+} from "vant";
 import { sm2 } from "sm-crypto";
 import { get, check } from "../request/captcha";
 import { Captcha, dCaptcha } from "../entity/captcha";
@@ -43,10 +48,13 @@ const barArea = ref();
  */
 const loadCaptcha = () => {
   loading.value = true;
+  captcha.originalImage = undefined;
   get(captcha)
     .then((res) => {
       if (res.code === "000") {
         Object.assign(captcha, res.data);
+        captcha.originalImage = `data:image/png;base64,${captcha.originalImage}`;
+        captcha.blockImage = `data:image/png;base64,${captcha.blockImage}`;
       }
     })
     .finally(() => {
@@ -125,10 +133,12 @@ function end() {
           y: 5.0,
         })}`;
         const captchaVerification = sm2.doEncrypt(content, captcha.secretKey);
-        emits("onSuccess", {
-          key: captcha.token,
-          verify: `04${captchaVerification}`,
-        });
+        setTimeout(() => {
+          emits("onSuccess", {
+            key: captcha.token,
+            verify: `04${captchaVerification}`,
+          });
+        }, 300);
       } else {
         [[, , moveStyle.blockBg], [, , moveStyle.barBg]] = colors;
         setTimeout(() => {
@@ -185,11 +195,14 @@ onMounted(() => {
       :style="{ width: `${310 * scale}px`, height: `${155 * scale}px` }"
     >
       <van-image
-        v-show="!loading"
-        :src="`data:image/png;base64,${captcha.originalImage}`"
+        :src="captcha.originalImage"
         :width="`${310 * scale}px`"
         :height="`${155 * scale}px`"
-      />
+      >
+        <template #loading>
+          <van-loading color="#448cfe" />
+        </template>
+      </van-image>
       <div class="verify-refresh-panel">
         <van-icon
           class="verify-refresh"
@@ -236,7 +249,7 @@ onMounted(() => {
         <div class="verify-sub-block" :style="{ top: `-${169 * scale}px` }">
           <van-image
             v-show="!loading"
-            :src="`data:image/png;base64,${captcha.blockImage}`"
+            :src="captcha.blockImage"
             :width="scale * 47"
           />
         </div>

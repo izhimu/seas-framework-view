@@ -14,11 +14,11 @@ const onSuccess = (captchaVerification: string) => {
     async (data: string) => {
       const encryptData: EncryptData = JSON.parse(data);
       if (encryptData.login.password) {
-        encryptData.login.password = sm2.doEncrypt(
+        encryptData.login.password = `04${sm2.doEncrypt(
           encryptData.login.password,
           encryptData.publicKey,
-        );
-        jsBridge.callNative("sm2", JSON.stringify(encryptData.login));
+        )}`;
+        jsBridge.callNative("encrypt", JSON.stringify(encryptData.login));
       }
     },
   );
