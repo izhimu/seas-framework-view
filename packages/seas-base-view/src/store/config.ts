@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 export interface LogoConfig {
   icon: boolean;
   iconSrc: string;
-  iconSize: string;
+  iconSize: number;
   iconStyle: object;
   title: string;
   titleStyle: object;
@@ -17,10 +17,14 @@ export interface HomeConfig {
 export const dLogoConfig = (): LogoConfig => ({
   icon: true,
   iconSrc: "/img/logo.png",
-  iconSize: "32",
+  iconSize: 32,
   iconStyle: { margin: "16px" },
   title: "",
-  titleStyle: { width: "284px" },
+  titleStyle: {
+    textAlign: "center",
+    fontSize: "20px",
+    fontWeight: "bold",
+  },
 });
 
 export const dHomeConfig = (): HomeConfig => ({

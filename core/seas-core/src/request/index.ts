@@ -75,12 +75,12 @@ export const createSeasRequest = (requestConfig?: RequestConfig) => {
     });
     // 空参数处理
     if (config.params) {
-      config.params = Object.keys(config.params)
-        .filter(
-          (key) =>
-            config.params[key] !== null && config.params[key] !== undefined,
-        )
-        .reduce((acc, key) => ({ ...acc, [key]: config.params[key] }), {});
+      // eslint-disable-next-line no-use-before-define
+      config.params = emptyClear(config.params);
+    }
+    if (config.data) {
+      // eslint-disable-next-line no-use-before-define
+      config.data = emptyClear(config.data);
     }
     return newConfig;
   });
@@ -132,3 +132,9 @@ export const createSeasRequest = (requestConfig?: RequestConfig) => {
 export const api = (): AxiosInstance => instance;
 
 export const path = () => apiPath;
+
+const emptyClear = (obj: object): object => {
+  return Object.keys(obj)
+    .filter((key) => obj[key] !== null && obj[key] !== undefined)
+    .reduce((acc, key) => ({ ...acc, [key]: obj[key] }), {});
+};

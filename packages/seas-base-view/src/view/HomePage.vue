@@ -10,7 +10,6 @@ import {
   NIcon,
   NEl,
   NButton,
-  NImage,
   NSpace,
   NCard,
   NDropdown,
@@ -39,7 +38,7 @@ import { useUserStore } from "@izhimu/seas-security-view";
 import { useConfigStore, useMenuStore } from "../store";
 import UserInfo from "./UserInfo.vue";
 import ChangePasswordForm from "./ChangePasswordForm.vue";
-import { useMenu } from "../hooks";
+import { useLogo, useMenu } from "../hooks";
 
 const userStore = useUserStore();
 const themeStore = useThemeStore();
@@ -50,11 +49,9 @@ const router = useRouter();
 const dialog = useDialog();
 const message = useMessage();
 const { renderIcon } = useIcon();
-const { menuRef, menuCollapsed, menuOptions, loadMenuData } = useMenu();
-
-const handleMenuClick = (key: string) => {
-  router.push({ name: key });
-};
+const { menuRef, menuCollapsed, menuOptions, loadMenuData, handleMenuClick } =
+  useMenu();
+const { logoOptions, handleLogoClick } = useLogo();
 
 /**
  * 切换主题
@@ -178,41 +175,6 @@ onMounted(() => {
 <template>
   <div>
     <n-layout>
-      <n-layout-header>
-        <n-el class="home-header n-card n-card--bordered">
-          <n-el
-            class="home-logo"
-            :style="configStore.logo.titleStyle"
-            @click="router.push('/index')"
-          >
-            <n-image
-              v-if="configStore.logo.icon"
-              preview-disabled
-              :src="configStore.logo.iconSrc"
-              :height="configStore.logo.iconSize"
-              :style="configStore.logo.iconStyle"
-            />
-            <n-el class="home-logo-text"
-              >{{
-                configStore.logo.title
-                  ? configStore.logo.title
-                  : commonStore.name
-              }}
-            </n-el>
-          </n-el>
-          <n-el class="home-top"></n-el>
-          <n-space class="home-esc" justify="end" size="small">
-            <n-button quaternary circle @click="handleThemeClick">
-              <n-icon :component="themeIcon" />
-            </n-button>
-            <n-dropdown :options="escOptions" @select="handleEscClick">
-              <n-button quaternary round
-                >{{ userStore.current.userName }}
-              </n-button>
-            </n-dropdown>
-          </n-space>
-        </n-el>
-      </n-layout-header>
       <n-layout has-sider>
         <n-layout-sider
           class="home-menu"
@@ -227,24 +189,52 @@ onMounted(() => {
           @expand="menuCollapsed = false"
         >
           <n-menu
-            ref="menuRef"
-            v-model:value="menuStore.active"
+            :value="null"
             :collapsed="menuCollapsed"
             :collapsed-width="64"
-            :collapsed-icon-size="22"
-            :options="menuOptions"
-            :on-update:value="handleMenuClick"
+            :icon-size="configStore.logo.iconSize"
+            :options="logoOptions"
+            :on-update:value="handleLogoClick"
+            class="home-logo"
           />
-        </n-layout-sider>
-        <n-layout-content class="home-content">
-          <n-scrollbar style="max-height: calc(100vh - 64px)">
-            <router-view v-slot="{ Component }">
-              <transition name="fade-slide" mode="out-in">
-                <component :is="Component" />
-              </transition>
-            </router-view>
+          <n-scrollbar style="height: calc(100vh - 70px)">
+            <n-menu
+              ref="menuRef"
+              v-model:value="menuStore.active"
+              :collapsed="menuCollapsed"
+              :collapsed-width="64"
+              :collapsed-icon-size="22"
+              :options="menuOptions"
+              :on-update:value="handleMenuClick"
+            />
           </n-scrollbar>
-        </n-layout-content>
+        </n-layout-sider>
+        <n-layout>
+          <n-layout-content>
+            <n-el class="home-header">
+              <n-el class="home-top"></n-el>
+              <n-space class="home-esc" justify="end" size="small">
+                <n-button quaternary circle @click="handleThemeClick">
+                  <n-icon :component="themeIcon" />
+                </n-button>
+                <n-dropdown :options="escOptions" @select="handleEscClick">
+                  <n-button quaternary round
+                    >{{ userStore.current.userName }}
+                  </n-button>
+                </n-dropdown>
+              </n-space>
+            </n-el>
+          </n-layout-content>
+          <n-layout-content class="home-content">
+            <n-scrollbar style="max-height: calc(100vh - 64px)">
+              <router-view v-slot="{ Component }">
+                <transition name="fade-slide" mode="out-in">
+                  <component :is="Component" />
+                </transition>
+              </router-view>
+            </n-scrollbar>
+          </n-layout-content>
+        </n-layout>
       </n-layout>
     </n-layout>
     <n-drawer
@@ -262,33 +252,45 @@ onMounted(() => {
   </div>
 </template>
 
+<style>
+.home-logo .n-menu-item {
+  height: 52px;
+}
+
+.home-logo .n-menu-divider {
+  margin-bottom: 0;
+}
+</style>
+
 <style scoped>
 .home-header {
   padding: 0 16px;
   height: 64px;
   display: grid;
-  grid-template-columns: 284px calc(100vw - 600px) auto;
+  grid-template-columns: auto 200px;
 }
 
 .home-menu {
-  height: calc(100vh - 64px);
-}
-
-.home-logo {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.home-logo-text {
-  font-size: 20px;
-  font-weight: bold;
+  height: 100vh;
 }
 
 .home-esc {
   display: flex;
   align-items: center;
-  width: 284px;
+  background-color: var(--card-color);
+  border: 1px solid var(--divider-color);
+  border-radius: 32px;
+  margin: 6px 0;
+  padding-right: 12px;
+  transition:
+    color 0.3s var(--n-bezier),
+    background-color 0.3s var(--n-bezier),
+    box-shadow 0.3s var(--n-bezier),
+    border-color 0.3s var(--n-bezier);
+}
+
+.home-logo {
+  padding: 0;
 }
 
 /*noinspection CssUnusedSymbol*/

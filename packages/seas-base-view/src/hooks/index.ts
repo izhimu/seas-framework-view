@@ -1,2 +1,3 @@
 // eslint-disable-next-line import/prefer-default-export
 export { default as useMenu } from "./menu";
+export { default as useLogo } from "./logo";
