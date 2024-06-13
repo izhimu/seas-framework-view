@@ -3,8 +3,8 @@ import { Captcha } from "../entity/captcha";
 
 const url = "/captcha";
 
-export function get(data: Captcha): Promise<Result<Captcha>> {
-  return api().post(`${url}/get`, data);
+export function get(): Promise<Result<Captcha>> {
+  return api().post(`${url}/get`);
 }
 
 export function check(data: Captcha): Promise<Result<Captcha>> {

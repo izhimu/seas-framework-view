@@ -55,7 +55,7 @@ const barArea = ref();
  */
 const loadCaptcha = () => {
   loading.value = true;
-  get(captcha)
+  get()
     .then((res) => {
       if (res.code === "000") {
         Object.assign(captcha, res.data);
@@ -122,6 +122,7 @@ function end() {
       captcha.secretKey,
     )}`;
 
+    delete captcha.tips;
     check(captcha).then((res) => {
       if (res.code === "000" && res.data && res.data.result) {
         [[, moveStyle.blockBg], [, moveStyle.barBg]] = colors;
