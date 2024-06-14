@@ -30,6 +30,7 @@ export default function useLogo() {
           src: configStore.logo.iconSrc,
           height: configStore.logo.iconSize,
           style: configStore.logo.iconStyle,
+          previewDisabled: true,
         }),
     },
     {

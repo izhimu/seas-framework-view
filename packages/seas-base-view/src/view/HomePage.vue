@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref, shallowRef } from "vue";
+import { nextTick, onMounted, ref, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import {
   NLayout,
-  NLayoutHeader,
   NLayoutSider,
   NLayoutContent,
+  NLayoutHeader,
   NMenu,
   NIcon,
   NEl,
@@ -15,6 +15,7 @@ import {
   NDropdown,
   NDrawer,
   NScrollbar,
+  NTag,
   useMessage,
   useDialog,
 } from "naive-ui";
@@ -39,20 +40,93 @@ import { useConfigStore, useMenuStore } from "../store";
 import UserInfo from "./UserInfo.vue";
 import ChangePasswordForm from "./ChangePasswordForm.vue";
 import { useLogo, useMenu } from "../hooks";
+import { TabItem } from "../store/menu.ts";
 
+const configStore = useConfigStore();
+
+// -- 菜单区域 --
+const { logoOptions, handleLogoClick } = useLogo();
+const { menuRef, menuCollapsed, menuOptions, loadMenuData, handleMenuClick } =
+  useMenu();
+
+// -- 页签区域 --
+const router = useRouter();
+const menuStore = useMenuStore();
+const tabType = (key: string): "info" | "default" =>
+  menuStore.active === key ? "info" : "default";
+const handleTabClick = (key: string) => {
+  router.push({ name: key });
+};
+const handleTabClose = (tab: TabItem) => {
+  const index = menuStore.tabs.indexOf(tab);
+  menuStore.tabs.splice(index, 1);
+  if (menuStore.active === tab.key) {
+    if (index <= menuStore.tabs.length - 1) {
+      router.push({ name: menuStore.tabs[index].key });
+    } else if (index !== 0) {
+      router.push({ name: menuStore.tabs[index - 1].key });
+    } else {
+      router.push("/index");
+    }
+  }
+};
+
+const currentTab = ref<TabItem>();
+const showTabOption = ref(false);
+const tabOptionX = ref(0);
+const tabOptionY = ref(0);
+const tabOption = [
+  {
+    key: "close",
+    label: "关闭",
+  },
+  {
+    key: "closeOther",
+    label: "关闭其他标签页",
+  },
+  {
+    key: "closeAll",
+    label: "关闭所有标签页",
+  },
+];
+const handleTabContextMenu = (e: MouseEvent, tab: TabItem) => {
+  e.preventDefault();
+  currentTab.value = tab;
+  showTabOption.value = false;
+  nextTick().then(() => {
+    showTabOption.value = true;
+    tabOptionX.value = e.clientX;
+    tabOptionY.value = e.clientY;
+  });
+};
+const handleTabClickoutside = () => {
+  showTabOption.value = false;
+};
+const handleTabOptionSelect = (key: string) => {
+  showTabOption.value = false;
+  if (key === "close") {
+    if (currentTab.value) {
+      handleTabClose(currentTab.value);
+    }
+  } else if (key === "closeOther") {
+    if (currentTab.value) {
+      menuStore.tabs = [currentTab.value];
+      if (menuStore.active !== currentTab.value.key) {
+        router.push({ name: currentTab.value.key });
+      }
+    }
+  } else if (key === "closeAll") {
+    menuStore.tabs = [];
+    router.push("/index");
+  }
+};
+
+// -- 系统菜单 --
 const userStore = useUserStore();
 const themeStore = useThemeStore();
-const commonStore = useCommonStore();
-const configStore = useConfigStore();
-const menuStore = useMenuStore();
-const router = useRouter();
 const dialog = useDialog();
 const message = useMessage();
 const { renderIcon } = useIcon();
-const { menuRef, menuCollapsed, menuOptions, loadMenuData, handleMenuClick } =
-  useMenu();
-const { logoOptions, handleLogoClick } = useLogo();
-
 /**
  * 切换主题
  */
@@ -91,7 +165,6 @@ const escOptions = [
 ];
 
 const changePasswordRef = ref();
-
 const handlePassword = () => {
   changePasswordRef.value.openModel();
 };
@@ -146,9 +219,7 @@ const handleUnlock = () => {
   lock.value = false;
 };
 
-/**
- * 事件监听
- */
+// -- 事件监听 --
 event.on("routerChange", (data) => {
   menuStore.active = data;
 });
@@ -157,6 +228,7 @@ event.on("toLogin", () => {
   router.push({ path: "/login" });
 });
 
+const commonStore = useCommonStore();
 onMounted(() => {
   loadMenuData();
   // 加载历史路由
@@ -210,9 +282,36 @@ onMounted(() => {
           </n-scrollbar>
         </n-layout-sider>
         <n-layout>
-          <n-layout-content>
+          <n-layout-header>
             <n-el class="home-header">
-              <n-el class="home-top"></n-el>
+              <n-el class="home-top">
+                <n-space class="home-tab">
+                  <n-tag
+                    v-for="tab in menuStore.tabs"
+                    :key="tab.key"
+                    :type="tabType(tab.key)"
+                    class="home-tab-item"
+                    size="large"
+                    :bordered="false"
+                    round
+                    closable
+                    @click="handleTabClick(tab.key)"
+                    @close="handleTabClose(tab)"
+                    @contextmenu="handleTabContextMenu($event, tab)"
+                    >{{ tab.name }}
+                  </n-tag>
+                </n-space>
+                <n-dropdown
+                  placement="bottom-start"
+                  trigger="manual"
+                  :x="tabOptionX"
+                  :y="tabOptionY"
+                  :options="tabOption"
+                  :show="showTabOption"
+                  :on-clickoutside="handleTabClickoutside"
+                  @select="handleTabOptionSelect"
+                />
+              </n-el>
               <n-space class="home-esc" justify="end" size="small">
                 <n-button quaternary circle @click="handleThemeClick">
                   <n-icon :component="themeIcon" />
@@ -224,12 +323,14 @@ onMounted(() => {
                 </n-dropdown>
               </n-space>
             </n-el>
-          </n-layout-content>
+          </n-layout-header>
           <n-layout-content class="home-content">
             <n-scrollbar style="max-height: calc(100vh - 64px)">
               <router-view v-slot="{ Component }">
                 <transition name="fade-slide" mode="out-in">
-                  <component :is="Component" />
+                  <keep-alive>
+                    <component :is="Component" />
+                  </keep-alive>
                 </transition>
               </router-view>
             </n-scrollbar>
@@ -252,6 +353,7 @@ onMounted(() => {
   </div>
 </template>
 
+<!--suppress CssUnusedSymbol -->
 <style>
 .home-logo .n-menu-item {
   height: 52px;
@@ -267,21 +369,35 @@ onMounted(() => {
   padding: 0 16px;
   height: 64px;
   display: grid;
-  grid-template-columns: auto 200px;
+  grid-template-columns: auto 174px;
 }
 
 .home-menu {
   height: 100vh;
 }
 
+.home-top {
+  display: flex;
+}
+
+.home-tab {
+  margin: auto 0;
+}
+
+.home-tab-item {
+  cursor: pointer;
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
 .home-esc {
+  height: 52px;
   display: flex;
   align-items: center;
+  border-radius: 32px;
+  margin: auto 0;
+  padding-right: 12px;
   background-color: var(--card-color);
   border: 1px solid var(--divider-color);
-  border-radius: 32px;
-  margin: 6px 0;
-  padding-right: 12px;
   transition:
     color 0.3s var(--n-bezier),
     background-color 0.3s var(--n-bezier),

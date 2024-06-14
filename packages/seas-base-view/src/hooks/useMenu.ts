@@ -57,8 +57,11 @@ export default function useMenu() {
       }
     });
   };
-  const handleMenuClick = (key: string) => {
+  const handleMenuClick = (key: string, item: MenuOption) => {
     router.push({ name: key });
+    if (!menuStore.tabs.some((tab) => tab.key === key)) {
+      menuStore.tabs.push({ key, name: item.label?.toString() ?? "" });
+    }
   };
   return {
     menuRef,
