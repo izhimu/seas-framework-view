@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, shallowRef } from "vue";
+import { nextTick, onMounted, ref, shallowRef, watch } from "vue";
 import { useRouter } from "vue-router";
 import {
   NLayout,
@@ -10,7 +10,7 @@ import {
   NIcon,
   NEl,
   NButton,
-  NSpace,
+  NFlex,
   NCard,
   NDropdown,
   NDrawer,
@@ -26,6 +26,7 @@ import {
   Sunny,
   Moon,
   Key,
+  Menu as IconMenu,
 } from "@vicons/ionicons5";
 import LockPage from "@izhimu/seas-security-view/src/view/LockPage.vue";
 import { logout } from "@izhimu/seas-security-view/src/request/security";
@@ -110,14 +111,55 @@ const handleTabOptionSelect = (key: string) => {
     }
   } else if (key === "closeOther") {
     if (currentTab.value) {
-      menuStore.tabs = [currentTab.value];
+      menuStore.tabs.length = 0;
+      menuStore.tabs.push(currentTab.value);
       if (menuStore.active !== currentTab.value.key) {
         router.push({ name: currentTab.value.key });
       }
     }
   } else if (key === "closeAll") {
-    menuStore.tabs = [];
+    menuStore.tabs.length = 0;
     router.push("/index");
+  }
+};
+
+const tabList = ref<TabItem[]>([]);
+const tabZipList = ref<TabItem[]>([]);
+const topRef = ref();
+const topWidth = ref(0);
+const tabRef = ref();
+const tabWidth = ref(0);
+const updateTabWidth = () => {
+  if (tabRef.value) {
+    tabWidth.value = tabRef.value.$el.offsetWidth;
+  }
+};
+const updateTopWidth = () => {
+  if (topRef.value) {
+    topWidth.value = topRef.value.$el.offsetWidth;
+  }
+};
+const updateTabList = () => {
+  tabList.value.length = 0;
+  Object.assign(tabList.value, menuStore.tabs);
+};
+const updateTabZipList = () => {
+  if (
+    topWidth.value - (tabWidth.value ?? 0) <= 82 &&
+    tabList.value.length > 0
+  ) {
+    const tab = tabList.value.shift();
+    if (tab) {
+      tabZipList.value.push(tab);
+    }
+  } else if (
+    topWidth.value - (tabWidth.value ?? 0) >= 192 &&
+    tabZipList.value.length > 0
+  ) {
+    const tab = tabZipList.value.pop();
+    if (tab) {
+      tabList.value.unshift(tab);
+    }
   }
 };
 
@@ -241,6 +283,23 @@ onMounted(() => {
   ) {
     router.push({ name: commonStore.currentRoute });
   }
+
+  watch(menuStore.tabs, () => {
+    tabZipList.value.length = 0;
+    updateTabList();
+  });
+  watch(tabList.value, () => {
+    nextTick(() => {
+      updateTopWidth();
+      updateTabWidth();
+      updateTabZipList();
+    });
+  });
+  updateTabList();
+  window.addEventListener("resize", () => {
+    updateTopWidth();
+    updateTabZipList();
+  });
 });
 </script>
 
@@ -284,23 +343,39 @@ onMounted(() => {
         <n-layout>
           <n-layout-header>
             <n-el class="home-header">
-              <n-el class="home-top">
-                <n-space class="home-tab">
-                  <n-tag
-                    v-for="tab in menuStore.tabs"
-                    :key="tab.key"
-                    :type="tabType(tab.key)"
-                    class="home-tab-item"
-                    size="large"
-                    :bordered="false"
-                    round
-                    closable
-                    @click="handleTabClick(tab.key)"
-                    @close="handleTabClose(tab)"
-                    @contextmenu="handleTabContextMenu($event, tab)"
-                    >{{ tab.name }}
-                  </n-tag>
-                </n-space>
+              <n-el ref="topRef" class="home-top">
+                <n-flex class="home-tab" :wrap="false">
+                  <n-dropdown
+                    v-if="tabZipList.length > 0"
+                    trigger="hover"
+                    :options="tabZipList"
+                    label-field="name"
+                  >
+                    <n-button quaternary round>
+                      <template #icon>
+                        <n-icon><icon-menu /></n-icon>
+                      </template>
+                    </n-button>
+                  </n-dropdown>
+                  <n-el class="home-tab-list">
+                    <n-flex ref="tabRef" :wrap="false">
+                      <n-tag
+                        v-for="tab in tabList"
+                        :key="tab.key"
+                        :type="tabType(tab.key)"
+                        class="home-tab-item"
+                        size="large"
+                        :bordered="false"
+                        round
+                        closable
+                        @click="handleTabClick(tab.key)"
+                        @close="handleTabClose(tab)"
+                        @contextmenu="handleTabContextMenu($event, tab)"
+                        >{{ tab.name }}
+                      </n-tag>
+                    </n-flex>
+                  </n-el>
+                </n-flex>
                 <n-dropdown
                   placement="bottom-start"
                   trigger="manual"
@@ -312,7 +387,7 @@ onMounted(() => {
                   @select="handleTabOptionSelect"
                 />
               </n-el>
-              <n-space class="home-esc" justify="end" size="small">
+              <n-flex class="home-esc" justify="end" size="small">
                 <n-button quaternary circle @click="handleThemeClick">
                   <n-icon :component="themeIcon" />
                 </n-button>
@@ -321,7 +396,7 @@ onMounted(() => {
                     >{{ userStore.current.userName }}
                   </n-button>
                 </n-dropdown>
-              </n-space>
+              </n-flex>
             </n-el>
           </n-layout-header>
           <n-layout-content class="home-content">
@@ -381,9 +456,14 @@ onMounted(() => {
 }
 
 .home-tab {
-  margin: auto 0;
+  width: 100%;
+  margin: auto 16px auto 0;
 }
 
+.home-tab-list {
+  overflow: hidden;
+  white-space: nowrap;
+}
 .home-tab-item {
   cursor: pointer;
 }
