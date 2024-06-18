@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, shallowRef, watch } from "vue";
+import { nextTick, onMounted, ref, shallowRef, watch, h } from "vue";
 import { useRouter } from "vue-router";
 import {
   NLayout,
@@ -16,6 +16,7 @@ import {
   NDrawer,
   NScrollbar,
   NTag,
+  NCollapseTransition,
   useMessage,
   useDialog,
 } from "naive-ui";
@@ -124,7 +125,7 @@ const handleTabOptionSelect = (key: string) => {
 };
 
 const tabList = ref<TabItem[]>([]);
-const tabZipList = ref<TabItem[]>([]);
+const tabMergeList = ref<TabItem[]>([]);
 const topRef = ref();
 const topWidth = ref(0);
 const tabRef = ref();
@@ -143,24 +144,50 @@ const updateTabList = () => {
   tabList.value.length = 0;
   Object.assign(tabList.value, menuStore.tabs);
 };
-const updateTabZipList = () => {
+const updateTabMergeList = () => {
   if (
     topWidth.value - (tabWidth.value ?? 0) <= 82 &&
     tabList.value.length > 0
   ) {
     const tab = tabList.value.shift();
     if (tab) {
-      tabZipList.value.push(tab);
+      tabMergeList.value.push(tab);
     }
   } else if (
     topWidth.value - (tabWidth.value ?? 0) >= 192 &&
-    tabZipList.value.length > 0
+    tabMergeList.value.length > 0
   ) {
-    const tab = tabZipList.value.pop();
+    const tab = tabMergeList.value.pop();
     if (tab) {
       tabList.value.unshift(tab);
     }
   }
+};
+const renderTabMerge = ({ option }) => {
+  return h(
+    NFlex,
+    {},
+    {
+      default: () =>
+        h(
+          NTag,
+          {
+            style: {
+              cursor: "pointer",
+              margin: "3px 6px",
+            },
+            type: tabType(option.key),
+            size: "large",
+            bordered: false,
+            closable: true,
+            onClick: () => handleTabClick(option.key),
+            onClose: () => handleTabClose(option),
+            onContextmenu: (e) => handleTabContextMenu(e, option),
+          },
+          { default: () => option.name },
+        ),
+    },
+  );
 };
 
 // -- 系统菜单 --
@@ -285,20 +312,20 @@ onMounted(() => {
   }
 
   watch(menuStore.tabs, () => {
-    tabZipList.value.length = 0;
+    tabMergeList.value.length = 0;
     updateTabList();
   });
   watch(tabList.value, () => {
     nextTick(() => {
       updateTopWidth();
       updateTabWidth();
-      updateTabZipList();
+      updateTabMergeList();
     });
   });
   updateTabList();
   window.addEventListener("resize", () => {
     updateTopWidth();
-    updateTabZipList();
+    updateTabMergeList();
   });
 });
 </script>
@@ -346,12 +373,25 @@ onMounted(() => {
               <n-el ref="topRef" class="home-top">
                 <n-flex class="home-tab" :wrap="false">
                   <n-dropdown
-                    v-if="tabZipList.length > 0"
                     trigger="hover"
-                    :options="tabZipList"
-                    label-field="name"
+                    :options="tabMergeList"
+                    :render-option="renderTabMerge"
                   >
-                    <n-button quaternary round>
+                    <n-button
+                      class="home-tab-merge"
+                      :style="{
+                        width: 0,
+                        opacity: tabMergeList.length > 0 ? 1 : 0,
+                        marginLeft: `${tabMergeList.length > 0 ? 0 : -47}px`,
+                      }"
+                      quaternary
+                      round
+                      :type="
+                        tabMergeList.some((tab) => tab.key === menuStore.active)
+                          ? 'info'
+                          : 'default'
+                      "
+                    >
                       <template #icon>
                         <n-icon><icon-menu /></n-icon>
                       </template>
@@ -458,6 +498,10 @@ onMounted(() => {
 .home-tab {
   width: 100%;
   margin: auto 16px auto 0;
+}
+
+.home-tab-merge {
+  transition: all 0.3s;
 }
 
 .home-tab-list {
