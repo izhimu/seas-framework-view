@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 
-export const baseHomePage = () => import("../view/HomePage.vue");
+export const baseHomePage = () => import("../view/home/BasHomePage.vue");
 export const baseIndexPage = () => import("../view/IndexPage.vue");
 
 export const baseRouter = (index = baseIndexPage): RouteRecordRaw[] => {
