@@ -9,6 +9,7 @@ import {
   DocumentLockSharp,
   DocumentTextSharp,
   Build,
+  Albums,
 } from "@vicons/ionicons5";
 import { useIcon } from "@izhimu/seas-core";
 
@@ -21,6 +22,7 @@ const loadIcons = () => {
   loadIcon("system.menu", Menu);
   loadIcon("system.dict", FileTrayFull);
   loadIcon("system.conf", Build);
+  loadIcon("system.topic", Albums);
   loadIcon("log", ShieldCheckmark);
   loadIcon("log.login.log", DocumentLockSharp);
   loadIcon("log.log", DocumentTextSharp);

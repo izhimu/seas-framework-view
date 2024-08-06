@@ -1,21 +1,12 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, h } from "vue";
-import {
-  NCard,
-  NInput,
-  NButton,
-  NDataTable,
-  NSpace,
-  NIcon,
-  NTag,
-} from "naive-ui";
-import { SearchSharp as SearchIcon } from "@vicons/ionicons5";
-import { usePage, useTableButton } from "@izhimu/seas-core/src";
-import { pRole, mEnable } from "../entity/role";
-import { page, del } from "../request/role";
-import RoleForm from "./RoleForm.vue";
+import { onMounted, reactive, ref } from "vue";
+import { NCard, NInput, NButton, NDataTable, NSpace, NIcon } from "naive-ui";
+import { usePage, useTableButton, SearchIcon } from "@izhimu/seas-core";
+import { dBasTopic as defEntity } from "../entity/basTopic";
+import { page, del } from "../request/basTopic";
+import DataForm from "./BasTopicForm.vue";
 
-const roleRef = ref();
+const formRef = ref();
 const { actionButton, confirmButton } = useTableButton();
 const {
   columns,
@@ -25,7 +16,7 @@ const {
   search,
   queryPage,
   handleSorter,
-} = usePage(page, reactive(pRole()), [
+} = usePage(page, reactive(defEntity()), [
   {
     title: "序号",
     key: "no",
@@ -34,41 +25,39 @@ const {
     },
   },
   {
-    title: "名称",
-    key: "roleName",
+    title: "主题名称",
+    key: "topicName",
     sorter: true,
     sortOrder: false,
-    sortKey: "role_name",
+    sortKey: "topic_name",
   },
   {
-    title: "描述",
-    key: "roleDesc",
-  },
-  {
-    title: "状态",
-    key: "enable",
+    title: "主题标识",
+    key: "topicCode",
     sorter: true,
     sortOrder: false,
-    sortKey: "enable",
-    render(rowData) {
-      const tagMap = mEnable.get(rowData.enable ?? 0);
-      return h(
-        NTag,
-        {
-          type: tagMap?.tag,
-        },
-        {
-          default: () => tagMap?.title,
-        },
-      );
-    },
+    sortKey: "topic_code",
   },
   {
-    title: "创建时间",
-    key: "createdTime",
+    title: "首页地址",
+    key: "indexUrl",
     sorter: true,
     sortOrder: false,
-    sortKey: "created_time",
+    sortKey: "index_url",
+  },
+  {
+    title: "排序",
+    key: "sort",
+    sorter: true,
+    sortOrder: false,
+    sortKey: "sort",
+  },
+  {
+    title: "备注",
+    key: "remarks",
+    sorter: true,
+    sortOrder: false,
+    sortKey: "remarks",
   },
   {
     title: "操作",
@@ -78,9 +67,9 @@ const {
         actionButton(
           "修改",
           "info",
-          "system.role.update",
+          "bas.topic.update",
           () => {
-            roleRef.value.openModel(rowData.id);
+            formRef.value.openModel(rowData.id);
           },
           {
             style: "margin-right: 8px;",
@@ -90,7 +79,7 @@ const {
           "删除",
           "确认删除数据？",
           "error",
-          "system.role.delete",
+          "bas.topic.delete",
           () => {
             if (rowData.id) {
               del(rowData.id).then(queryPage);
@@ -109,7 +98,7 @@ const handleSearchClick = (e: MouseEvent) => {
 
 const handleAddClick = (e: MouseEvent) => {
   e.preventDefault();
-  roleRef.value.openModel();
+  formRef.value.openModel();
 };
 
 onMounted(() => queryPage());
@@ -122,8 +111,13 @@ onMounted(() => queryPage());
         <n-card>
           <n-space>
             <n-input
-              v-model:value="search.roleName"
-              placeholder="角色名称"
+              v-model:value="search.topicName"
+              placeholder="主题名称"
+              clearable
+            />
+            <n-input
+              v-model:value="search.topicCode"
+              placeholder="主题标识"
               clearable
             />
             <n-button type="info" @click="handleSearchClick">
@@ -140,7 +134,7 @@ onMounted(() => queryPage());
           <n-space vertical :size="12">
             <n-space>
               <n-button
-                v-auth="'system.role.add'"
+                v-auth="'bas.topic.add'"
                 strong
                 secondary
                 type="info"
@@ -162,7 +156,7 @@ onMounted(() => queryPage());
         </n-card>
       </n-space>
     </div>
-    <role-form ref="roleRef" @success="queryPage" />
+    <data-form ref="formRef" @success="queryPage" />
   </div>
 </template>
 

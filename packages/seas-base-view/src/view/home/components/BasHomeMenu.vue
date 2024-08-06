@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { NMenu, NScrollbar } from "naive-ui";
+import { NMenu, NScrollbar, NDropdown } from "naive-ui";
 import { useCommonStore } from "@izhimu/seas-core";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useLogo, useMenu } from "../../../hooks";
 import { useConfigStore, useMenuStore } from "../../../store";
@@ -16,6 +16,8 @@ const menuStore = useMenuStore();
 const configStore = useConfigStore();
 const { logoOptions, handleLogoClick } = useLogo();
 const { menuRef, menuOptions, loadMenuData, handleMenuClick } = useMenu();
+
+const topicRef = ref();
 
 onMounted(() => {
   loadMenuData();
@@ -42,7 +44,7 @@ onMounted(() => {
     :on-update:value="handleLogoClick"
     class="home-logo"
   />
-  <n-scrollbar style="height: calc(100vh - 70px)">
+  <n-scrollbar style="height: calc(100vh - 120px)">
     <n-menu
       ref="menuRef"
       v-model:value="menuStore.active"
@@ -53,6 +55,21 @@ onMounted(() => {
       :on-update:value="handleMenuClick"
     />
   </n-scrollbar>
+  <n-dropdown trigger="click" :width="240" :options="[]">
+    <n-menu
+      ref="topicRef"
+      value="topic"
+      :collapsed="props.collapsed"
+      :collapsed-width="64"
+      :collapsed-icon-size="22"
+      :options="[
+        {
+          label: '主题1',
+          key: 'topic',
+        },
+      ]"
+    />
+  </n-dropdown>
 </template>
 
 <style scoped>

@@ -41,6 +41,11 @@ export const baseRouter = (index = baseIndexPage): RouteRecordRaw[] => {
       component: () => import("../view/ConfPage.vue"),
     },
     {
+      path: "system/topic",
+      name: "system.topic",
+      component: () => import("../view/BasTopicPage.vue"),
+    },
+    {
       path: "log/login/log",
       name: "log.login.log",
       component: () => import("../view/LoginLogPage.vue"),

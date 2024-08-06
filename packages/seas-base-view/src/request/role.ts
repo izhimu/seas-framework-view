@@ -2,6 +2,7 @@ import Qs from "qs";
 import { Page, Result, Select, api } from "@izhimu/seas-core/src";
 import { Role, AuthMenu, AuthOrg } from "../entity/role";
 import { UserRole } from "../entity/user";
+import { BasAuthTopic } from "../entity/basTopic.ts";
 
 const url = "/bas/role";
 
@@ -65,4 +66,12 @@ export function updateUser(data: UserRole): Promise<Result<void>> {
 
 export function select(): Promise<Result<Array<Select>>> {
   return api().get(`${url}/select`);
+}
+
+export function topic(id: string): Promise<Result<Array<string>>> {
+  return api().get(`${url}/topic/${id}`);
+}
+
+export function updateTopic(data: BasAuthTopic): Promise<Result<void>> {
+  return api().post(`${url}/topic`, data);
 }

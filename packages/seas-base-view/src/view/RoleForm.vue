@@ -23,11 +23,13 @@ import {
   NSelect,
   NEmpty,
   NIcon,
+  NDataTable,
   useMessage,
 } from "naive-ui";
 import { Option } from "naive-ui/es/transfer/src/interface";
 import { CheckboxOutline } from "@vicons/ionicons5";
 import { useFormModel, useTree, useCommonStore } from "@izhimu/seas-core";
+import type { DataTableColumns, DataTableRowKey } from "naive-ui";
 import {
   get,
   save,
@@ -38,6 +40,8 @@ import {
   updateAuthMenu,
   authOrg,
   updateAuthOrg,
+  updateTopic,
+  topic,
 } from "../request/role";
 import { snowflake } from "../request/common";
 import { list } from "../request/user";
@@ -52,6 +56,8 @@ import {
 import { dUserRole } from "../entity/user";
 import { tree as menuTree } from "../request/menu";
 import { tree as orgTree } from "../request/org";
+import { BasTopic } from "../entity/basTopic.ts";
+import { list as topicList } from "../request/basTopic";
 
 const commonStore = useCommonStore();
 const message = useMessage();
@@ -109,6 +115,37 @@ const loadOrg = () => {
   }
 };
 
+const onSuccess = () => {
+  message.success("提交成功");
+  emits("success");
+};
+
+const topicColumns: DataTableColumns<BasTopic> = [
+  {
+    type: "selection",
+  },
+  {
+    title: "主题名称",
+    key: "topicName",
+  },
+  {
+    title: "主题标识",
+    key: "topicCode",
+  },
+];
+const topicData = ref<BasTopic[]>([]);
+const loadTopic = () => {
+  topicList().then((res) => {
+    if (res.code === "000" && res.data) {
+      topicData.value = res.data;
+    }
+  });
+};
+const topicKeys = ref<DataTableRowKey[]>([]);
+const handleTopicCheck = (rowKeys: DataTableRowKey[]) => {
+  topicKeys.value = rowKeys;
+};
+
 const openModel = async (id?: string) => {
   userList.value = [];
   showModel.value = true;
@@ -129,6 +166,8 @@ const openModel = async (id?: string) => {
     Object.assign(model, roleRes.data);
     const userRes = await user(id);
     userModel.userIds = userRes.data ?? null;
+    const topicRes = await topic(id);
+    topicKeys.value = topicRes.data ?? [];
   } else {
     const idRes = await snowflake();
     model.id = idRes.data ?? null;
@@ -138,6 +177,7 @@ const openModel = async (id?: string) => {
   }
   loadMenu();
   loadOrg();
+  loadTopic();
   dataLoading.value = false;
 };
 
@@ -146,12 +186,8 @@ const closeModel = () => {
   Object.assign(userModel, dUserRole());
   Object.assign(menuValue, dAuthMenu());
   Object.assign(orgValue, dAuthOrg());
+  topicKeys.value = [];
   showModel.value = false;
-};
-
-const onSuccess = () => {
-  message.success("提交成功");
-  emits("success");
 };
 
 const handleSubmit = async (e: MouseEvent) => {
@@ -167,6 +203,12 @@ const handleSubmit = async (e: MouseEvent) => {
       await updateUser(userModel);
       await updateAuthMenu(menuValue);
       await updateAuthOrg(orgValue);
+      await updateTopic({
+        id: null,
+        roleId: model.id,
+        topicId: null,
+        topicIds: topicKeys.value,
+      });
       btnLoading.value = false;
       onSuccess();
       closeModel();
@@ -182,7 +224,7 @@ defineExpose({
 <template>
   <n-modal
     v-model:show="showModel"
-    style="width: 500px"
+    style="width: 512px"
     :content-style="{ paddingTop: '6px' }"
     preset="card"
     :title="addStatus ? '新增' : '修改'"
@@ -252,7 +294,7 @@ defineExpose({
             style="width: 100%; height: 382px"
             virtual-scroll
             :options="userList"
-            filterable
+            source-filterable
           />
         </n-tab-pane>
         <n-tab-pane
@@ -263,13 +305,13 @@ defineExpose({
           display-directive="show:lazy"
         >
           <n-card>
-            <n-scrollbar style="height: 340px">
-              <n-space vertical :size="12">
-                <n-input
-                  v-model:value="menuPattern"
-                  placeholder="搜索"
-                  clearable
-                />
+            <n-space vertical :size="12">
+              <n-input
+                v-model:value="menuPattern"
+                placeholder="搜索"
+                clearable
+              />
+              <n-scrollbar style="height: 300px">
                 <!--suppress TypeScriptValidateTypes -->
                 <n-tree
                   v-model:checked-keys="menuValue.menuIds"
@@ -282,8 +324,8 @@ defineExpose({
                   :pattern="menuPattern"
                   :data="menuData"
                 />
-              </n-space>
-            </n-scrollbar>
+              </n-scrollbar>
+            </n-space>
           </n-card>
         </n-tab-pane>
         <n-tab-pane
@@ -313,13 +355,13 @@ defineExpose({
             </n-form-item>
           </n-form>
           <n-card>
-            <n-scrollbar style="height: 253px">
-              <n-space v-if="model.authType === 1" vertical :size="12">
-                <n-input
-                  v-model:value="orgPattern"
-                  placeholder="搜索"
-                  clearable
-                />
+            <n-space v-if="model.authType === 1" vertical :size="12">
+              <n-input
+                v-model:value="orgPattern"
+                placeholder="搜索"
+                clearable
+              />
+              <n-scrollbar style="height: 220px">
                 <!--suppress TypeScriptValidateTypes -->
                 <n-tree
                   v-model:checked-keys="orgValue.orgIds"
@@ -331,20 +373,36 @@ defineExpose({
                   :pattern="orgPattern"
                   :data="orgData"
                 />
-              </n-space>
-              <n-empty
-                v-else
-                style="margin-top: 100px"
-                :description="'已选择：' + mType.get(model.authType ?? 4)"
-              >
-                <template #icon>
-                  <n-icon>
-                    <checkbox-outline />
-                  </n-icon>
-                </template>
-              </n-empty>
-            </n-scrollbar>
+              </n-scrollbar>
+            </n-space>
+            <n-empty
+              v-else
+              style="margin-top: 100px"
+              :description="'已选择：' + mType.get(model.authType ?? 4)"
+            >
+              <template #icon>
+                <n-icon>
+                  <checkbox-outline />
+                </n-icon>
+              </template>
+            </n-empty>
           </n-card>
+        </n-tab-pane>
+        <n-tab-pane
+          v-if="commonStore.auth.indexOf('system.role.topic') !== -1"
+          class="tab-box"
+          name="topic"
+          tab="主题分配"
+          display-directive="show:lazy"
+        >
+          <n-data-table
+            :columns="topicColumns"
+            :data="topicData"
+            :row-key="(row) => row.id"
+            :max-height="340"
+            :checked-row-keys="topicKeys"
+            @update:checked-row-keys="handleTopicCheck"
+          />
         </n-tab-pane>
       </n-tabs>
     </n-spin>
