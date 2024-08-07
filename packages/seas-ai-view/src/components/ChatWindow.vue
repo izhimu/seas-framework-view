@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NInput, NButton, NInputGroup, NUpload, NScrollbar } from "naive-ui";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import { AiHistory } from "../entity/aiHistory";
 import { list } from "../request/aiHistory";
 import { useAiStore } from "../store";
@@ -18,10 +18,17 @@ const resizeObserver = new ResizeObserver((entries) => {
   }
 });
 
+const chatRef = ref<HTMLDivElement>();
+
 onMounted(() => {
   list(aiStore.chatId).then((res) => {
     if (res.data) {
       messages.value = res.data;
+      nextTick(() => {
+        if (chatRef.value) {
+          chatRef.value.scrollIntoView({ behavior: "smooth", block: "end" });
+        }
+      });
     }
   });
   const element = document.querySelector(".input-container");
@@ -33,7 +40,7 @@ onMounted(() => {
 
 <template>
   <n-scrollbar>
-    <div class="chat-window">
+    <div ref="chatRef" class="chat-window">
       <div class="chat-container">
         <div v-for="message in messages" :key="message.id" class="chat-item">
           <div
@@ -67,6 +74,8 @@ onMounted(() => {
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+  /*noinspection CssUnresolvedCustomProperty*/
+  background-color: var(--action-color);
 }
 
 .chat-container {
@@ -80,13 +89,14 @@ onMounted(() => {
 }
 
 .chat-content {
-  padding: 12px 16px;
+  padding: 10px 16px;
   border-radius: 16px;
   /*noinspection CssUnresolvedCustomProperty*/
-  background-color: var(--divider-color);
+  background-color: var(--base-color);
   max-width: calc(100% - 32px);
 }
 
+/*noinspection ALL*/
 .chat-right {
   border-top-right-radius: unset;
   float: right;
@@ -95,6 +105,7 @@ onMounted(() => {
   color: #fff;
 }
 
+/*noinspection ALL*/
 .chat-left {
   border-top-left-radius: unset;
   float: left;
@@ -107,10 +118,13 @@ onMounted(() => {
   padding: 16px;
   border-radius: 16px;
   position: absolute;
-  background: #fff;
   bottom: 14px;
   width: calc(100% - 64px);
-  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  /*noinspection CssUnresolvedCustomProperty*/
+  background: var(--base-color) transparent;
+  //box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  backdrop-filter: blur(24px);
+  box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
 }
 
 .input-file {
