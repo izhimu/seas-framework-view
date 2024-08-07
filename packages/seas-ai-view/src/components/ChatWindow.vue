@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { NInput, NButton, NInputGroup, NUpload, NScrollbar } from "naive-ui";
-import MarkdownIt from "markdown-it";
 import { onMounted, ref } from "vue";
 import { AiHistory } from "../entity/aiHistory";
 import { list } from "../request/aiHistory";
 import { useAiStore } from "../store";
+import MarkdownRender from "./MarkdownRender.vue";
 
 const aiStore = useAiStore();
 aiStore.chatId = "1821089654937919488";
-const markdown = new MarkdownIt();
 const messages = ref<AiHistory[]>([]);
 
 const compensateHeight = ref(0);
@@ -43,7 +42,7 @@ onMounted(() => {
               'chat-content',
             ]"
           >
-            <div v-html="markdown.render(message.messageStr)"></div>
+            <markdown-render :content="message.messageStr" />
           </div>
         </div>
         <div :style="{ height: compensateHeight + 'px' }"></div>
