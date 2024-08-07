@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { NInput, NButton, NInputGroup, NUpload, NScrollbar } from "naive-ui";
+import {
+  NInput,
+  NButton,
+  NInputGroup,
+  NUpload,
+  NScrollbar,
+  NSpin,
+} from "naive-ui";
 import { onMounted, ref, nextTick } from "vue";
 import { AiHistory } from "../entity/aiHistory";
 import { list } from "../request/aiHistory";
@@ -10,25 +17,34 @@ const aiStore = useAiStore();
 aiStore.chatId = "1821089654937919488";
 const messages = ref<AiHistory[]>([]);
 
+const paddingHeight = ref(0);
 const compensateHeight = ref(0);
 const resizeObserver = new ResizeObserver((entries) => {
-  if (entries) {
+  if (entries && paddingHeight.value === 0) {
     const entry = entries[0];
     compensateHeight.value = entry.target.clientHeight;
   }
 });
 
-const chatRef = ref<HTMLDivElement>();
+const scrollRef = ref();
+const chatRef = ref();
 
 onMounted(() => {
   list(aiStore.chatId).then((res) => {
     if (res.data) {
       messages.value = res.data;
       nextTick(() => {
-        if (chatRef.value) {
-          chatRef.value.scrollIntoView({ behavior: "smooth", block: "end" });
-        }
+        chatRef.value?.scrollIntoView({ behavior: "smooth", block: "end" });
       });
+      if (res.data.length === 0) {
+        paddingHeight.value =
+          Number(
+            scrollRef.value?.scrollbarInstRef.yBarSizePx.replace("px", ""),
+          ) - 32;
+        compensateHeight.value = paddingHeight.value;
+      } else {
+        paddingHeight.value = 0;
+      }
     }
   });
   const element = document.querySelector(".input-container");
@@ -39,7 +55,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-scrollbar>
+  <n-scrollbar ref="scrollRef">
     <div ref="chatRef" class="chat-window">
       <div class="chat-container">
         <div v-for="message in messages" :key="message.id" class="chat-item">
@@ -50,6 +66,11 @@ onMounted(() => {
             ]"
           >
             <markdown-render :content="message.messageStr" />
+          </div>
+        </div>
+        <div class="chat-item">
+          <div :class="['chat-left', 'chat-content']">
+            <div class="dot-flashing"></div>
           </div>
         </div>
         <div :style="{ height: compensateHeight + 'px' }"></div>
@@ -121,13 +142,76 @@ onMounted(() => {
   bottom: 14px;
   width: calc(100% - 64px);
   /*noinspection CssUnresolvedCustomProperty*/
-  background: var(--base-color) transparent;
-  //box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  background-color: color-mix(
+    in srgb,
+    var(--base-color),
+    rgb(255, 255, 255, 0.2)
+  );
+  /*noinspection CssUnresolvedCustomProperty*/
+  box-shadow: var(--box-shadow-1);
   backdrop-filter: blur(24px);
-  box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
 }
 
 .input-file {
   margin-bottom: 8px;
+}
+
+.dot-flashing {
+  margin: 8px 48px;
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  color: var(--primary-color);
+  animation: dotFlashing 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+
+.dot-flashing::before {
+  left: -14px;
+  animation: dotFlashing 1s infinite alternate;
+  animation-delay: 0s;
+}
+
+.dot-flashing::before,
+.dot-flashing::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.dot-flashing::after {
+  left: 14px;
+  animation: dotFlashing 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+.dot-flashing::before,
+.dot-flashing::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+@keyframes dotFlashing {
+  0% {
+    background-color: var(--primary-color);
+  }
+  100% {
+    background-color: var(--base-color);
+  }
 }
 </style>
