@@ -1,52 +1,129 @@
+<!--suppress CssUnresolvedCustomProperty -->
 <script setup lang="ts">
 import {
   NInput,
   NButton,
   NInputGroup,
   NUpload,
+  NUploadTrigger,
+  NUploadFileList,
   NScrollbar,
-  NSpin,
+  NCollapseTransition,
+  NFlex,
+  NFloatButton,
+  NIcon,
 } from "naive-ui";
-import { onMounted, ref, nextTick } from "vue";
+import { onMounted, ref, nextTick, reactive } from "vue";
+import { ChevronDown } from "@vicons/ionicons5";
 import { AiHistory } from "../entity/aiHistory";
 import { list } from "../request/aiHistory";
 import { useAiStore } from "../store";
 import MarkdownRender from "./MarkdownRender.vue";
+import { dAiInput } from "../entity/aiChat";
+import { chat } from "../request/aiChat";
 
 const aiStore = useAiStore();
-aiStore.chatId = "1821089654937919488";
 const messages = ref<AiHistory[]>([]);
 
-const paddingHeight = ref(0);
+const chatRef = ref();
+
+const toEnd = (
+  behavior: "auto" | "instant" | "smooth" = "smooth",
+  timeout = false,
+) => {
+  nextTick(() => {
+    if (timeout) {
+      setTimeout(() => {
+        chatRef.value?.scrollIntoView({ block: "end", behavior });
+      }, 300);
+    } else {
+      chatRef.value?.scrollIntoView({ block: "end", behavior });
+    }
+  });
+};
+
+const disableButton = ref(true);
+const handleInputUpdate = (value: string) => {
+  disableButton.value = value.trim().length === 0;
+};
+
+const loading = ref(false);
+const model = reactive(dAiInput());
+model.chatId = aiStore.chatId;
+const handleSubmit = () => {
+  if (disableButton.value) {
+    return;
+  }
+  messages.value.push({
+    id: new Date().getTime().toString(),
+    chatId: model.chatId,
+    sort: null,
+    role: "USER",
+    token: null,
+    totalToken: null,
+    messageStr: model.msg,
+  });
+  toEnd();
+  loading.value = true;
+  disableButton.value = true;
+  toEnd("smooth", true);
+  chat(model)
+    .then((res) => {
+      if (res.data) {
+        model.chatId = res.data.chatId;
+        aiStore.chatId = res.data.chatId;
+        messages.value.push({
+          id: res.data.id,
+          chatId: res.data.chatId,
+          sort: null,
+          role: "ASSISTANT",
+          token: null,
+          totalToken: null,
+          messageStr: res.data.msg,
+        });
+        toEnd("smooth", true);
+      }
+    })
+    .finally(() => {
+      loading.value = false;
+      disableButton.value = false;
+      model.msg = "";
+    });
+};
+
+const handleReset = () => {
+  aiStore.chatId = "";
+  messages.value = [];
+};
+
+const loadHistory = () => {
+  if (aiStore.chatId) {
+    list(aiStore.chatId).then((res) => {
+      if (res.data) {
+        messages.value = res.data;
+        toEnd("auto");
+      }
+    });
+  }
+};
+
+const scrollRef = ref();
 const compensateHeight = ref(0);
 const resizeObserver = new ResizeObserver((entries) => {
-  if (entries && paddingHeight.value === 0) {
+  if (entries) {
     const entry = entries[0];
     compensateHeight.value = entry.target.clientHeight;
   }
 });
 
-const scrollRef = ref();
-const chatRef = ref();
+const showBottom = ref(false);
+const handleScroll = (e) => {
+  showBottom.value =
+    e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight > 20;
+};
 
 onMounted(() => {
-  list(aiStore.chatId).then((res) => {
-    if (res.data) {
-      messages.value = res.data;
-      nextTick(() => {
-        chatRef.value?.scrollIntoView({ behavior: "smooth", block: "end" });
-      });
-      if (res.data.length === 0) {
-        paddingHeight.value =
-          Number(
-            scrollRef.value?.scrollbarInstRef.yBarSizePx.replace("px", ""),
-          ) - 32;
-        compensateHeight.value = paddingHeight.value;
-      } else {
-        paddingHeight.value = 0;
-      }
-    }
-  });
+  loadHistory();
   const element = document.querySelector(".input-container");
   if (element) {
     resizeObserver.observe(element);
@@ -55,33 +132,92 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-scrollbar ref="scrollRef">
+  <n-scrollbar ref="scrollRef" :on-scroll="handleScroll" class="chat-main">
     <div ref="chatRef" class="chat-window">
       <div class="chat-container">
-        <div v-for="message in messages" :key="message.id" class="chat-item">
-          <div
-            :class="[
-              message.role === 'USER' ? 'chat-right' : 'chat-left',
-              'chat-content',
-            ]"
-          >
-            <markdown-render :content="message.messageStr" />
+        <n-collapse-transition
+          v-for="(message, index) in messages"
+          :key="message.id"
+          :show="
+            message.role === 'USER' || index < messages.length - 1 || !loading
+          "
+        >
+          <div class="chat-item">
+            <div
+              :class="[
+                message.role === 'USER' ? 'chat-right' : 'chat-left',
+                'chat-content',
+              ]"
+            >
+              <markdown-render :content="message.messageStr" />
+            </div>
           </div>
-        </div>
-        <div class="chat-item">
-          <div :class="['chat-left', 'chat-content']">
-            <div class="dot-flashing"></div>
+        </n-collapse-transition>
+        <n-collapse-transition :show="loading">
+          <div class="chat-item">
+            <div :class="['chat-left', 'chat-content']">
+              <div class="dot-flashing"></div>
+            </div>
           </div>
-        </div>
+        </n-collapse-transition>
         <div :style="{ height: compensateHeight + 'px' }"></div>
+        <n-collapse-transition :show="showBottom">
+          <n-float-button
+            left="calc(50% - 20px)"
+            :bottom="160"
+            position="absolute"
+            @click="toEnd()"
+          >
+            <n-icon size="22px">
+              <ChevronDown />
+            </n-icon>
+          </n-float-button>
+        </n-collapse-transition>
       </div>
       <div class="input-container">
-        <n-upload class="input-file">
-          <n-button size="small" type="info" tertiary round>上传附件</n-button>
+        <n-upload abstract class="input-file">
+          <n-flex>
+            <n-upload-trigger #="{ handleClick }" abstract>
+              <n-button
+                size="small"
+                type="info"
+                tertiary
+                round
+                @click="handleClick"
+              >
+                上传附件
+              </n-button>
+            </n-upload-trigger>
+            <n-button
+              size="small"
+              type="error"
+              tertiary
+              round
+              @click="handleReset"
+            >
+              清空会话
+            </n-button>
+          </n-flex>
+          <n-upload-file-list class="file-list" />
         </n-upload>
         <n-input-group>
-          <n-input size="large" round clearable />
-          <n-button type="info" size="large" round>发送</n-button>
+          <n-input
+            v-model:value="model.msg"
+            size="large"
+            round
+            clearable
+            placeholder="输入您想说的，按Enter发送"
+            @keyup.enter="handleSubmit"
+            @update:value="handleInputUpdate"
+          />
+          <n-button
+            type="info"
+            size="large"
+            round
+            :disabled="disableButton"
+            @click="handleSubmit"
+            >发送
+          </n-button>
         </n-input-group>
       </div>
     </div>
@@ -95,8 +231,6 @@ onMounted(() => {
   flex-direction: column;
   overflow: hidden;
   height: 100%;
-  /*noinspection CssUnresolvedCustomProperty*/
-  background-color: var(--action-color);
 }
 
 .chat-container {
@@ -112,7 +246,6 @@ onMounted(() => {
 .chat-content {
   padding: 10px 16px;
   border-radius: 16px;
-  /*noinspection CssUnresolvedCustomProperty*/
   background-color: var(--base-color);
   max-width: calc(100% - 32px);
 }
@@ -121,7 +254,6 @@ onMounted(() => {
 .chat-right {
   border-top-right-radius: unset;
   float: right;
-  /*noinspection CssUnresolvedCustomProperty*/
   background-color: var(--primary-color-hover);
   color: #fff;
 }
@@ -139,15 +271,14 @@ onMounted(() => {
   padding: 16px;
   border-radius: 16px;
   position: absolute;
-  bottom: 14px;
-  width: calc(100% - 64px);
-  /*noinspection CssUnresolvedCustomProperty*/
+  bottom: 20px;
+  left: 42px;
+  width: calc(100% - 120px);
   background-color: color-mix(
     in srgb,
     var(--base-color),
     rgb(255, 255, 255, 0.2)
   );
-  /*noinspection CssUnresolvedCustomProperty*/
   box-shadow: var(--box-shadow-1);
   backdrop-filter: blur(24px);
 }
@@ -156,15 +287,20 @@ onMounted(() => {
   margin-bottom: 8px;
 }
 
+.file-list {
+  margin: 12px 0;
+  width: 100%;
+}
+
 .dot-flashing {
   margin: 8px 48px;
   position: relative;
   width: 8px;
   height: 8px;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: var(--primary-color);
   color: var(--primary-color);
-  animation: dotFlashing 1s infinite linear alternate;
+  animation: dotFlashing 0.5s infinite linear alternate;
   animation-delay: 0.5s;
 }
 
@@ -182,7 +318,7 @@ onMounted(() => {
   top: 0;
   width: 8px;
   height: 8px;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: var(--primary-color);
   color: var(--primary-color);
 }
@@ -201,7 +337,7 @@ onMounted(() => {
   top: 0;
   width: 8px;
   height: 8px;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: var(--primary-color);
   color: var(--primary-color);
 }
@@ -213,5 +349,11 @@ onMounted(() => {
   100% {
     background-color: var(--base-color);
   }
+}
+</style>
+
+<style>
+.chat-main {
+  background-color: var(--divider-color);
 }
 </style>

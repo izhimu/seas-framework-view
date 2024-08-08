@@ -2,7 +2,7 @@
 import MarkdownIt from "markdown-it";
 import "github-markdown-css";
 import "highlight.js/styles/github.min.css";
-import hljs from "highlight.js/lib/core";
+import hljs from "highlight.js";
 
 const props = withDefaults(
   defineProps<{

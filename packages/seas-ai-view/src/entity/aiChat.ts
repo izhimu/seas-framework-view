@@ -4,6 +4,12 @@ export interface AiInput {
 }
 
 export interface AiOutput {
-  chatId: string | null;
+  id: string;
+  chatId: string;
   msg: string | null;
 }
+
+export const dAiInput = (): AiInput => ({
+  chatId: null,
+  msg: null,
+});
