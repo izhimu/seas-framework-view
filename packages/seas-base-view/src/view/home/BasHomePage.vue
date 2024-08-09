@@ -15,6 +15,7 @@ import { useMenuStore } from "../../store";
 import BasHomeTab from "./components/BasHomeTab.vue";
 import BasHomeMenu from "./components/BasHomeMenu.vue";
 import BasHomeTools from "./components/BasHomeTools.vue";
+import BasHomeAiChat from "./components/BasHomeAiChat.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -74,6 +75,7 @@ const menuCollapsed = ref(false);
         </n-layout>
       </n-layout>
     </n-layout>
+    <bas-home-ai-chat />
   </div>
 </template>
 

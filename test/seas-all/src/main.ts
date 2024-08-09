@@ -6,6 +6,7 @@ import "@izhimu/seas-healthy-view/init";
 import "@izhimu/seas-job-view/init";
 import "@izhimu/seas-security-view/init";
 import "@izhimu/seas-mqtt-view/init";
+import "@izhimu/seas-ai-view/init";
 
 // App
 createSeasApp();

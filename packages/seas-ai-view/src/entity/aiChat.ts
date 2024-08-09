@@ -4,7 +4,6 @@ export interface AiInput {
 }
 
 export interface AiOutput {
-  id: string;
   chatId: string;
   msg: string | null;
 }

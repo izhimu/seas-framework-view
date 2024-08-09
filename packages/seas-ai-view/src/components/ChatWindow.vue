@@ -1,4 +1,4 @@
-<!--suppress CssUnresolvedCustomProperty -->
+<!--suppress CssUnresolvedCustomProperty, CssUnusedSymbol -->
 <script setup lang="ts">
 import {
   NInput,
@@ -21,6 +21,15 @@ import { useAiStore } from "../store";
 import MarkdownRender from "./MarkdownRender.vue";
 import { dAiInput } from "../entity/aiChat";
 import { chat } from "../request/aiChat";
+
+const props = withDefaults(
+  defineProps<{
+    backgroundBlur: boolean | null;
+  }>(),
+  {
+    backgroundBlur: false,
+  },
+);
 
 const aiStore = useAiStore();
 const messages = ref<AiHistory[]>([]);
@@ -73,7 +82,7 @@ const handleSubmit = () => {
         model.chatId = res.data.chatId;
         aiStore.chatId = res.data.chatId;
         messages.value.push({
-          id: res.data.id,
+          id: new Date().getTime().toString(),
           chatId: res.data.chatId,
           sort: null,
           role: "ASSISTANT",
@@ -132,7 +141,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-scrollbar ref="scrollRef" :on-scroll="handleScroll" class="chat-main">
+  <n-scrollbar
+    ref="scrollRef"
+    :on-scroll="handleScroll"
+    :class="props.backgroundBlur ? 'chat-main-bg-blur' : 'chat-main-bg-color'"
+  >
     <div ref="chatRef" class="chat-window">
       <div class="chat-container">
         <n-collapse-transition
@@ -174,7 +187,14 @@ onMounted(() => {
           </n-float-button>
         </n-collapse-transition>
       </div>
-      <div class="input-container">
+      <div
+        :class="[
+          'input-container',
+          !props.backgroundBlur
+            ? 'input-container-bg-blur'
+            : 'input-container-bg-color',
+        ]"
+      >
         <n-upload abstract class="input-file">
           <n-flex>
             <n-upload-trigger #="{ handleClick }" abstract>
@@ -250,15 +270,13 @@ onMounted(() => {
   max-width: calc(100% - 32px);
 }
 
-/*noinspection ALL*/
 .chat-right {
   border-top-right-radius: unset;
   float: right;
-  background-color: var(--primary-color-hover);
+  background-color: var(--info-color-suppl);
   color: #fff;
 }
 
-/*noinspection ALL*/
 .chat-left {
   border-top-left-radius: unset;
   float: left;
@@ -272,14 +290,22 @@ onMounted(() => {
   border-radius: 16px;
   position: absolute;
   bottom: 20px;
-  left: 42px;
-  width: calc(100% - 120px);
+  width: calc(100% - 64px);
+  box-shadow:
+    rgba(0, 0, 0, 0.05) 0 6px 24px 0,
+    rgba(0, 0, 0, 0.08) 0 0 0 1px;
+}
+
+.input-container-bg-color {
+  background-color: var(--base-color);
+}
+
+.input-container-bg-blur {
   background-color: color-mix(
     in srgb,
     var(--base-color),
     rgb(255, 255, 255, 0.2)
   );
-  box-shadow: var(--box-shadow-1);
   backdrop-filter: blur(24px);
 }
 
@@ -353,7 +379,16 @@ onMounted(() => {
 </style>
 
 <style>
-.chat-main {
+.chat-main-bg-color {
   background-color: var(--divider-color);
+}
+
+.chat-main-bg-blur {
+  background-color: color-mix(
+    in srgb,
+    var(--divider-color),
+    rgb(255, 255, 255, 0.1)
+  );
+  backdrop-filter: blur(12px);
 }
 </style>
