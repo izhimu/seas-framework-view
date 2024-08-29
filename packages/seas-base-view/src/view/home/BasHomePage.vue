@@ -11,7 +11,7 @@ import {
 import { event } from "@izhimu/seas-core";
 import { useUserStore } from "@izhimu/seas-security-view";
 import { useRouter } from "vue-router";
-import { useMenuStore } from "../../store";
+import { useMenuStore, useConfigStore } from "../../store";
 import BasHomeTab from "./components/BasHomeTab.vue";
 import BasHomeMenu from "./components/BasHomeMenu.vue";
 import BasHomeTools from "./components/BasHomeTools.vue";
@@ -20,6 +20,7 @@ import BasHomeAiChat from "./components/BasHomeAiChat.vue";
 const router = useRouter();
 const userStore = useUserStore();
 const menuStore = useMenuStore();
+const configStore = useConfigStore();
 // -- 事件监听 --
 event.on("routerChange", (data) => {
   menuStore.active = data;
@@ -45,6 +46,7 @@ const menuCollapsed = ref(false);
           :collapsed="menuCollapsed"
           :native-scrollbar="false"
           show-trigger
+          :inverted="configStore.home.menuInverted"
           @collapse="menuCollapsed = true"
           @expand="menuCollapsed = false"
         >

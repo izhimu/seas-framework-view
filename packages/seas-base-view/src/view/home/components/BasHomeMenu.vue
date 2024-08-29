@@ -42,7 +42,7 @@ onMounted(() => {
     :icon-size="configStore.logo.iconSize"
     :options="logoOptions"
     :on-update:value="handleLogoClick"
-    class="home-logo"
+    :inverted="configStore.home.menuInverted"
   />
   <n-scrollbar style="height: calc(100vh - 120px)">
     <n-menu
@@ -53,6 +53,7 @@ onMounted(() => {
       :collapsed-icon-size="22"
       :options="menuOptions"
       :on-update:value="handleMenuClick"
+      :inverted="configStore.home.menuInverted"
     />
   </n-scrollbar>
   <n-dropdown trigger="click" :width="240" :options="[]">
@@ -72,8 +73,4 @@ onMounted(() => {
   </n-dropdown>
 </template>
 
-<style scoped>
-.home-logo {
-  padding: 0;
-}
-</style>
+<style scoped></style>

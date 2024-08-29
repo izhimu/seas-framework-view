@@ -33,9 +33,6 @@ export default function useLogo() {
           previewDisabled: true,
         }),
     },
-    {
-      type: "divider",
-    },
   ]);
   const handleLogoClick = () => {
     router.push("/index");
