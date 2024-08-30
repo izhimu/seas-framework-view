@@ -30,7 +30,7 @@ export const dLogoConfig = (): LogoConfig => ({
 
 export const dHomeConfig = (): HomeConfig => ({
   menuCollapsed: false,
-  menuInverted: true,
+  menuInverted: false,
 });
 
 export const useConfigStore = defineStore("base.config", () => {
