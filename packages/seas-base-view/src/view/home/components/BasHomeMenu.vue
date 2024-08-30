@@ -36,6 +36,7 @@ onMounted(() => {
 
 <template>
   <n-menu
+    class="home-logo"
     :value="null"
     :collapsed="props.collapsed"
     :collapsed-width="64"
@@ -73,4 +74,8 @@ onMounted(() => {
   </n-dropdown>
 </template>
 
-<style scoped></style>
+<style>
+.home-logo .n-menu-item {
+  height: 52px;
+}
+</style>

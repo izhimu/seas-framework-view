@@ -17,6 +17,8 @@ import {
   Sunny,
   Moon,
   Key,
+  Expand,
+  Contract,
 } from "@vicons/ionicons5";
 import { useIcon, useThemeStore } from "@izhimu/seas-core";
 import { useUserStore } from "@izhimu/seas-security-view";
@@ -34,6 +36,23 @@ const themeIcon = shallowRef(themeStore.isDark() ? Moon : Sunny);
 const handleThemeClick = () => {
   themeIcon.value = themeStore.isDark() ? Sunny : Moon;
   themeStore.toggle();
+};
+
+/**
+ * 切换全屏
+ */
+const fullScreen = ref(false);
+const fullScreenIcon = shallowRef(Expand);
+const handleFullScreenClick = () => {
+  if (document.fullscreenEnabled) {
+    fullScreenIcon.value = fullScreen.value ? Expand : Contract;
+    fullScreen.value = !fullScreen.value;
+    if (fullScreen.value) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
 };
 
 /**
@@ -129,6 +148,9 @@ const handleUnlock = () => {
   <n-flex justify="end" size="small">
     <n-button quaternary circle @click="handleThemeClick">
       <n-icon :component="themeIcon" />
+    </n-button>
+    <n-button quaternary circle @click="handleFullScreenClick">
+      <n-icon :component="fullScreenIcon" />
     </n-button>
     <n-dropdown :options="escOptions" @select="handleEscClick">
       <n-button quaternary round>{{ userStore.current.userName }} </n-button>

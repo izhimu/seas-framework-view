@@ -113,11 +113,9 @@ const menuCollapsed = ref(false);
   height: 52px;
   display: flex;
   align-items: center;
-  border-radius: 32px;
   margin: auto 0;
   padding: 0 12px;
   background-color: var(--card-color);
-  border: 1px solid var(--divider-color);
   transition:
     color 0.3s var(--n-bezier),
     background-color 0.3s var(--n-bezier),
