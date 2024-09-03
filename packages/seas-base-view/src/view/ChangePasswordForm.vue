@@ -68,7 +68,8 @@ const getEncryptKey = async () => {
 };
 
 const handleSubmit = async () => {
-  const errors = await formRef.value?.validate();
+  // eslint-disable-next-line no-unsafe-optional-chaining
+  const { errors } = await formRef.value?.validate();
   if (errors) {
     return;
   }
