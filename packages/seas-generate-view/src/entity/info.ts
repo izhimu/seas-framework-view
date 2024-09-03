@@ -27,6 +27,7 @@ export interface Info {
   tablePrefix: string | null;
   className: string | null;
   fieldList: Array<FieldInfo>;
+  ext: object | null;
 }
 
 export const dFieldInfo = (): FieldInfo => ({
@@ -58,6 +59,7 @@ export const dInfo = (): Info => ({
   tablePrefix: null,
   className: null,
   fieldList: [],
+  ext: null,
 });
 
 export const oSearchType = [

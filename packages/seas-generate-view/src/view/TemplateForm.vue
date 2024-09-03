@@ -9,7 +9,10 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NInputGroup,
   NSpin,
+  NDynamicInput,
+  NScrollbar,
   useMessage,
 } from "naive-ui";
 import { useFormModel } from "@izhimu/seas-core/src";
@@ -39,6 +42,8 @@ const rules = ref<FormRules>({
   ],
 });
 
+const extParam = ref();
+
 const openModel = (id?: string) => {
   Object.assign(model, entity());
   open(!id);
@@ -47,6 +52,9 @@ const openModel = (id?: string) => {
     get(id)
       .then((res) => {
         Object.assign(model, res.data);
+        if (model.ext) {
+          extParam.value = JSON.parse(model.ext);
+        }
       })
       .finally(() => {
         dataLoading.value = false;
@@ -63,6 +71,9 @@ const handleSubmit = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
+      if (extParam.value) {
+        model.ext = JSON.stringify(extParam.value);
+      }
       btnLoading.value = true;
       if (addStatus.value) {
         save(model)
@@ -105,27 +116,56 @@ defineExpose({
   >
     <n-spin :show="dataLoading">
       <n-form ref="formRef" :model="model" :rules="rules">
-        <n-form-item path="name" label="模板名称">
+        <n-form-item path="templateName" label="模板名称">
           <n-input
             v-model:value="model.templateName"
             placeholder="请输入模板名称"
             @keydown.enter.prevent
           />
         </n-form-item>
-        <n-form-item path="name" label="模板版本">
+        <n-form-item path="templateVersion" label="模板版本">
           <n-input
             v-model:value="model.templateVersion"
             placeholder="请输入模板版本"
             @keydown.enter.prevent
           />
         </n-form-item>
-        <n-form-item path="name" label="备注">
+        <n-form-item path="remark" label="备注">
           <n-input
             v-model:value="model.remark"
             type="textarea"
             placeholder="请输入备注"
             @keydown.enter.prevent
           />
+        </n-form-item>
+        <n-form-item path="extParam" label="附加参数">
+          <n-scrollbar style="max-height: 170px">
+            <n-dynamic-input
+              v-model:value="extParam"
+              preset="pair"
+              :on-create="() => ({ key: '', value: '' })"
+            >
+              <template #default="{ value }">
+                <n-input-group>
+                  <n-input
+                    v-model:value="value.name"
+                    placeholder="说明"
+                    style="width: 33%"
+                  />
+                  <n-input
+                    v-model:value="value.key"
+                    placeholder="参数名"
+                    style="width: 33%"
+                  />
+                  <n-input
+                    v-model:value="value.value"
+                    placeholder="默认值"
+                    style="width: 33%"
+                  />
+                </n-input-group>
+              </template>
+            </n-dynamic-input>
+          </n-scrollbar>
         </n-form-item>
       </n-form>
     </n-spin>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, unref } from "vue";
+import { reactive, ref } from "vue";
 import {
   FormInst,
   FormRules,
@@ -21,6 +21,7 @@ import {
   NCollapse,
   NCollapseItem,
   NDivider,
+  NScrollbar,
   useMessage,
 } from "naive-ui";
 import { useFormModel } from "@izhimu/seas-core/src";
@@ -29,7 +30,7 @@ import {
   dTemplateAssets as entity,
   valData,
 } from "../entity/template";
-import { assets, assetsSave } from "../request/template";
+import { get, assets, assetsSave } from "../request/template";
 
 const valColumns = [
   {
@@ -39,9 +40,9 @@ const valColumns = [
   },
   {
     title: "标识",
-    key: "template",
+    key: "key",
     render(rowData) {
-      return `\${${rowData.template}}`;
+      return `\${${rowData.key}}`;
     },
   },
 ];
@@ -88,6 +89,8 @@ const handleTabAdd = () => {
   model.outPath = templateAssets.outPath;
 };
 
+const extParam = ref();
+
 const openModel = (id?: string, title?: string, version?: string) => {
   index = 0;
   fileTab.value = undefined;
@@ -105,6 +108,11 @@ const openModel = (id?: string, title?: string, version?: string) => {
   if (id) {
     idRef.value = id;
     dataLoading.value = true;
+    get(id).then((res) => {
+      if (res.data?.ext) {
+        extParam.value = JSON.parse(res.data.ext);
+      }
+    });
     assets(id)
       .then((res) => {
         if (res.data && res.data.length > 0) {
@@ -222,15 +230,16 @@ defineExpose({
           </n-form>
         </n-spin>
         <n-divider />
-        <n-collapse>
-          <n-collapse-item title="可选变量">
-            <n-data-table
-              :columns="valColumns"
-              :data="valData"
-              max-height="calc(100vh - 500px)"
-            />
-          </n-collapse-item>
-        </n-collapse>
+        <n-scrollbar style="height: calc(100vh - 420px)">
+          <n-collapse>
+            <n-collapse-item title="可选变量">
+              <n-data-table :columns="valColumns" :data="valData" />
+            </n-collapse-item>
+            <n-collapse-item v-if="extParam.length > 0" title="附加参数">
+              <n-data-table :columns="valColumns" :data="extParam" />
+            </n-collapse-item>
+          </n-collapse>
+        </n-scrollbar>
       </n-layout-sider>
       <n-layout>
         <n-layout-content>

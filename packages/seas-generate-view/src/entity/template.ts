@@ -3,6 +3,7 @@ export interface Template {
   templateName: string | null;
   templateVersion: string | null;
   remark: string | null;
+  ext: string | null;
 }
 
 export const pTemplate = (): Template => ({
@@ -10,6 +11,7 @@ export const pTemplate = (): Template => ({
   templateName: null,
   templateVersion: null,
   remark: null,
+  ext: null,
 });
 
 export const dTemplate = (): Template => ({
@@ -17,6 +19,7 @@ export const dTemplate = (): Template => ({
   templateName: null,
   templateVersion: null,
   remark: null,
+  ext: null,
 });
 
 export interface TemplateAssets {
@@ -52,94 +55,94 @@ export const dTemplateAssets = (): TemplateAssets => ({
 export const valData = [
   {
     name: "作者",
-    template: "author",
+    key: "author",
   },
   {
     name: "包名",
-    template: "packageName",
+    key: "packageName",
   },
   {
     name: "表名",
-    template: "tableName",
+    key: "tableName",
   },
   {
     name: "描述",
-    template: "tableDesc",
+    key: "tableDesc",
   },
   {
     name: "类名",
-    template: "className",
+    key: "className",
   },
   {
     name: "文件名",
-    template: "fileName",
+    key: "fileName",
   },
   {
     name: "路径名",
-    template: "pathName",
+    key: "pathName",
   },
   {
     name: "键名",
-    template: "keyName",
+    key: "keyName",
   },
   {
     name: "字段名",
-    template: "fieldList[].fieldName",
+    key: "fieldList[].fieldName",
   },
   {
     name: "显示名",
-    template: "fieldList[].showName",
+    key: "fieldList[].showName",
   },
   {
     name: "属性名",
-    template: "fieldList[].attrName",
+    key: "fieldList[].attrName",
   },
   {
     name: "字段类型",
-    template: "fieldList[].fieldType",
+    key: "fieldList[].fieldType",
   },
   {
     name: "java类型",
-    template: "fieldList[].javaType",
+    key: "fieldList[].javaType",
   },
   {
     name: "js类型",
-    template: "fieldList[].jsType",
+    key: "fieldList[].jsType",
   },
   {
     name: "主键",
-    template: "fieldList[].isPk",
+    key: "fieldList[].isPk",
   },
   {
     name: "可空",
-    template: "fieldList[].isNull",
+    key: "fieldList[].isNull",
   },
   {
     name: "可插入",
-    template: "fieldList[].insertable",
+    key: "fieldList[].insertable",
   },
   {
     name: "列表显示",
-    template: "fieldList[].listable",
+    key: "fieldList[].listable",
   },
   {
     name: "可查询",
-    template: "fieldList[].searchable",
+    key: "fieldList[].searchable",
   },
   {
     name: "可排序",
-    template: "fieldList[].sortable",
+    key: "fieldList[].sortable",
   },
   {
     name: "查询模式",
-    template: "fieldList[].searchType",
+    key: "fieldList[].searchType",
   },
   {
     name: "导包",
-    template: "importList",
+    key: "importList",
   },
   {
     name: "导包Search",
-    template: "importSearch",
+    key: "importSearch",
   },
 ];

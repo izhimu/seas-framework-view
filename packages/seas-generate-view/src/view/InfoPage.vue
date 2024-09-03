@@ -25,9 +25,10 @@ import { SelectMixedOption } from "naive-ui/es/select/src/interface";
 import { useDownload } from "@izhimu/seas-storage-view/src";
 import { get, create, preview } from "../request/info";
 import { list as datasourceList, tables } from "../request/datasource";
-import { list as templateList } from "../request/template";
+import { list as templateList, get as getTemplate } from "../request/template";
 import { FieldInfo, dInfo, oSearchType } from "../entity/info";
 import InfoPreview from "./InfoPreview.vue";
+import InfoExt from "./InfoExt.vue";
 
 const message = useMessage();
 const { ofBlob } = useDownload();
@@ -308,6 +309,14 @@ const handleTableClick = (v: string) => {
   }
 };
 
+const extRef = ref();
+const extParams = ref();
+const extBtnType = ref();
+
+const handleExtClick = () => {
+  extRef.value.openModel();
+};
+
 const paramVerify = (): boolean => {
   if (!model.tableName) {
     message.warning("请选择表!");
@@ -327,6 +336,9 @@ const paramVerify = (): boolean => {
 const handlePreviewClick = () => {
   if (paramVerify()) {
     previewLoading.value = true;
+    model.ext = Object.fromEntries(
+      extParams.value.map((item) => [item.key, item.value]),
+    );
     preview(model)
       .then((res) => {
         if (res.data) {
@@ -342,6 +354,9 @@ const handlePreviewClick = () => {
 const handleCreateClick = () => {
   if (paramVerify()) {
     createLoading.value = true;
+    model.ext = Object.fromEntries(
+      extParams.value.map((item) => [item.key, item.value]),
+    );
     create(model)
       .then((blob) => {
         ofBlob(blob, `${model.className}.zip`);
@@ -363,6 +378,15 @@ const handleUpdateClassName = (val: string) => {
     const str = tableName.split("_");
     model.className = str.map(firstUpper).join("");
   }
+};
+
+const handleTemplateSelect = (val: string) => {
+  getTemplate(val).then((res) => {
+    if (res.data?.ext) {
+      extParams.value = JSON.parse(res.data.ext);
+      extBtnType.value = "warning";
+    }
+  });
 };
 
 onMounted(() => {
@@ -449,6 +473,7 @@ onMounted(() => {
                       style="width: 220px"
                       :options="templateRef"
                       placeholder="请选择模板"
+                      @change="handleTemplateSelect"
                     ></n-select>
                     <n-input
                       v-model:value="model.packageName"
@@ -466,6 +491,9 @@ onMounted(() => {
                       placeholder="请输入表前缀"
                       @input="handleUpdateClassName"
                     />
+                    <n-button :type="extBtnType" ghost @click="handleExtClick">
+                      附加参数
+                    </n-button>
                   </n-space>
                   <n-space justify="end">
                     <n-button
@@ -491,6 +519,7 @@ onMounted(() => {
       </n-layout>
     </n-layout>
     <info-preview ref="previewRef" />
+    <info-ext ref="extRef" v-model:value="extParams" />
   </div>
 </template>
 
