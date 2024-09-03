@@ -3,7 +3,7 @@ import { onMounted, reactive, ref } from "vue";
 import { NCard, NInput, NButton, NDataTable, NSpace, NIcon } from "naive-ui";
 import { usePage, useTableButton, SearchIcon } from "@izhimu/seas-core/src";
 import { pTemplate as param } from "../entity/template";
-import { page, del } from "../request/template";
+import { page, del, copy } from "../request/template";
 import FormModel from "./TemplateForm.vue";
 import TemplateAssets from "./TemplateAssetsForm.vue";
 
@@ -67,6 +67,21 @@ const {
               rowData.templateVersion,
             );
           },
+          {
+            style: "margin-right: 8px;",
+          },
+        ),
+        confirmButton(
+          "复制",
+          "确认复制数据？",
+          "info",
+          "gen.template.copy",
+          () => {
+            if (rowData.id) {
+              copy(rowData.id).then(queryPage);
+            }
+          },
+          undefined,
           {
             style: "margin-right: 8px;",
           },

@@ -12,7 +12,7 @@ export default defineConfig({
     port: 30000,
     proxy: {
       "/api": {
-        target: "https://seas-gen.home.izhimu.cn/api/",
+        target: "http://localhost:8080/",
         changeOrigin: true,
         secure: false,
         // eslint-disable-next-line no-shadow

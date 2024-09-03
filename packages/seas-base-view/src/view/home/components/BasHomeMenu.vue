@@ -66,7 +66,7 @@ onMounted(() => {
       :collapsed-icon-size="22"
       :options="[
         {
-          label: '主题1',
+          label: '默认',
           key: 'topic',
         },
       ]"

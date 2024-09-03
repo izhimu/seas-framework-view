@@ -13,6 +13,7 @@ export interface LogoConfig {
 export interface HomeConfig {
   menuCollapsed: boolean;
   menuInverted: boolean;
+  aiChat: boolean;
 }
 
 export const dLogoConfig = (): LogoConfig => ({
@@ -31,6 +32,7 @@ export const dLogoConfig = (): LogoConfig => ({
 export const dHomeConfig = (): HomeConfig => ({
   menuCollapsed: false,
   menuInverted: false,
+  aiChat: false,
 });
 
 export const useConfigStore = defineStore("base.config", () => {

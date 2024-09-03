@@ -77,7 +77,7 @@ const menuCollapsed = ref(false);
         </n-layout>
       </n-layout>
     </n-layout>
-    <bas-home-ai-chat />
+    <bas-home-ai-chat v-if="configStore.home.aiChat" />
   </div>
 </template>
 

@@ -45,9 +45,13 @@ export const assets = (id: string): Promise<Result<Array<TemplateAssets>>> => {
 export const assetsSave = (
   assetsList: Array<TemplateAssets>,
 ): Promise<Result<Array<TemplateAssets>>> => {
-  return api().post(`${url}/assets`, assetsList);
+  return api().post(`${url}/assets`, { data: assetsList });
 };
 
 export const list = (): Promise<Result<Array<Entity>>> => {
   return api().get(`${url}/list`);
+};
+
+export const copy = (id: string): Promise<Result<void>> => {
+  return api().post(`${url}/copy/${id}`);
 };
