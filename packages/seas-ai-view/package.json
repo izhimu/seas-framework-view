@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-ai-view",
-  "version": "1.1.30",
+  "version": "1.1.31",
   "type": "module",
   "description": "Seas Framework View",
   "main": "src/index.ts",
