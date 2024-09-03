@@ -1,6 +1,6 @@
 {
   "name": "@izhimu/seas-storage-view",
-  "version": "1.1.31",
+  "version": "1.1.32",
   "type": "module",
   "description": "Seas Framework View",
   "main": "src/index.ts",
