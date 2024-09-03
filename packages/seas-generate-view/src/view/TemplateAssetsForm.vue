@@ -42,7 +42,7 @@ const valColumns = [
     title: "标识",
     key: "key",
     render(rowData) {
-      return `\${${rowData.key}}`;
+      return `\${ext.${rowData.key}}`;
     },
   },
 ];
