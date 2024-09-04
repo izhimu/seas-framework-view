@@ -42,6 +42,21 @@ const valColumns = [
     title: "标识",
     key: "key",
     render(rowData) {
+      return `\${${rowData.key}}`;
+    },
+  },
+];
+
+const extColumns = [
+  {
+    title: "变量",
+    key: "name",
+    width: 60,
+  },
+  {
+    title: "标识",
+    key: "key",
+    render(rowData) {
       return `\${ext.${rowData.key}}`;
     },
   },
@@ -236,7 +251,7 @@ defineExpose({
               <n-data-table :columns="valColumns" :data="valData" />
             </n-collapse-item>
             <n-collapse-item v-if="extParam.length > 0" title="附加参数">
-              <n-data-table :columns="valColumns" :data="extParam" />
+              <n-data-table :columns="extColumns" :data="extParam" />
             </n-collapse-item>
           </n-collapse>
         </n-scrollbar>
