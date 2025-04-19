@@ -42,7 +42,7 @@ const menuCollapsed = ref(false);
           bordered
           collapse-mode="width"
           :collapsed-width="64"
-          :width="260"
+          :width="220"
           :collapsed="menuCollapsed"
           :native-scrollbar="false"
           show-trigger

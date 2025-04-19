@@ -44,6 +44,7 @@ onMounted(() => {
     :options="logoOptions"
     :on-update:value="handleLogoClick"
     :inverted="configStore.home.menuInverted"
+    :root-indent="20"
   />
   <n-scrollbar style="height: calc(100vh - 120px)">
     <n-menu
