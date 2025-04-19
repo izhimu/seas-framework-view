@@ -19,12 +19,12 @@ export interface HomeConfig {
 export const dLogoConfig = (): LogoConfig => ({
   icon: true,
   iconSrc: "/img/logo.png",
-  iconSize: 32,
+  iconSize: 28,
   iconStyle: { margin: "16px" },
   title: "",
   titleStyle: {
     textAlign: "center",
-    fontSize: "20px",
+    fontSize: "18px",
     fontWeight: "bold",
   },
 });

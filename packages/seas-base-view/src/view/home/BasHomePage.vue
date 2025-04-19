@@ -42,7 +42,7 @@ const menuCollapsed = ref(false);
           bordered
           collapse-mode="width"
           :collapsed-width="64"
-          :width="220"
+          :width="200"
           :collapsed="menuCollapsed"
           :native-scrollbar="false"
           show-trigger
@@ -64,7 +64,7 @@ const menuCollapsed = ref(false);
             </n-el>
           </n-layout-header>
           <n-layout-content class="home-content">
-            <n-scrollbar style="max-height: calc(100vh - 64px)">
+            <n-scrollbar style="max-height: calc(100vh - 56px)">
               <router-view v-slot="{ Component }">
                 <transition name="fade-slide" mode="out-in">
                   <keep-alive>
@@ -84,7 +84,7 @@ const menuCollapsed = ref(false);
 <!--suppress CssUnusedSymbol -->
 <style>
 .home-logo .n-menu-item {
-  height: 52px;
+  height: 44px;
 }
 
 .home-logo .n-menu-divider {
@@ -95,7 +95,7 @@ const menuCollapsed = ref(false);
 <style scoped>
 .home-header {
   padding: 0 16px;
-  height: 64px;
+  height: 56px;
   display: grid;
   grid-template-columns: auto max-content;
 }

@@ -95,7 +95,7 @@ hljs.registerLanguage("rust", rust);
 
 /*noinspection CssUnusedSymbol*/
 .box-content {
-  padding: 16px;
+  padding: 10px;
 }
 
 .fade-bottom-enter-active,

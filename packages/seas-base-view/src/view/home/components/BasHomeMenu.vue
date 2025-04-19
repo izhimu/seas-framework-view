@@ -44,9 +44,9 @@ onMounted(() => {
     :options="logoOptions"
     :on-update:value="handleLogoClick"
     :inverted="configStore.home.menuInverted"
-    :root-indent="20"
+    :indent="20"
   />
-  <n-scrollbar style="height: calc(100vh - 120px)">
+  <n-scrollbar style="height: calc(100vh - 112px)">
     <n-menu
       ref="menuRef"
       v-model:value="menuStore.active"
@@ -56,6 +56,7 @@ onMounted(() => {
       :options="menuOptions"
       :on-update:value="handleMenuClick"
       :inverted="configStore.home.menuInverted"
+      :indent="26"
     />
   </n-scrollbar>
   <n-dropdown trigger="click" :width="240" :options="[]">
@@ -76,7 +77,4 @@ onMounted(() => {
 </template>
 
 <style>
-.home-logo .n-menu-item {
-  height: 52px;
-}
 </style>

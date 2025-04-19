@@ -26,7 +26,7 @@
 
 /*noinspection CssUnusedSymbol*/
 .box-content {
-  padding: 16px;
+  padding: 10px;
 }
 
 .fill-width {
