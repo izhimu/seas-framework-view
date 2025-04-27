@@ -336,9 +336,11 @@ const paramVerify = (): boolean => {
 const handlePreviewClick = () => {
   if (paramVerify()) {
     previewLoading.value = true;
-    model.ext = Object.fromEntries(
-      extParams.value.map((item) => [item.key, item.value]),
-    );
+    if (model.ext){
+      model.ext = Object.fromEntries(
+          extParams.value.map((item) => [item.key, item.value]),
+      );
+    }
     preview(model)
       .then((res) => {
         if (res.data) {
@@ -354,9 +356,11 @@ const handlePreviewClick = () => {
 const handleCreateClick = () => {
   if (paramVerify()) {
     createLoading.value = true;
-    model.ext = Object.fromEntries(
-      extParams.value.map((item) => [item.key, item.value]),
-    );
+    if (model.ext) {
+      model.ext = Object.fromEntries(
+          extParams.value.map((item) => [item.key, item.value]),
+      );
+    }
     create(model)
       .then((blob) => {
         ofBlob(blob, `${model.className}.zip`);
