@@ -25,7 +25,7 @@
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^4.6.2",
     "@vicons/ionicons5": "^0.13.0",
-    "axios": "^1.8.4",
+    "axios": "^1.9.0",
     "echarts": "^5.6.0",
     "highlight.js": "^11.11.1",
     "mitt": "^3.0.1",
@@ -36,25 +36,26 @@
     "sm-crypto": "^0.3.13",
     "vant": "^4.9.19",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.27.0",
+    "@tsconfig/node22": "^22.0.1",
+    "@types/node": "^22.15.12",
     "@types/qs": "^6.9.18",
     "@types/sm-crypto": "^0.3.4",
-    "@typescript-eslint/eslint-plugin": "^8.30.1",
-    "@typescript-eslint/parser": "^8.30.1",
     "@vitejs/plugin-vue": "^5.2.3",
-    "eslint": "^9.25.0",
-    "eslint-config-prettier": "^10.1.2",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.2.6",
-    "eslint-plugin-vue": "^10.0.0",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.3",
-    "vite": "^6.3.2",
-    "vue-eslint-parser": "^10.1.3",
-    "vue-tsc": "3.0.0-alpha.2"
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.5.0",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.26.0",
+    "eslint-plugin-vue": "~10.1.0",
+    "jiti": "^2.4.2",
+    "npm-run-all2": "^8.0.1",
+    "prettier": "3.5.3",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-vue-devtools": "^7.7.6",
+    "vue-tsc": "^2.2.10"
   },
   "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
 }
