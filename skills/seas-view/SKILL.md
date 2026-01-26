@@ -1,167 +1,130 @@
 ---
 name: seas-view
-description: Comprehensive skill documentation for SEAS Framework View - a Vue 3 + TypeScript monorepo framework with modular architecture. Guides AI assistants in understanding framework structure, development patterns, and best practices.
+description: SEAS Framework View skill for AI assistants. Vue 3 + TypeScript monorepo framework with modular architecture. Provides guidance on framework structure, development patterns, and best practices.
 license: Apache-2.0
-compatibility: SEAS Framework View 1.1.34+, requires Node.js >= 18, pnpm >= 9.7.1
+compatibility: SEAS Framework View 1.1.34+, Node.js >= 18, pnpm >= 9.7.1
 metadata:
   author: izhimu
   version: "1.1.34"
   framework: "Vue 3.5+ | TypeScript 5.8+ | Vite 6+"
   lastUpdated: "2026-01-26"
-  documentationIndex: "README.md"
+  references: "references/"
 ---
 
 # SEAS Framework View
 
-SEAS Framework View is a monorepo-based Vue 3 frontend framework designed for building enterprise applications. It provides a modular architecture with reusable core libraries and feature-specific package modules, supporting both desktop (Naive UI) and mobile (Vant) development patterns.
+SEAS Framework View is a monorepo-based Vue 3 frontend framework for enterprise applications with modular architecture, supporting both desktop (Naive UI) and mobile (Vant) development.
 
-## 📚 Documentation Index
+## Quick Start
 
-**For detailed module documentation, see the [Documentation Index](README.md)**
+**For AI assistants working with SEAS:**
 
-Quick links:
-- **[Core Libraries](#core-libraries)** - Foundational functionality
-- **[Package Modules](#package-modules)** - Feature-specific UI components
-- **[Technology Stack](#technology-stack)** - Framework and tools
-- **[Development Workflow](#development-workflow)** - Commands and processes
-- **[Component Patterns](#component-development-patterns)** - Vue 3 examples
-- **[State Management](#state-management-patterns)** - Pinia usage
-- **[Best Practices](#best-practices)** - Coding standards
+1. **Start here** - Read this SKILL.md for framework overview and patterns
+2. **Module details** - See `references/` directory for specific module documentation
+3. **Follow patterns** - Vue 3 Composition API, TypeScript, workspace dependencies
 
-## Framework Overview
+## Architecture
 
-### Architecture
+### Monorepo Structure
 
-The framework follows a monorepo structure using pnpm workspaces:
+```
+core/              # Core libraries (reusable by external projects)
+├── seas-core      # HTTP, auth, encryption, composables
+├── seas-common    # Utilities: string, number, date, validation
+└── seas-mobile-core # Mobile: device detection, gestures, mobile UI
 
-**Core Libraries** (`core/`):
-- [`@izhimu/seas-core`](references/core/seas-core.md) - Core functionality with HTTP, auth, encryption
-- [`@izhimu/seas-common`](references/core/seas-common.md) - Common utilities and helpers
-- [`@izhimu/seas-mobile-core`](references/core/seas-mobile-core.md) - Mobile-specific features
+packages/          # Feature-specific UI modules
+├── seas-base-view     # Layouts, tables, forms
+├── seas-security-view # Auth, users, roles, permissions
+├── seas-ai-view       # Chat, prompts, AI workflows
+├── seas-storage-view  # File upload/management
+├── seas-job-view      # Job scheduling
+├── seas-healthy-view  # Health monitoring
+├── seas-generate-view # Code generation
+├── seas-mqtt-view     # MQTT messaging
+└── seas-form-view     # Dynamic forms
+```
 
-**Package Modules** (`packages/`):
-- [`@izhimu/seas-base-view`](references/packages/seas-base-view.md) - Base UI components and layouts
-- [`@izhimu/seas-security-view`](references/packages/seas-security-view.md) - Authentication and access control
-- [`@izhimu/seas-ai-view`](references/packages/seas-ai-view.md) - AI integration and chat interfaces
-- [`@izhimu/seas-storage-view`](references/packages/seas-storage-view.md) - File storage and management
-- [`@izhimu/seas-job-view`](references/packages/seas-job-view.md) - Job scheduling and tasks
-- [`@izhimu/seas-healthy-view`](references/packages/seas-healthy-view.md) - Health monitoring
-- [`@izhimu/seas-generate-view`](references/packages/seas-generate-view.md) - Code generation tools
-- [`@izhimu/seas-mqtt-view`](references/packages/seas-mqtt-view.md) - MQTT messaging
-- [`@izhimu/seas-form-view`](references/packages/seas-form-view.md) - Form building and validation
+**Key**: Core libs = foundational functionality. Packages = feature-specific UI implementations.
 
-**Key distinction**: Core libraries provide foundational functionality for external projects. Package modules contain feature-specific UI implementations.
+## Module Documentation
+
+Detailed module docs are in `references/`:
+
+**Core Libraries:**
+- [`@izhimu/seas-core`](references/core/seas-core.md) - HTTP, auth, encryption
+- [`@izhimu/seas-common`](references/core/seas-common.md) - Utilities
+- [`@izhimu/seas-mobile-core`](references/core/seas-mobile-core.md) - Mobile features
+
+**Package Modules:**
+- [`@izhimu/seas-base-view`](references/packages/seas-base-view.md) - Base UI
+- [`@izhimu/seas-security-view`](references/packages/seas-security-view.md) - Security
+- [`@izhimu/seas-ai-view`](references/packages/seas-ai-view.md) - AI integration
+- [`@izhimu/seas-storage-view`](references/packages/seas-storage-view.md) - Storage
+- [`@izhimu/seas-job-view`](references/packages/seas-job-view.md) - Jobs
+- [`@izhimu/seas-healthy-view`](references/packages/seas-healthy-view.md) - Health
+- [`@izhimu/seas-generate-view`](references/packages/seas-generate-view.md) - Code gen
+- [`@izhimu/seas-mqtt-view`](references/packages/seas-mqtt-view.md) - MQTT
+- [`@izhimu/seas-form-view`](references/packages/seas-form-view.md) - Forms
 
 ## Technology Stack
 
-### Core Technologies
+**Core**: Vue 3.5+, TypeScript 5.8+, Vite 6+, Node.js >= 18
+**Desktop**: Naive UI 2.41+
+**Mobile**: Vant 4.9+
+**State**: Pinia 3.0+ with persistence plugin
+**Routing**: Vue Router 4.5+
+**Build**: ESLint 9.26+, Prettier 3.5+
+**Package Manager**: pnpm 9.7.1+ with workspaces
 
-- **Vue 3.5+**: Progressive JavaScript framework using Composition API
-- **TypeScript 5.8+**: Typed JavaScript for enhanced developer experience
-- **Vite 6+**: Next-generation build tool for rapid development
-- **Node.js >= 18**: Runtime environment requirement
-
-### UI Libraries
-
-- **Desktop**: Naive UI 2.41+ - comprehensive Vue 3 component library
-- **Mobile**: Vant 4.9+ - mobile UI components built for Vue 3
-
-### State Management & Routing
-
-- **Pinia 3.0+**: Official Vue state management library
-- **pinia-plugin-persistedstate 4.2+**: State persistence plugin
-- **Vue Router 4.5+**: Official routing solution for Vue.js
-
-### Additional Dependencies
-
-- **ECharts 5.6+**: Data visualization library
-- **axios 1.9+**: HTTP client for API requests
-- **mitt 3.0+**: Event emitter for component communication
-- **sm-crypto 0.3+**: SM2/SM3/SM4 encryption algorithms
-- **qs 6.14+**: Query string parsing and utilities
-- **@fingerprintjs/fingerprintjs 4.6+**: Browser fingerprinting
-- **highlight.js 11.11+**: Syntax highlighting
-
-### Build Tools & Quality
-
-- **ESLint 9.26+**: Code linting and quality checks
-- **Prettier 3.5+**: Code formatting
-- **TypeScript**: `@tsconfig/node22`, `@vue/tsconfig`
-- **Vite**: `@vitejs/plugin-vue`, `vite-plugin-vue-devtools`
-
-### Package Manager
-
-- **pnpm 9.7.1+**: Fast, disk space efficient package manager
-- **Workspaces**: Monorepo support using `workspace:*` protocol
-
-## Development Workflow
-
-### Development Commands
+## Development Commands
 
 ```bash
-# Start all packages in parallel
+# Start all packages
 pnpm run dev
 
 # Start specific package
-pnpm run dev:base          # Base view components
-pnpm run dev:generate      # Code generation tools
-pnpm run dev:healthy       # Health monitoring
-pnpm run dev:job           # Job scheduling
-pnpm run dev:security      # Security components
-pnpm run dev:storage       # Storage management
-pnpm run dev:mqtt          # MQTT messaging
-pnpm run dev:ai            # AI integration
-pnpm run dev:mobile-security  # Mobile security view
+pnpm run dev:base | dev:security | dev:ai | dev:storage | etc.
 
-# Build all packages
+# Build all
 pnpm run build
 
 # Build specific package
 pnpm --filter @izhimu/seas-base-view run build
-```
 
-### Package-Specific Development
-
-```bash
-# Work on specific package using filter
+# Work on specific package
 pnpm --filter @izhimu/seas-security-view run dev
-
-# Run multiple packages in parallel
-pnpm --parallel --filter @izhimu/seas-base-view --filter @izhimu/seas-security-view run dev
 ```
 
-## Development Standards
+## Code Standards
 
-### Code Style Requirements
+**Required**:
+- TypeScript for all code
+- Vue 3 Composition API with `<script setup>`
+- 2-space indentation, 100-char line width
+- PascalCase component names
+- TypeScript interfaces for props
+- Typed events with `defineEmits<T>()`
+- Scoped CSS for components
 
-- **Language**: TypeScript for all new code
-- **Vue API**: Composition API with `<script setup>` syntax
-- **Indentation**: 2 spaces (no tabs)
-- **Line width**: 100 characters maximum
-- **Component naming**: PascalCase (e.g., `UserProfile.vue`)
-
-### Component Development Standards
+**Example Component**:
 
 ```vue
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-// Props must use TypeScript interfaces
 interface Props {
   userId: number
   title?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  title: 'Default Title'
+  title: 'Default'
 })
 
-// Events must be explicitly typed
-interface Emits {
+const emit = defineEmits<{
   (e: 'update', value: string): void
-}
-
-const emit = defineEmits<Emits>()
+}>()
 </script>
 
 <template>
@@ -171,78 +134,30 @@ const emit = defineEmits<Emits>()
 </template>
 
 <style scoped>
-/* Always use scoped CSS */
 .component {
   padding: 16px;
 }
 </style>
 ```
 
-### Commit Message Standards
+**Commit Messages**: Conventional Commits format
 
-Use [Conventional Commits](https://www.conventionalcommits.org/) format:
-
-```
-<type>[optional scope]: <description>
-
-[optional body]
-```
-
-**Valid types**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ui`
-
-**Examples**:
 ```
 feat(security): add password strength component
-fix(storage): resolve file upload timeout issue
-docs(seas-ai-view): update AI integration examples
+fix(storage): resolve file upload timeout
+docs(seas-ai-view): update AI examples
 ```
 
-## Component Development Patterns
+Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ui`
 
-### Standard Vue Component Structure
+## Component Patterns
 
-```vue
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { NButton, NCard } from 'naive-ui'
-
-interface Props {
-  modelValue: string
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
-
-const localValue = ref(props.modelValue)
-const isValid = computed(() => localValue.value.length > 0)
-
-onMounted(() => {
-  console.log('Component mounted')
-})
-</script>
-
-<template>
-  <div class="component-container">
-    <NCard title="Component">
-      <!-- Content -->
-    </NCard>
-  </div>
-</template>
-
-<style scoped>
-.component-container {
-  max-width: 600px;
-}
-</style>
-```
-
-### Desktop Components (Naive UI)
+### Desktop (Naive UI)
 
 ```vue
 <script setup lang="ts">
 import { NButton, NDataTable } from 'naive-ui'
+import { ref } from 'vue'
 
 const columns = [
   { title: 'ID', key: 'id' },
@@ -257,11 +172,12 @@ const data = ref([])
 </template>
 ```
 
-### Mobile Components (Vant)
+### Mobile (Vant)
 
 ```vue
 <script setup lang="ts">
-import { VanButton, VanList } from 'vant'
+import { VanList, VanCard } from 'vant'
+import { ref } from 'vue'
 
 const list = ref([])
 const loading = ref(false)
@@ -274,9 +190,7 @@ const loading = ref(false)
 </template>
 ```
 
-## State Management Patterns
-
-### Pinia Store Definition
+## State Management (Pinia)
 
 ```typescript
 // stores/user.ts
@@ -292,18 +206,7 @@ export const useUserStore = defineStore('user', () => {
     token.value = newToken
   }
 
-  const logout = () => {
-    userInfo.value = null
-    token.value = ''
-  }
-
-  return {
-    userInfo,
-    token,
-    isAuthenticated,
-    setToken,
-    logout
-  }
+  return { userInfo, token, isAuthenticated, setToken }
 }, {
   persist: {
     key: 'user-store',
@@ -312,32 +215,20 @@ export const useUserStore = defineStore('user', () => {
 })
 ```
 
-### Using Stores in Components
+**Usage**:
 
 ```vue
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
-
-// Access state
-console.log(userStore.userInfo)
-console.log(userStore.isAuthenticated)
-
-// Call actions
-userStore.setToken('new-token')
+// userStore.userInfo, userStore.isAuthenticated, userStore.setToken()
 </script>
-
-<template>
-  <div v-if="userStore.isAuthenticated">
-    Welcome, {{ userStore.userInfo?.name }}
-  </div>
-</template>
 ```
 
-## Package Dependency Guidelines
+## Dependencies
 
-### Core Library Dependencies
+**Core libraries** (for packages):
 
 ```json
 {
@@ -348,35 +239,30 @@ userStore.setToken('new-token')
 }
 ```
 
-### Inter-Package Dependencies
+**Inter-package**:
 
 ```json
 {
   "devDependencies": {
     "@izhimu/seas-core": "workspace:*",
-    "@izhimu/seas-security-view": "workspace:*",
-    "@izhimu/seas-ai-view": "workspace:*"
+    "@izhimu/seas-security-view": "workspace:*"
   }
 }
 ```
 
-**Example**: `seas-base-view` depends on `seas-security-view` for authentication and `seas-ai-view` for AI features.
-
-### Importing from Dependencies
+**Importing**:
 
 ```typescript
-// Import from core
+// From core
 import { http, useAuth } from '@izhimu/seas-core'
 import { formatDate, isEmail } from '@izhimu/seas-common'
 
-// Import from packages
+// From packages
 import { LoginForm } from '@izhimu/seas-security-view'
 import { ChatBox } from '@izhimu/seas-ai-view'
 ```
 
-## Routing and Navigation
-
-### Vue Router 4 Configuration
+## Routing (Vue Router 4)
 
 ```typescript
 import { createRouter, createWebHistory } from 'vue-router'
@@ -401,170 +287,100 @@ const router = createRouter({
 })
 ```
 
-### Integration with Naive UI
+## Quality Checklist
 
-```vue
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { NMenu } from 'naive-ui'
-
-const router = useRouter()
-
-const menuOptions = computed(() => [
-  {
-    label: 'Home',
-    key: 'Home',
-    onClick: () => router.push({ name: 'Home' })
-  }
-])
-</script>
-
-<template>
-  <NMenu :options="menuOptions" />
-</template>
-```
-
-## Testing and Quality Assurance
-
-### Quality Checklist
-
-Before committing code:
+Before committing:
 
 1. ✅ Type checking: `pnpm run type-check`
 2. ✅ Linting: `pnpm run lint`
 3. ✅ Build: `pnpm run build`
-4. ✅ Components follow Vue 3 Composition API
+4. ✅ Vue 3 Composition API used
 5. ✅ Props have TypeScript interfaces
-6. ✅ Events use `defineEmits` with types
-7. ✅ Styles are scoped
-8. ✅ Commit follows Conventional Commits
+6. ✅ Events are typed
+7. ✅ CSS is scoped
+8. ✅ Conventional Commit message
 
-## Build and Deployment
+## For AI Assistants
 
-### Build Process
+### When Working with SEAS
 
-```bash
-# Build all packages
-pnpm run build
+**1. Understand the structure**:
+- Core libraries in `core/` for reusable functionality
+- Package modules in `packages/` for UI features
+- Use `workspace:*` protocol for monorepo dependencies
 
-# Build specific package
-pnpm --filter @izhimu/seas-base-view run build
+**2. Use appropriate imports**:
+```typescript
+import { http } from '@izhimu/seas-core'
+import { formatDate } from '@izhimu/seas-common'
+import { DataTable } from '@izhimu/seas-base-view'
+import { LoginForm } from '@izhimu/seas-security-view'
 ```
 
-### Publishing
+**3. Follow patterns**:
+- Vue 3 Composition API with `<script setup>`
+- TypeScript for all types
+- Naive UI for desktop, Vant for mobile
+- Pinia for state management
 
-```bash
-# Publish to internal registry
-pnpm run publish
-
-# Publish to open registry
-pnpm run publish:open
-```
-
-**Registry**: `https://izhimu-npm.pkg.coding.net/seas/npm-releases/`
-
-## AI Assistant Integration
-
-### Quick Reference for AI Agents
-
-**When working with SEAS Framework:**
-
-1. **Understand the structure**:
-   - Core libraries in `core/` for reusable functionality
-   - Package modules in `packages/` for UI features
-   - Use `workspace:*` for monorepo dependencies
-
-2. **Use appropriate imports**:
-   ```typescript
-   import { http } from '@izhimu/seas-core'
-   import { formatDate } from '@izhimu/seas-common'
-   import { DataTable } from '@izhimu/seas-base-view'
-   import { LoginForm } from '@izhimu/seas-security-view'
-   ```
-
-3. **Follow patterns**:
-   - Vue 3 Composition API with `<script setup>`
-   - TypeScript for all types
-   - Naive UI for desktop, Vant for mobile
-   - Pinia for state management
-
-4. **Read module docs**:
-   - Working on authentication? → See [`@izhimu/seas-security-view`](references/packages/seas-security-view.md)
-   - Building forms? → See [`@izhimu/seas-form-view`](references/packages/seas-form-view.md)
-   - Adding AI features? → See [`@izhimu/seas-ai-view`](references/packages/seas-ai-view.md)
+**4. Read module docs when needed**:
+- Authentication work? → [`@izhimu/seas-security-view`](references/packages/seas-security-view.md)
+- Building forms? → [`@izhimu/seas-form-view`](references/packages/seas-form-view.md)
+- AI features? → [`@izhimu/seas-ai-view`](references/packages/seas-ai-view.md)
+- Mobile development? → [`@izhimu/seas-mobile-core`](references/core/seas-mobile-core.md)
 
 ### Troubleshooting
 
-**Dependency Issues**:
+**Dependency issues**:
 ```bash
 rm -rf node_modules pnpm-lock.yaml
 pnpm install
 ```
 
-**Build Issues**:
+**Build issues**:
 ```bash
-pnpm run type-check
-# Fix type errors
+pnpm run type-check  # Fix type errors first
 pnpm run build
 ```
 
-**Runtime Errors**:
-- Check browser console for specific errors
+**Runtime errors**:
+- Check browser console
 - Verify props match TypeScript interfaces
-- Ensure Pinia stores are initialized
+- Ensure Pinia stores initialized
 - Check router configuration
 
-## Best Practices Summary
+## Best Practices
 
-### Component Development
+**Component Development**:
 - Use `<script setup lang="ts">`
 - Define props with TypeScript interfaces
 - Type events with `defineEmits<T>()`
-- Always scope component styles
+- Always scope styles
 
-### State Management
+**State Management**:
 - One store per domain
 - Enable persistence for necessary state
 - Use computed for derived state
 - Keep actions simple
 
-### Dependencies
+**Dependencies**:
 - Use `workspace:*` for monorepo packages
-- Prefer core libraries over external
+- Prefer core libraries over external deps
 - Run `pnpm install` after dependency changes
 - Minimize coupling
 
-### Code Quality
+**Code Quality**:
 - Type check before commits
 - Format with Prettier
 - Fix ESLint issues
 - Follow Conventional Commits
 
-## Additional Resources
+## Resources
 
-- **[Documentation Index](README.md)** - Complete module documentation
+- **Module docs**: See `references/` directory
 - **[CONTRIBUTING.md](../../CONTRIBUTING.md)** - Contribution guidelines
 - **[CHANGELOG.md](../../CHANGELOG.md)** - Version history
 
-## Module Quick Links
-
-### Core Libraries
-- **[@izhimu/seas-core](references/core/seas-core.md)** - HTTP, auth, encryption, composables
-- **[@izhimu/seas-common](references/core/seas-common.md)** - String, number, date utilities
-- **[@izhimu/seas-mobile-core](references/core/seas-mobile-core.md)** - Device detection, touch, mobile
-
-### Package Modules
-- **[@izhimu/seas-base-view](references/packages/seas-base-view.md)** - Layouts, tables, forms
-- **[@izhimu/seas-security-view](references/packages/seas-security-view.md)** - Auth, users, roles, permissions
-- **[@izhimu/seas-ai-view](references/packages/seas-ai-view.md)** - Chat, prompts, AI workflows
-- **[@izhimu/seas-storage-view](references/packages/seas-storage-view.md)** - File upload/management
-- **[@izhimu/seas-job-view](references/packages/seas-job-view.md)** - Job scheduling
-- **[@izhimu/seas-healthy-view](references/packages/seas-healthy-view.md)** - Health monitoring
-- **[@izhimu/seas-generate-view](references/packages/seas-generate-view.md)** - Code generation
-- **[@izhimu/seas-mqtt-view](references/packages/seas-mqtt-view.md)** - MQTT messaging
-- **[@izhimu/seas-form-view](references/packages/seas-form-view.md)** - Dynamic forms
-
 ---
 
-This SKILL.md provides an overview of SEAS Framework View. For detailed module documentation, refer to the individual module files listed above or see the [Documentation Index](README.md).
+This SKILL.md provides framework overview and patterns. For detailed module documentation, see the `references/` directory.
