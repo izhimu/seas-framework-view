@@ -35,20 +35,20 @@ Quick links:
 The framework follows a monorepo structure using pnpm workspaces:
 
 **Core Libraries** (`core/`):
-- [`@izhimu/seas-core`](core/seas-core.md) - Core functionality with HTTP, auth, encryption
-- [`@izhimu/seas-common`](core/seas-common.md) - Common utilities and helpers
-- [`@izhimu/seas-mobile-core`](core/seas-mobile-core.md) - Mobile-specific features
+- [`@izhimu/seas-core`](references/core/seas-core.md) - Core functionality with HTTP, auth, encryption
+- [`@izhimu/seas-common`](references/core/seas-common.md) - Common utilities and helpers
+- [`@izhimu/seas-mobile-core`](references/core/seas-mobile-core.md) - Mobile-specific features
 
 **Package Modules** (`packages/`):
-- [`@izhimu/seas-base-view`](packages/seas-base-view.md) - Base UI components and layouts
-- [`@izhimu/seas-security-view`](packages/seas-security-view.md) - Authentication and access control
-- [`@izhimu/seas-ai-view`](packages/seas-ai-view.md) - AI integration and chat interfaces
-- [`@izhimu/seas-storage-view`](packages/seas-storage-view.md) - File storage and management
-- [`@izhimu/seas-job-view`](packages/seas-job-view.md) - Job scheduling and tasks
-- [`@izhimu/seas-healthy-view`](packages/seas-healthy-view.md) - Health monitoring
-- [`@izhimu/seas-generate-view`](packages/seas-generate-view.md) - Code generation tools
-- [`@izhimu/seas-mqtt-view`](packages/seas-mqtt-view.md) - MQTT messaging
-- [`@izhimu/seas-form-view`](packages/seas-form-view.md) - Form building and validation
+- [`@izhimu/seas-base-view`](references/packages/seas-base-view.md) - Base UI components and layouts
+- [`@izhimu/seas-security-view`](references/packages/seas-security-view.md) - Authentication and access control
+- [`@izhimu/seas-ai-view`](references/packages/seas-ai-view.md) - AI integration and chat interfaces
+- [`@izhimu/seas-storage-view`](references/packages/seas-storage-view.md) - File storage and management
+- [`@izhimu/seas-job-view`](references/packages/seas-job-view.md) - Job scheduling and tasks
+- [`@izhimu/seas-healthy-view`](references/packages/seas-healthy-view.md) - Health monitoring
+- [`@izhimu/seas-generate-view`](references/packages/seas-generate-view.md) - Code generation tools
+- [`@izhimu/seas-mqtt-view`](references/packages/seas-mqtt-view.md) - MQTT messaging
+- [`@izhimu/seas-form-view`](references/packages/seas-form-view.md) - Form building and validation
 
 **Key distinction**: Core libraries provide foundational functionality for external projects. Package modules contain feature-specific UI implementations.
 
@@ -490,9 +490,9 @@ pnpm run publish:open
    - Pinia for state management
 
 4. **Read module docs**:
-   - Working on authentication? → See [`@izhimu/seas-security-view`](packages/seas-security-view.md)
-   - Building forms? → See [`@izhimu/seas-form-view`](packages/seas-form-view.md)
-   - Adding AI features? → See [`@izhimu/seas-ai-view`](packages/seas-ai-view.md)
+   - Working on authentication? → See [`@izhimu/seas-security-view`](references/packages/seas-security-view.md)
+   - Building forms? → See [`@izhimu/seas-form-view`](references/packages/seas-form-view.md)
+   - Adding AI features? → See [`@izhimu/seas-ai-view`](references/packages/seas-ai-view.md)
 
 ### Troubleshooting
 
@@ -550,20 +550,20 @@ pnpm run build
 ## Module Quick Links
 
 ### Core Libraries
-- **[@izhimu/seas-core](core/seas-core.md)** - HTTP, auth, encryption, composables
-- **[@izhimu/seas-common](core/seas-common.md)** - String, number, date utilities
-- **[@izhimu/seas-mobile-core](core/seas-mobile-core.md)** - Device detection, touch, mobile
+- **[@izhimu/seas-core](references/core/seas-core.md)** - HTTP, auth, encryption, composables
+- **[@izhimu/seas-common](references/core/seas-common.md)** - String, number, date utilities
+- **[@izhimu/seas-mobile-core](references/core/seas-mobile-core.md)** - Device detection, touch, mobile
 
 ### Package Modules
-- **[@izhimu/seas-base-view](packages/seas-base-view.md)** - Layouts, tables, forms
-- **[@izhimu/seas-security-view](packages/seas-security-view.md)** - Auth, users, roles, permissions
-- **[@izhimu/seas-ai-view](packages/seas-ai-view.md)** - Chat, prompts, AI workflows
-- **[@izhimu/seas-storage-view](packages/seas-storage-view.md)** - File upload/management
-- **[@izhimu/seas-job-view](packages/seas-job-view.md)** - Job scheduling
-- **[@izhimu/seas-healthy-view](packages/seas-healthy-view.md)** - Health monitoring
-- **[@izhimu/seas-generate-view](packages/seas-generate-view.md)** - Code generation
-- **[@izhimu/seas-mqtt-view](packages/seas-mqtt-view.md)** - MQTT messaging
-- **[@izhimu/seas-form-view](packages/seas-form-view.md)** - Dynamic forms
+- **[@izhimu/seas-base-view](references/packages/seas-base-view.md)** - Layouts, tables, forms
+- **[@izhimu/seas-security-view](references/packages/seas-security-view.md)** - Auth, users, roles, permissions
+- **[@izhimu/seas-ai-view](references/packages/seas-ai-view.md)** - Chat, prompts, AI workflows
+- **[@izhimu/seas-storage-view](references/packages/seas-storage-view.md)** - File upload/management
+- **[@izhimu/seas-job-view](references/packages/seas-job-view.md)** - Job scheduling
+- **[@izhimu/seas-healthy-view](references/packages/seas-healthy-view.md)** - Health monitoring
+- **[@izhimu/seas-generate-view](references/packages/seas-generate-view.md)** - Code generation
+- **[@izhimu/seas-mqtt-view](references/packages/seas-mqtt-view.md)** - MQTT messaging
+- **[@izhimu/seas-form-view](references/packages/seas-form-view.md)** - Dynamic forms
 
 ---
 
