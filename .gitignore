@@ -30,3 +30,6 @@ coverage
 
 *.tsbuildinfo
 /pnpm-lock.yaml
+
+.claude
+.gemini

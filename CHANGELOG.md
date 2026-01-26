@@ -8,6 +8,9 @@
 ## [未发布]
 
 ### 新增
+- AI助手技能文档 (skills/seas-view/SKILL.md)
+- 为Claude Code等AI助手提供全面的框架使用指南
+- OpenSpec工作流支持 (openspec/目录)
 - 开源项目模板文件
 - GitHub工作流配置
 - 贡献指南文档
